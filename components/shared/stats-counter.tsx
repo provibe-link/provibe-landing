@@ -19,7 +19,7 @@ export function StatsCounter({
   duration = 2000,
   className,
 }: StatsCounterProps) {
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLSpanElement>(null)
   const count = useCountUp(value, duration, ref as React.RefObject<HTMLElement>)
 
   return (
