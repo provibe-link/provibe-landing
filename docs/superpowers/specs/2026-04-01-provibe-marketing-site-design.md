@@ -151,9 +151,12 @@ provibe-landing/
 - Error: `#EF4444` (red)
 - Info: `#3B82F6` (blue)
 
-**Light Theme (Optional, Accessible):**
-- Keep existing mist theme configuration
-- Optimize dark theme first per requirements
+**Light Theme (Fully Supported):**
+- Both light and dark themes should be equally polished
+- Light theme uses softer gradients with higher backgrounds
+- Maintains orange-pink palette with adjusted opacity/saturation
+- Theme switcher allows users to choose preference
+- Respects system preference on first load
 
 **CSS Variables:**
 - Extend existing `globals.css` variables
@@ -340,12 +343,32 @@ interface CreatorCardProps {
 ```
 **Usage:** Creator showcases on homepage and /creators page
 
+**6. ThemeSwitcher (`components/shared/theme-switcher.tsx`)**
+```typescript
+interface ThemeSwitcherProps {
+  variant?: 'icon' | 'toggle' | 'dropdown'
+  className?: string
+}
+```
+**Features:**
+- Toggles between light and dark themes
+- Uses next-themes for theme management
+- Animated icon transition (sun ↔ moon)
+- Smooth theme transition with no flash
+- Respects system preference on first load
+**Variants:**
+- `icon`: Simple icon button (navbar)
+- `toggle`: Switch/toggle component (settings)
+- `dropdown`: Dropdown with system/light/dark options
+**Placement:** Navbar (top right), footer (optional)
+
 ### Layout Components
 
 **Navbar (`components/layout/navbar.tsx`)**
 - **Behavior:** Transparent on hero, solid background on scroll (threshold: 100px)
-- **Layout:** Logo left, nav links center, CTA button right
-- **Mobile:** Hamburger menu with slide-in drawer (Framer Motion AnimatePresence)
+- **Layout:** Logo left, nav links center, theme switcher + CTA button right
+- **Theme Switcher:** Icon variant, animated sun/moon toggle
+- **Mobile:** Hamburger menu with slide-in drawer (Framer Motion AnimatePresence), theme switcher in drawer
 - **Sticky:** Fixed positioning with smooth show/hide on scroll direction
 - **Links:** Home, Creators, Brands, Blog, About, Contact
 - **Active state:** Gradient underline for current page
