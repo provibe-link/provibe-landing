@@ -56,8 +56,11 @@
     --card-foreground: oklch(0.148 0.004 228.8);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.148 0.004 228.8);
-    --primary: oklch(0.553 0.195 38.402);
+    /* ProVibe Orange-Pink Primary Palette */
+    --primary: #fa6f62;
     --primary-foreground: oklch(0.98 0.016 73.684);
+    --primary-light: #ff8a7a;
+    --primary-dark: #e55548;
     --secondary: oklch(0.967 0.001 286.375);
     --secondary-foreground: oklch(0.21 0.006 285.885);
     --muted: oklch(0.963 0.002 197.1);
@@ -83,10 +86,7 @@
     --sidebar-border: oklch(0.925 0.005 214.3);
     --sidebar-ring: oklch(0.723 0.014 214.4);
 
-    /* ProVibe Orange-Pink Palette */
-    --primary: #fa6f62;
-    --primary-light: #ff8a7a;
-    --primary-dark: #e55548;
+    /* ProVibe Extended Colors */
     --pink: #ff6b9d;
     --pink-light: #ff85b3;
     --pink-dark: #e5507c;
@@ -104,8 +104,11 @@
     --card-foreground: oklch(0.987 0.002 197.1);
     --popover: oklch(0.218 0.008 223.9);
     --popover-foreground: oklch(0.987 0.002 197.1);
-    --primary: oklch(0.47 0.157 37.304);
+    /* ProVibe Orange-Pink Primary Palette (Dark Theme) */
+    --primary: #fa6f62;
     --primary-foreground: oklch(0.98 0.016 73.684);
+    --primary-light: #ff8a7a;
+    --primary-dark: #e55548;
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.275 0.011 216.9);
@@ -130,10 +133,7 @@
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.56 0.021 213.5);
 
-    /* Ensure primary colors work in dark theme */
-    --primary: #fa6f62;
-    --primary-light: #ff8a7a;
-    --primary-dark: #e55548;
+    /* ProVibe Extended Colors (Dark Theme) */
     --pink: #ff6b9d;
     --pink-light: #ff85b3;
     --pink-dark: #e5507c;
