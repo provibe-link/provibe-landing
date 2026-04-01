@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { GrainOverlay } from "@/components/shared/grain-overlay"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -44,14 +45,7 @@ export function CTA() {
       </div>
 
       {/* Grain Overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "128px 128px",
-        }}
-      />
+      <GrainOverlay opacity={0.05} />
 
       {/* Content */}
       <div className="container relative mx-auto max-w-4xl px-6 text-center">
