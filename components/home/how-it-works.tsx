@@ -1,33 +1,32 @@
 "use client"
 
 import { motion, Variants } from "framer-motion"
+import { useTranslations } from "next-intl"
 import { SectionHeader } from "@/components/shared/section-header"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const steps = [
-  {
-    number: 1,
-    title: "Create Your Page",
-    description:
-      "Pick a template, add your links, products, and content blocks. Your page is live in minutes.",
-  },
-  {
-    number: 2,
-    title: "Set Up Your Store",
-    description:
-      "Add digital products, services, or affiliate links to start earning from day one.",
-  },
-  {
-    number: 3,
-    title: "Grow & Monetize",
-    description:
-      "Track analytics, capture leads, and land brand partnerships as your audience grows.",
-  },
-]
-
 export function HowItWorks() {
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("howItWorks")
+
+  const steps = [
+    {
+      number: 1,
+      title: t("step1Title"),
+      description: t("step1Desc"),
+    },
+    {
+      number: 2,
+      title: t("step2Title"),
+      description: t("step2Desc"),
+    },
+    {
+      number: 3,
+      title: t("step3Title"),
+      description: t("step3Desc"),
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -43,9 +42,9 @@ export function HowItWorks() {
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-3xl px-6">
         <SectionHeader
-          eyebrow="How It Works"
-          headline="Launch in"
-          headlineHighlight="3 Minutes"
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
         />
 
         <motion.div

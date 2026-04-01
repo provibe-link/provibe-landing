@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
+import { useTranslations } from "next-intl"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
@@ -77,6 +78,7 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const prefersReducedMotion = useReducedMotion()
   const [waitlistOpen, setWaitlistOpen] = useState(false)
+  const t = useTranslations("hero")
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -156,16 +158,16 @@ export function Hero() {
               className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 text-xs font-medium text-secondary-foreground cursor-pointer hover:bg-secondary/60 transition-colors"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              🚀 Launching July 2026
+              {t("badge")}
             </motion.div>
 
             {/* Headline */}
             <h1 className="mb-6 font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05]">
               <motion.span variants={wordVariants} className="block">
-                Your Creator Empire
+                {t("headlineLine1")}
               </motion.span>
               <motion.span variants={wordVariants} className="block">
-                <span className="gradient-text">Starts Here.</span>
+                <span className="gradient-text">{t("headlineLine2")}</span>
               </motion.span>
             </h1>
 
@@ -174,8 +176,7 @@ export function Hero() {
               variants={fadeUpVariants}
               className="mx-auto mb-8 max-w-lg text-base sm:text-lg lg:text-xl text-muted-foreground"
             >
-              Bio links, digital store, brand deals, analytics — one platform to
-              build, monetize, and grow.
+              {t("subheadline")}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -188,7 +189,7 @@ export function Hero() {
                 className="group h-12 px-8 text-base bg-primary text-white hover:bg-primary/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Join the Waitlist
+                {t("joinWaitlist")}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
@@ -201,7 +202,7 @@ export function Hero() {
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
               >
-                See Features
+                {t("seeFeatures")}
               </Button>
             </motion.div>
 
@@ -211,9 +212,9 @@ export function Hero() {
               className="mt-10 flex items-center justify-center gap-8 sm:gap-12"
             >
               {[
-                { value: "10K+", label: "Creators waiting" },
-                { value: "500+", label: "Brand partners" },
-                { value: "$2M+", label: "Creator earnings" },
+                { value: t("stat1Value"), label: t("stat1Label") },
+                { value: t("stat2Value"), label: t("stat2Label") },
+                { value: t("stat3Value"), label: t("stat3Label") },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="font-display text-2xl font-bold text-primary sm:text-3xl">

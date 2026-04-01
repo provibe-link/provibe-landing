@@ -1,42 +1,41 @@
 "use client"
 
 import { motion, Variants } from "framer-motion"
+import { useTranslations } from "next-intl"
 import { SectionHeader } from "@/components/shared/section-header"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const phases = [
-  {
-    badge: "JULY 2026",
-    badgeStyle: "bg-primary text-white",
-    title: "Creator Platform Launch",
-    description:
-      "Bio links, digital store, analytics, lead capture, and monetization tools — everything you need to build your creator business.",
-    highlighted: true,
-    opacity: 1,
-  },
-  {
-    badge: "COMING SOON",
-    badgeStyle: "bg-muted text-muted-foreground",
-    title: "Brand Marketplace",
-    description:
-      "Creator-brand matching, campaign management, collaboration tools, and performance tracking.",
-    highlighted: false,
-    opacity: 0.7,
-  },
-  {
-    badge: "2027",
-    badgeStyle: "bg-muted text-muted-foreground",
-    title: "AI Growth Engine",
-    description:
-      "Smart scheduling, AI content assistant, creator matching engine, and predictive analytics.",
-    highlighted: false,
-    opacity: 0.5,
-  },
-]
-
 export function Roadmap() {
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("roadmap")
+
+  const phases = [
+    {
+      badge: t("phase1Badge"),
+      badgeStyle: "bg-primary text-white",
+      title: t("phase1Title"),
+      description: t("phase1Desc"),
+      highlighted: true,
+      opacity: 1,
+    },
+    {
+      badge: t("phase2Badge"),
+      badgeStyle: "bg-muted text-muted-foreground",
+      title: t("phase2Title"),
+      description: t("phase2Desc"),
+      highlighted: false,
+      opacity: 0.7,
+    },
+    {
+      badge: t("phase3Badge"),
+      badgeStyle: "bg-muted text-muted-foreground",
+      title: t("phase3Title"),
+      description: t("phase3Desc"),
+      highlighted: false,
+      opacity: 0.5,
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -52,9 +51,9 @@ export function Roadmap() {
     <section id="roadmap" className="py-24 md:py-32">
       <div className="container mx-auto max-w-3xl px-6">
         <SectionHeader
-          eyebrow="Roadmap"
-          headline="What's"
-          headlineHighlight="Coming Next"
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
         />
 
         <motion.div

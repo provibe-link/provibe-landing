@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 // Placeholder brand names (would be logos in production)
 const brandsRow1 = [
   "Nike", "Spotify", "Adobe", "Shopify", "Notion",
@@ -14,11 +16,13 @@ const brandsRow2 = [
 ]
 
 export function BrandScroller() {
+  const t = useTranslations("brandScroller")
+
   return (
     <section className="py-24 md:py-32 overflow-hidden">
       <div className="container mx-auto max-w-7xl px-6">
         <p className="text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground mb-12">
-          Trusted by Industry Leading Worldwide
+          {t("eyebrow")}
         </p>
       </div>
 

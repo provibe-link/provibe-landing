@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
@@ -44,6 +45,7 @@ const staggerReduced = {
 export function CTA() {
   const prefersReducedMotion = useReducedMotion()
   const [waitlistOpen, setWaitlistOpen] = useState(false)
+  const t = useTranslations("cta")
 
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
@@ -81,15 +83,15 @@ export function CTA() {
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            Ready to Build Your Creator{" "}
-            <span className="underline decoration-white/40 underline-offset-4 decoration-2">Empire?</span>
+            {t("headline")}{" "}
+            <span className="underline decoration-white/40 underline-offset-4 decoration-2">{t("headlineHighlight")}</span>
           </motion.h2>
 
           <motion.p
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mx-auto mt-6 max-w-xl text-lg text-white/80 sm:text-xl"
           >
-            Join 10,000+ creators on the waitlist. Be first when we launch July 2026.
+            {t("subtitle")}
           </motion.p>
 
           <motion.div variants={prefersReducedMotion ? fadeUpReduced : fadeUp} className="mt-10">
@@ -98,7 +100,7 @@ export function CTA() {
               className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90 transition-all"
               onClick={() => setWaitlistOpen(true)}
             >
-              Join the Waitlist
+              {t("button")}
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </motion.div>
@@ -107,7 +109,7 @@ export function CTA() {
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mt-6 text-sm text-white/60"
           >
-            Free to join • No credit card required • Launch July 2026
+            {t("tagline")}
           </motion.p>
         </motion.div>
       </div>

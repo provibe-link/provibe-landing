@@ -9,6 +9,7 @@ import {
   MessageCircle,
   ArrowRight,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { AnimatedSection } from "@/components/shared/animated-section"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -17,36 +18,33 @@ import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const brandFeatures = [
-  {
-    icon: Search,
-    title: "Creator Discovery",
-    description:
-      "Search and filter creators by niche, audience size, engagement rate, and performance metrics.",
-  },
-  {
-    icon: ClipboardList,
-    title: "Campaign Manager",
-    description:
-      "Launch, manage, and track influencer campaigns with budget controls and milestone tracking.",
-  },
-  {
-    icon: TrendingUp,
-    title: "ROI Analytics",
-    description:
-      "Measure real campaign results with conversion tracking, engagement analytics, and ROI reporting.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Direct Messaging",
-    description:
-      "Communicate directly with creators, share briefs, approve content, and manage deliverables.",
-  },
-]
-
 export function BrandsContent() {
   const [waitlistOpen, setWaitlistOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("brands")
+
+  const brandFeatures = [
+    {
+      icon: Search,
+      title: t("creatorDiscovery"),
+      description: t("creatorDiscoveryDesc"),
+    },
+    {
+      icon: ClipboardList,
+      title: t("campaignManager"),
+      description: t("campaignManagerDesc"),
+    },
+    {
+      icon: TrendingUp,
+      title: t("roiAnalytics"),
+      description: t("roiAnalyticsDesc"),
+    },
+    {
+      icon: MessageCircle,
+      title: t("directMessaging"),
+      description: t("directMessagingDesc"),
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -71,15 +69,14 @@ export function BrandsContent() {
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
-              ⏳ Coming Soon — Phase 2
+              {t("badge")}
             </span>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Find Your Perfect{" "}
-              <span className="gradient-text">Creator Match.</span>
+              {t("headline")}{" "}
+              <span className="gradient-text">{t("headlineHighlight")}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
-              Discover vetted creators, launch campaigns, and measure real ROI —
-              all in one platform. Coming after our creator platform launch.
+              {t("subheadline")}
             </p>
             <div className="mt-8">
               <Button
@@ -87,7 +84,7 @@ export function BrandsContent() {
                 className="group h-12 px-8 text-base bg-primary text-white hover:bg-primary/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Get Notified When We Launch
+                {t("getNotified")}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
@@ -99,9 +96,9 @@ export function BrandsContent() {
       <section className="py-24 md:py-32">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeader
-            eyebrow="Brand Tools"
-            headline="What Brands Will"
-            headlineHighlight="Get"
+            eyebrow={t("brandToolsEyebrow")}
+            headline={t("forBrandsHeadline")}
+            headlineHighlight={t("forBrandsHighlight")}
           />
 
           <motion.div
@@ -139,11 +136,10 @@ export function BrandsContent() {
         <div className="container relative mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-              Be First to Access
+              {t("ctaHeadline")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
-              Brand marketplace launching after our creator platform. Get
-              notified when it&apos;s ready.
+              {t("ctaSubtitle")}
             </p>
             <div className="mt-8">
               <Button
@@ -151,7 +147,7 @@ export function BrandsContent() {
                 className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Join Brand Waitlist
+                {t("ctaButton")}
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>

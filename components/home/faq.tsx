@@ -1,3 +1,6 @@
+"use client"
+
+import { useTranslations } from "next-intl"
 import {
   Accordion,
   AccordionContent,
@@ -7,58 +10,28 @@ import {
 import { AnimatedSection } from "@/components/shared/animated-section"
 import { SectionHeader } from "@/components/shared/section-header"
 
-const faqs = [
-  {
-    question: "What is ProVibe?",
-    answer:
-      "ProVibe is an all-in-one creator platform that combines bio link pages, a digital storefront, audience analytics, lead capture, and brand partnerships — everything you need to build, monetize, and grow your creator business.",
-  },
-  {
-    question: "When does ProVibe launch?",
-    answer:
-      "ProVibe launches in July 2026. Join the waitlist now to get early access and be among the first creators on the platform.",
-  },
-  {
-    question: "Is it free to join the waitlist?",
-    answer:
-      "Absolutely! Joining the waitlist is completely free. We'll notify you as soon as we launch so you can be first in line.",
-  },
-  {
-    question: "What features will be available at launch?",
-    answer:
-      "At launch, you'll get customizable bio link pages, a digital storefront for selling products and services, audience analytics, lead capture forms, email broadcasting, and affiliate link management.",
-  },
-  {
-    question: "How is ProVibe different from Linktree?",
-    answer:
-      "ProVibe goes far beyond link-in-bio. While Linktree focuses on links, ProVibe includes a full digital store, lead generation tools, audience analytics, campaign broadcasting, and a brand partnership marketplace — all in one platform.",
-  },
-  {
-    question: "Will there be a free plan?",
-    answer:
-      "Yes! ProVibe will offer a generous free plan that includes a customizable bio page, basic analytics, and essential monetization tools. Premium plans will unlock advanced features like detailed analytics, priority brand matching, and more.",
-  },
-  {
-    question: "How do brand partnerships work?",
-    answer:
-      "After our Phase 2 launch, brands will be able to discover creators based on niche, audience size, and engagement. Creators can browse opportunities, apply to campaigns, and manage collaborations directly through ProVibe.",
-  },
-  {
-    question: "Can I sell products on ProVibe?",
-    answer:
-      "Yes! You can sell digital products (ebooks, courses, templates), physical products, services (consultations, coaching), and subscription-based content — all from your ProVibe page with built-in payments.",
-  },
-]
-
 export function FAQ() {
+  const t = useTranslations("faq")
+
+  const faqs = [
+    { question: t("q1"), answer: t("a1") },
+    { question: t("q2"), answer: t("a2") },
+    { question: t("q3"), answer: t("a3") },
+    { question: t("q4"), answer: t("a4") },
+    { question: t("q5"), answer: t("a5") },
+    { question: t("q6"), answer: t("a6") },
+    { question: t("q7"), answer: t("a7") },
+    { question: t("q8"), answer: t("a8") },
+  ]
+
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-3xl px-6">
         {/* Section Header */}
         <SectionHeader
-          eyebrow="FAQ"
-          headline="Questions?"
-          headlineHighlight="Answers."
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
         />
 
         {/* Accordion */}

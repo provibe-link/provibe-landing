@@ -10,6 +10,7 @@ import {
   Target,
   ArrowRight,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/shared/section-header"
 import { AnimatedSection } from "@/components/shared/animated-section"
@@ -24,65 +25,57 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const features = [
-  {
-    icon: Link2,
-    title: "Bio Link Builder",
-    description:
-      "Drag-and-drop blocks for links, media, products, forms, and embeds. Fully customizable templates with your brand colors.",
-  },
-  {
-    icon: ShoppingCart,
-    title: "Digital Storefront",
-    description:
-      "Sell digital and physical products, offer services and bookings, manage subscriptions — all with built-in payments.",
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics Dashboard",
-    description:
-      "Track link clicks, page views, conversions, revenue, and audience growth with real-time dashboards.",
-  },
-  {
-    icon: Mail,
-    title: "Lead Gen & Broadcasting",
-    description:
-      "Capture emails and phone numbers, broadcast campaigns to subscribers, and grow your audience list.",
-  },
-  {
-    icon: Target,
-    title: "Affiliate Management",
-    description:
-      "Track affiliate links, monitor commissions, and measure performance across all your partnerships.",
-  },
-]
-
-const creatorFaqs = [
-  {
-    question: "How quickly can I set up my page?",
-    answer:
-      "Most creators have their page live in under 3 minutes. Choose a template, customize your colors and content, and you're ready to share.",
-  },
-  {
-    question: "Can I use my own domain?",
-    answer:
-      "Yes! You can connect your custom domain or use a free provibe.com/yourname subdomain.",
-  },
-  {
-    question: "What can I sell on ProVibe?",
-    answer:
-      "Digital products (ebooks, courses, templates, presets), physical products, services (coaching, consultations), and subscription content.",
-  },
-  {
-    question: "How do payments work?",
-    answer:
-      "We integrate with major payment processors. You receive payouts directly to your bank account with transparent fee structures.",
-  },
-]
-
 export function CreatorsContent() {
   const [waitlistOpen, setWaitlistOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("creators")
+
+  const features = [
+    {
+      icon: Link2,
+      title: t("bioBuilder"),
+      description: t("bioBuilderDesc"),
+    },
+    {
+      icon: ShoppingCart,
+      title: t("digitalStorefront"),
+      description: t("digitalStorefrontDesc"),
+    },
+    {
+      icon: BarChart3,
+      title: t("analyticsDashboard"),
+      description: t("analyticsDashboardDesc"),
+    },
+    {
+      icon: Mail,
+      title: t("leadGen"),
+      description: t("leadGenDesc"),
+    },
+    {
+      icon: Target,
+      title: t("affiliateManagement"),
+      description: t("affiliateManagementDesc"),
+    },
+  ]
+
+  const creatorFaqs = [
+    {
+      question: t("faqQ1"),
+      answer: t("faqA1"),
+    },
+    {
+      question: t("faqQ2"),
+      answer: t("faqA2"),
+    },
+    {
+      question: t("faqQ3"),
+      answer: t("faqA3"),
+    },
+    {
+      question: t("faqQ4"),
+      answer: t("faqA4"),
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -107,15 +100,14 @@ export function CreatorsContent() {
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-              For Creators
+              {t("eyebrow")}
             </p>
             <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Your Bio. Your Store.{" "}
-              <span className="gradient-text">Your Empire.</span>
+              {t("headline")}{" "}
+              <span className="gradient-text">{t("headlineHighlight")}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
-              One link to showcase everything — sell products, capture leads, and
-              land brand deals. All from your ProVibe page.
+              {t("subheadline")}
             </p>
             <div className="mt-8">
               <Button
@@ -123,7 +115,7 @@ export function CreatorsContent() {
                 className="group h-12 px-8 text-base bg-primary text-white hover:bg-primary/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Join the Waitlist
+                {t("joinWaitlist")}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
@@ -135,9 +127,9 @@ export function CreatorsContent() {
       <section className="py-24 md:py-32">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeader
-            eyebrow="Creator Tools"
-            headline="Everything to"
-            headlineHighlight="Build & Sell"
+            eyebrow={t("toolsEyebrow")}
+            headline={t("toolsHeadline")}
+            headlineHighlight={t("toolsHighlight")}
           />
 
           <motion.div
@@ -174,14 +166,14 @@ export function CreatorsContent() {
       <section className="bg-card/30 py-24 md:py-32">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeader
-            eyebrow="Templates"
-            headline="Start With a"
-            headlineHighlight="Template"
-            description="Choose from professionally designed templates and make them yours in minutes."
+            eyebrow={t("templatesEyebrow")}
+            headline={t("templatesHeadline")}
+            headlineHighlight={t("templatesHighlight")}
+            description={t("templatesDesc")}
           />
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {["Minimal", "Bold", "Creative"].map((name) => (
+            {[t("templateMinimal"), t("templateBold"), t("templateCreative")].map((name) => (
               <AnimatedSection key={name}>
                 <div className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary">
                   <div className="aspect-[3/4] bg-muted/20" />
@@ -199,9 +191,9 @@ export function CreatorsContent() {
       <section className="py-24 md:py-32">
         <div className="container mx-auto max-w-3xl px-6">
           <SectionHeader
-            eyebrow="FAQ"
-            headline="Creator"
-            headlineHighlight="Questions"
+            eyebrow={t("faqEyebrow")}
+            headline={t("faqHeadline")}
+            headlineHighlight={t("faqHighlight")}
           />
 
           <AnimatedSection variant="fade-up" delay={0.2}>
@@ -232,11 +224,10 @@ export function CreatorsContent() {
         <div className="container relative mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-              Start Building Today
+              {t("ctaHeadline")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
-              Be among the first creators on ProVibe. Join the waitlist and get
-              early access when we launch.
+              {t("ctaSubtitle")}
             </p>
             <div className="mt-8">
               <Button
@@ -244,7 +235,7 @@ export function CreatorsContent() {
                 className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Join the Waitlist
+                {t("joinWaitlist")}
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>

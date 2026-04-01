@@ -9,6 +9,7 @@ import {
   Users,
   ArrowRight,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/shared/section-header"
 import { AnimatedSection } from "@/components/shared/animated-section"
@@ -17,77 +18,78 @@ import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const stats = [
-  { value: "2026", label: "Founded" },
-  { value: "10K+", label: "Waitlist" },
-  { value: "3", label: "Phases planned" },
-]
-
-const phases = [
-  {
-    badge: "JULY 2026",
-    title: "Creator Platform Launch",
-    description: "Bio links, digital store, analytics, lead capture, monetization tools.",
-    highlighted: true,
-  },
-  {
-    badge: "COMING SOON",
-    title: "Brand Marketplace",
-    description: "Creator-brand matching, campaign management, collaboration tools.",
-    highlighted: false,
-  },
-  {
-    badge: "2027",
-    title: "AI Growth Engine",
-    description: "Smart scheduling, AI content assistant, predictive analytics.",
-    highlighted: false,
-  },
-]
-
-const team = [
-  {
-    name: "Coming Soon",
-    role: "Founder & CEO",
-    bio: "Passionate about empowering creators with tools to build sustainable businesses.",
-  },
-  {
-    name: "Coming Soon",
-    role: "CTO",
-    bio: "Building the infrastructure that powers the next generation of creator economy.",
-  },
-  {
-    name: "Coming Soon",
-    role: "Head of Design",
-    bio: "Crafting beautiful, intuitive experiences that creators love to use.",
-  },
-]
-
-const values = [
-  {
-    icon: Heart,
-    title: "Creator-First",
-    description: "Every decision starts with asking: how does this help creators succeed?",
-  },
-  {
-    icon: Shield,
-    title: "Transparency",
-    description: "Clear pricing, honest communication, and no hidden fees or surprises.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Innovation",
-    description: "Constantly pushing boundaries to give creators the best tools available.",
-  },
-  {
-    icon: Users,
-    title: "Community",
-    description: "Building a supportive network where creators help each other grow.",
-  },
-]
-
 export function AboutContent() {
   const [waitlistOpen, setWaitlistOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("about")
+
+  const stats = [
+    { value: t("stat1Value"), label: t("stat1Label") },
+    { value: t("stat2Value"), label: t("stat2Label") },
+    { value: t("stat3Value"), label: t("stat3Label") },
+  ]
+
+  const phases = [
+    {
+      badge: t("phase1Badge"),
+      title: t("phase1Title"),
+      description: t("phase1Desc"),
+      highlighted: true,
+    },
+    {
+      badge: t("phase2Badge"),
+      title: t("phase2Title"),
+      description: t("phase2Desc"),
+      highlighted: false,
+    },
+    {
+      badge: t("phase3Badge"),
+      title: t("phase3Title"),
+      description: t("phase3Desc"),
+      highlighted: false,
+    },
+  ]
+
+  const team = [
+    {
+      name: t("team1Name"),
+      role: t("team1Role"),
+      bio: t("team1Bio"),
+    },
+    {
+      name: t("team2Name"),
+      role: t("team2Role"),
+      bio: t("team2Bio"),
+    },
+    {
+      name: t("team3Name"),
+      role: t("team3Role"),
+      bio: t("team3Bio"),
+    },
+  ]
+
+  const values = [
+    {
+      icon: Heart,
+      title: t("value1Title"),
+      description: t("value1Desc"),
+    },
+    {
+      icon: Shield,
+      title: t("value2Title"),
+      description: t("value2Desc"),
+    },
+    {
+      icon: Lightbulb,
+      title: t("value3Title"),
+      description: t("value3Desc"),
+    },
+    {
+      icon: Users,
+      title: t("value4Title"),
+      description: t("value4Desc"),
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -112,17 +114,16 @@ export function AboutContent() {
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-              Our Story
+              {t("eyebrow")}
             </p>
             <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Built{" "}
-              <span className="gradient-text">By Creators,</span>
+              {t("headlinePart1")}{" "}
+              <span className="gradient-text">{t("headlineHighlight")}</span>
               <br />
-              For Creators
+              {t("headlinePart2")}
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
-              We believe every creator deserves tools to turn passion into
-              profession — without needing technical skills or a big budget.
+              {t("subheadline")}
             </p>
           </AnimatedSection>
         </div>
@@ -133,13 +134,10 @@ export function AboutContent() {
         <div className="container mx-auto max-w-3xl px-6 text-center">
           <AnimatedSection>
             <h2 className="font-heading text-2xl font-bold sm:text-3xl">
-              Our Mission
+              {t("missionTitle")}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Empowering creators with an all-in-one platform to build their
-              online presence, monetize their audience, and connect with brands —
-              no technical skills needed. We&apos;re building the infrastructure
-              for the next generation of the creator economy.
+              {t("missionText")}
             </p>
           </AnimatedSection>
         </div>
@@ -177,9 +175,9 @@ export function AboutContent() {
       <section className="py-24 md:py-32">
         <div className="container mx-auto max-w-3xl px-6">
           <SectionHeader
-            eyebrow="Vision"
-            headline="Our"
-            headlineHighlight="Roadmap"
+            eyebrow={t("visionEyebrow")}
+            headline={t("visionHeadline")}
+            headlineHighlight={t("visionHighlight")}
           />
 
           <motion.div
@@ -225,9 +223,9 @@ export function AboutContent() {
       <section className="bg-card/30 py-24 md:py-32">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeader
-            eyebrow="Team"
-            headline="The People"
-            headlineHighlight="Behind ProVibe"
+            eyebrow={t("teamEyebrow")}
+            headline={t("teamHeadline")}
+            headlineHighlight={t("teamHighlight")}
           />
 
           <motion.div
@@ -265,9 +263,9 @@ export function AboutContent() {
       <section className="py-24 md:py-32">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeader
-            eyebrow="Values"
-            headline="What We"
-            headlineHighlight="Stand For"
+            eyebrow={t("valuesEyebrow")}
+            headline={t("valuesHeadline")}
+            headlineHighlight={t("valuesHighlight")}
           />
 
           <motion.div
@@ -305,11 +303,10 @@ export function AboutContent() {
         <div className="container relative mx-auto max-w-4xl px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-              Join Our Journey
+              {t("ctaHeadline")}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
-              Be part of the movement that&apos;s redefining how creators build
-              and grow their businesses.
+              {t("ctaSubtitle")}
             </p>
             <div className="mt-8">
               <Button
@@ -317,7 +314,7 @@ export function AboutContent() {
                 className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90"
                 onClick={() => setWaitlistOpen(true)}
               >
-                Join the Waitlist
+                {t("ctaButton")}
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>

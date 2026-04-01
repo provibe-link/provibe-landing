@@ -3,23 +3,26 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ArrowRight, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeSwitcher } from "@/components/shared/theme-switcher"
+import { LanguageSwitcher } from "@/components/shared/language-switcher"
 import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { cn } from "@/lib/utils"
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/creators", label: "Creators" },
-  { href: "/brands", label: "Brands" },
-  { href: "/blogs", label: "Blog" },
-  { href: "/about", label: "About" },
-]
-
 export function Navbar() {
   const pathname = usePathname()
+  const t = useTranslations("nav")
+
+  const navLinks = [
+    { href: "/", label: t("home") },
+    { href: "/creators", label: t("creators") },
+    { href: "/brands", label: t("brands") },
+    { href: "/blogs", label: t("blog") },
+    { href: "/about", label: t("about") },
+  ]
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [waitlistOpen, setWaitlistOpen] = useState(false)
@@ -59,7 +62,7 @@ export function Navbar() {
             </span>
             <span className="text-lg font-bold">ProVibe</span>
             <span className="hidden items-center rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-medium text-primary sm:inline-flex">
-              July 2026
+              {t("launchBadge")}
             </span>
           </Link>
 
@@ -96,12 +99,13 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden items-center gap-5 md:flex">
+            <LanguageSwitcher />
             <ThemeSwitcher />
             <Button
               className="rounded-full bg-primary px-5 text-white hover:bg-primary/90"
               onClick={() => setWaitlistOpen(true)}
             >
-              Join Waitlist
+              {t("joinWaitlist")}
               <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           </div>
@@ -150,6 +154,7 @@ export function Navbar() {
                 ))}
 
                 <div className="mt-2 flex items-center gap-4 border-t border-border/30 pt-4">
+                  <LanguageSwitcher />
                   <ThemeSwitcher />
                   <Button
                     className="flex-1 rounded-full bg-primary text-white hover:bg-primary/90"
@@ -158,7 +163,7 @@ export function Navbar() {
                       setWaitlistOpen(true)
                     }}
                   >
-                    Join Waitlist
+                    {t("joinWaitlist")}
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Button>
                 </div>

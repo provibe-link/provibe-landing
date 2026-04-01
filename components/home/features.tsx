@@ -10,59 +10,55 @@ import {
   Megaphone,
   ArrowRight,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { SectionHeader } from "@/components/shared/section-header"
 import { cardFadeUp, staggerContainer } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const features = [
-  {
-    icon: Link2,
-    title: "Bio Link Pages",
-    description:
-      "Custom SEO-friendly pages with drag-and-drop blocks for links, media, and products.",
-    link: { label: "Learn More", href: "/creators" },
-  },
-  {
-    icon: ShoppingCart,
-    title: "Digital Store",
-    description:
-      "Sell digital and physical products, services, bookings, and subscriptions.",
-    link: { label: "Learn More", href: "/creators" },
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics",
-    description:
-      "Track link clicks, conversions, revenue, and audience growth in real-time.",
-    link: { label: "Learn More", href: "/creators" },
-  },
-  {
-    icon: Mail,
-    title: "Lead Capture",
-    description:
-      "Grow your subscriber list with forms, email capture, and broadcast campaigns.",
-    link: { label: "Learn More", href: "/creators" },
-  },
-  {
-    icon: Handshake,
-    title: "Brand Deals",
-    description:
-      "Get discovered by brands looking for authentic creators in your niche.",
-    link: { label: "See Brands", href: "/brands" },
-  },
-  {
-    icon: Megaphone,
-    title: "Campaigns",
-    description:
-      "Broadcast promotions to your audience and manage affiliate link tracking.",
-    link: { label: "Learn More", href: "/creators" },
-  },
-]
-
 export function Features() {
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("features")
+
+  const features = [
+    {
+      icon: Link2,
+      title: t("bioLinks"),
+      description: t("bioLinksDesc"),
+      link: { label: t("learnMore"), href: "/creators" },
+    },
+    {
+      icon: ShoppingCart,
+      title: t("digitalStore"),
+      description: t("digitalStoreDesc"),
+      link: { label: t("learnMore"), href: "/creators" },
+    },
+    {
+      icon: BarChart3,
+      title: t("analytics"),
+      description: t("analyticsDesc"),
+      link: { label: t("learnMore"), href: "/creators" },
+    },
+    {
+      icon: Mail,
+      title: t("leadCapture"),
+      description: t("leadCaptureDesc"),
+      link: { label: t("learnMore"), href: "/creators" },
+    },
+    {
+      icon: Handshake,
+      title: t("brandDeals"),
+      description: t("brandDealsDesc"),
+      link: { label: t("seeBrands"), href: "/brands" },
+    },
+    {
+      icon: Megaphone,
+      title: t("campaigns"),
+      description: t("campaignsDesc"),
+      link: { label: t("learnMore"), href: "/creators" },
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -84,9 +80,9 @@ export function Features() {
     <section id="features" className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="Platform Features"
-          headline="Everything You Need to"
-          headlineHighlight="Monetize"
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
         />
 
         <motion.div

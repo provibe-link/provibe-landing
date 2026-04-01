@@ -9,45 +9,47 @@ import {
   Palette,
   Dumbbell,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { SectionHeader } from "@/components/shared/section-header"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-const creatorTypes = [
-  {
-    icon: Video,
-    title: "Video Creators",
-    subtitle: "YouTube, TikTok, Reels",
-  },
-  {
-    icon: Camera,
-    title: "Photographers",
-    subtitle: "Portfolios & prints",
-  },
-  {
-    icon: PenTool,
-    title: "Writers & Bloggers",
-    subtitle: "Newsletters & ebooks",
-  },
-  {
-    icon: Music,
-    title: "Musicians",
-    subtitle: "Merch & streaming",
-  },
-  {
-    icon: Palette,
-    title: "Artists & Designers",
-    subtitle: "Digital art & commissions",
-  },
-  {
-    icon: Dumbbell,
-    title: "Fitness & Coaches",
-    subtitle: "Programs & bookings",
-  },
-]
-
 export function ForEveryCreator() {
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("forEveryCreator")
+
+  const creatorTypes = [
+    {
+      icon: Video,
+      title: t("videoCreators"),
+      subtitle: t("videoCreatorsSubtitle"),
+    },
+    {
+      icon: Camera,
+      title: t("photographers"),
+      subtitle: t("photographersSubtitle"),
+    },
+    {
+      icon: PenTool,
+      title: t("writersAndBloggers"),
+      subtitle: t("writersAndBloggersSubtitle"),
+    },
+    {
+      icon: Music,
+      title: t("musicians"),
+      subtitle: t("musiciansSubtitle"),
+    },
+    {
+      icon: Palette,
+      title: t("artistsAndDesigners"),
+      subtitle: t("artistsAndDesignersSubtitle"),
+    },
+    {
+      icon: Dumbbell,
+      title: t("fitnessAndCoaches"),
+      subtitle: t("fitnessAndCoachesSubtitle"),
+    },
+  ]
 
   const staggerReduced: Variants = {
     hidden: { opacity: 0 },
@@ -63,10 +65,10 @@ export function ForEveryCreator() {
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="Built For You"
-          headline="For Every"
-          headlineHighlight="Creator"
-          description="No matter your niche, audience size, or goals — ProVibe adapts to how you create."
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
+          description={t("description")}
         />
 
         <motion.div

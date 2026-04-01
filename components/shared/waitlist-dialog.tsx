@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTranslations } from "next-intl"
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ interface WaitlistDialogProps {
 }
 
 export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
+  const t = useTranslations("waitlist")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [handle, setHandle] = useState("")
@@ -51,7 +53,7 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
       setStatus("success")
     } catch {
       setStatus("error")
-      setErrorMessage("Something went wrong. Please try again.")
+      setErrorMessage(t("error"))
     }
   }
 
@@ -83,11 +85,10 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
                 <CheckCircle className="h-8 w-8 text-primary" />
               </div>
               <h3 className="mb-2 font-display text-xl font-bold">
-                You&apos;re on the list!
+                {t("successTitle")}
               </h3>
               <p className="text-sm text-muted-foreground">
-                We&apos;ll notify you as soon as ProVibe launches. Get ready to
-                build your creator empire.
+                {t("successDescription")}
               </p>
             </motion.div>
           ) : (
@@ -99,28 +100,28 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
               <DialogHeader className="text-center">
                 <div className="mx-auto mb-3 text-4xl">🚀</div>
                 <DialogTitle className="font-display text-xl">
-                  Join the Waitlist
+                  {t("title")}
                 </DialogTitle>
                 <DialogDescription>
-                  Be first to launch when ProVibe goes live
+                  {t("description")}
                 </DialogDescription>
               </DialogHeader>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 <Input
-                  placeholder="Your name"
+                  placeholder={t("namePlaceholder")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                   type="email"
-                  placeholder="Email address"
+                  placeholder={t("emailPlaceholder")}
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
-                  placeholder="@social_handle"
+                  placeholder={t("handlePlaceholder")}
                   value={handle}
                   onChange={(e) => setHandle(e.target.value)}
                 />
@@ -137,13 +138,13 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
                   {status === "loading" ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : null}
-                  Get Early Access
+                  {t("button")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </form>
 
               <p className="mt-4 text-center text-xs text-muted-foreground">
-                No spam. We&apos;ll only email you about launch updates.
+                {t("privacyNote")}
               </p>
             </motion.div>
           )}

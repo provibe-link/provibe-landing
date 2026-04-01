@@ -4,20 +4,13 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search, ArrowRight, Calendar, Clock, User } from "lucide-react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { cn } from "@/lib/utils"
-
-const categories = [
-  "All Posts",
-  "Monetization",
-  "Growth",
-  "Brand Deals",
-  "Tools & Tips",
-]
 
 const posts = [
   {
@@ -131,12 +124,21 @@ const categoryColors: Record<string, string> = {
 
 export function BlogsContent() {
   const [search, setSearch] = useState("")
-  const [activeCategory, setActiveCategory] = useState("All Posts")
+  const [activeCategory, setActiveCategory] = useState("all")
+  const t = useTranslations("blog")
+
+  const categories = [
+    { key: "all", label: t("categoryAll") },
+    { key: "monetization", label: t("categoryMonetization") },
+    { key: "growth", label: t("categoryGrowth") },
+    { key: "brandDeals", label: t("categoryBrandDeals") },
+    { key: "toolsTips", label: t("categoryToolsTips") },
+  ]
 
   const featured = posts.find((p) => p.featured)
   const filteredPosts = posts
     .filter((p) => !p.featured)
-    .filter((p) => activeCategory === "All Posts" || p.category === activeCategory)
+    .filter((p) => activeCategory === "all" || p.category === activeCategory)
     .filter((p) =>
       search === "" ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -155,7 +157,7 @@ export function BlogsContent() {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
           >
-            ProVibe <span className="gradient-text">Blog</span>
+            {t("heroTitle")} <span className="gradient-text">{t("heroHighlight")}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -163,7 +165,7 @@ export function BlogsContent() {
             transition={{ delay: 0.1 }}
             className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground"
           >
-            Tips, stories, and insights for creators and brands
+            {t("heroSubtitle")}
           </motion.p>
 
           {/* Search */}
@@ -176,7 +178,7 @@ export function BlogsContent() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search articles..."
+                placeholder={t("searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10"
@@ -192,22 +194,22 @@ export function BlogsContent() {
           <div className="mb-12 flex flex-wrap gap-2">
             {categories.map((cat) => (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-all",
-                  activeCategory === cat
+                  activeCategory === cat.key
                     ? "bg-primary text-white"
                     : "bg-card border border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
                 )}
               >
-                {cat}
+                {cat.label}
               </button>
             ))}
           </div>
 
           {/* Featured Post */}
-          {featured && activeCategory === "All Posts" && search === "" && (
+          {featured && activeCategory === "all" && search === "" && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -221,7 +223,7 @@ export function BlogsContent() {
                         <span className={cn("rounded-full px-3 py-1 text-xs font-medium", categoryColors[featured.category])}>
                           {featured.category}
                         </span>
-                        <span className="text-xs text-muted-foreground">Featured</span>
+                        <span className="text-xs text-muted-foreground">{t("featured")}</span>
                       </div>
                       <h2 className="font-heading text-2xl font-bold transition-colors group-hover:text-primary md:text-3xl">
                         {featured.title}
@@ -299,13 +301,13 @@ export function BlogsContent() {
 
           {filteredPosts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">No posts found matching your search.</p>
+              <p className="text-lg text-muted-foreground">{t("noPostsFound")}</p>
               <Button
                 variant="outline"
                 className="mt-4"
-                onClick={() => { setSearch(""); setActiveCategory("All Posts") }}
+                onClick={() => { setSearch(""); setActiveCategory("all") }}
               >
-                Clear Filters
+                {t("clearFilters")}
               </Button>
             </div>
           )}

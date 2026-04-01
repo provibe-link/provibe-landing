@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { GradientCard } from "@/components/shared/gradient-card"
@@ -33,6 +34,8 @@ const relatedPosts = [
 ]
 
 export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }) {
+  const t = useTranslations("blog")
+
   return (
     <>
       {/* Hero */}
@@ -45,7 +48,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
             className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+            {t("backToBlog")}
           </Link>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -70,7 +73,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
-                {post.readTime} read
+                {post.readTime} {t("read")}
               </span>
             </div>
           </motion.div>
@@ -125,11 +128,11 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
       {/* Newsletter */}
       <section className="border-t border-border py-12">
         <div className="container mx-auto max-w-3xl px-6 text-center">
-          <h3 className="font-heading text-xl font-bold">Get creator tips in your inbox</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Join 5,000+ creators getting weekly insights.</p>
+          <h3 className="font-heading text-xl font-bold">{t("newsletterTitle")}</h3>
+          <p className="mt-2 text-sm text-muted-foreground">{t("newsletterSubtitle")}</p>
           <div className="mx-auto mt-6 flex max-w-md gap-2">
-            <Input type="email" placeholder="Enter your email" className="flex-1" />
-            <Button className="bg-primary text-white hover:bg-primary/90">Subscribe</Button>
+            <Input type="email" placeholder={t("newsletterPlaceholder")} className="flex-1" />
+            <Button className="bg-primary text-white hover:bg-primary/90">{t("newsletterButton")}</Button>
           </div>
         </div>
       </section>
@@ -137,7 +140,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
       {/* Related Posts */}
       <section className="border-t border-border py-16">
         <div className="container mx-auto max-w-7xl px-6">
-          <h3 className="mb-8 text-center font-heading text-2xl font-bold">Read More Like This</h3>
+          <h3 className="mb-8 text-center font-heading text-2xl font-bold">{t("relatedPosts")}</h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {relatedPosts.map((related) => (
               <Link key={related.slug} href={`/blogs/${related.slug}`}>
@@ -149,7 +152,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
                   <h4 className="font-heading font-bold transition-colors group-hover:text-primary line-clamp-2">
                     {related.title}
                   </h4>
-                  <p className="mt-2 text-xs text-muted-foreground">{related.readTime} read</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{related.readTime} {t("read")}</p>
                 </GradientCard>
               </Link>
             ))}

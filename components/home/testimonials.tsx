@@ -1,6 +1,7 @@
 "use client"
 
 import { Star } from "lucide-react"
+import { useTranslations } from "next-intl"
 import {
   Carousel,
   CarouselContent,
@@ -10,65 +11,6 @@ import {
 } from "@/components/ui/carousel"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { SectionHeader } from "@/components/shared/section-header"
-
-const testimonials = [
-  {
-    name: "Sarah Kim",
-    role: "Beauty Creator",
-    rating: 5,
-    quote: "ProVibe's bio page builder is incredible. My conversion rate doubled within the first week.",
-    initials: "SK",
-  },
-  {
-    name: "David Okonkwo",
-    role: "Music Producer",
-    rating: 5,
-    quote: "Finally, a platform that actually connects me with brands that match my vibe. No more cold DMs.",
-    initials: "DO",
-  },
-  {
-    name: "Luna Martinez",
-    role: "Travel Blogger",
-    rating: 5,
-    quote: "The events feature helped me meet 50+ creators in my city. My network has never been stronger.",
-    initials: "LM",
-  },
-  {
-    name: "Ryan Park",
-    role: "Fitness Coach",
-    rating: 5,
-    quote: "I replaced 4 different tools with ProVibe. Everything I need in one beautiful dashboard.",
-    initials: "RP",
-  },
-  {
-    name: "Zara Ahmed",
-    role: "Fashion Influencer",
-    rating: 5,
-    quote: "Brands reach out to ME now. ProVibe completely changed how I approach partnerships.",
-    initials: "ZA",
-  },
-  {
-    name: "Tyler Brooks",
-    role: "Tech Reviewer",
-    rating: 4,
-    quote: "Setup took literally 2 minutes. The templates are gorgeous and the analytics are super helpful.",
-    initials: "TB",
-  },
-  {
-    name: "Mia Thompson",
-    role: "Art & Design",
-    rating: 5,
-    quote: "My bio page is basically my portfolio now. Clients love it and I've landed 3 freelance gigs.",
-    initials: "MT",
-  },
-  {
-    name: "Carlos Ruiz",
-    role: "Comedy Creator",
-    rating: 5,
-    quote: "The community aspect is what sets ProVibe apart. I've collabed with creators I never would have found.",
-    initials: "CR",
-  },
-]
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -88,14 +30,27 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function Testimonials() {
+  const t = useTranslations("testimonials")
+
+  const testimonials = [
+    { name: t("t1Name"), role: t("t1Role"), rating: 5, quote: t("t1Quote"), initials: "SK" },
+    { name: t("t2Name"), role: t("t2Role"), rating: 5, quote: t("t2Quote"), initials: "DO" },
+    { name: t("t3Name"), role: t("t3Role"), rating: 5, quote: t("t3Quote"), initials: "LM" },
+    { name: t("t4Name"), role: t("t4Role"), rating: 5, quote: t("t4Quote"), initials: "RP" },
+    { name: t("t5Name"), role: t("t5Role"), rating: 5, quote: t("t5Quote"), initials: "ZA" },
+    { name: t("t6Name"), role: t("t6Role"), rating: 4, quote: t("t6Quote"), initials: "TB" },
+    { name: t("t7Name"), role: t("t7Role"), rating: 5, quote: t("t7Quote"), initials: "MT" },
+    { name: t("t8Name"), role: t("t8Role"), rating: 5, quote: t("t8Quote"), initials: "CR" },
+  ]
+
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
         <SectionHeader
-          eyebrow="Social Proof"
-          headline="Loved by"
-          headlineHighlight="creators"
+          eyebrow={t("eyebrow")}
+          headline={t("headline")}
+          headlineHighlight={t("headlineHighlight")}
         />
 
         {/* Carousel */}

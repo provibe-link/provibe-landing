@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Rocket } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
@@ -10,6 +11,7 @@ export function FloatingWaitlistButton() {
   const [isVisible, setIsVisible] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+  const t = useTranslations("floatingButton")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,12 +38,12 @@ export function FloatingWaitlistButton() {
                 ? "none"
                 : "glow-pulse 2s ease-in-out infinite",
             }}
-            aria-label="Join the waitlist"
+            aria-label={t("text")}
           >
             <Rocket className="h-4 w-4" />
-            Join the Waitlist
+            {t("text")}
             <span className="absolute -right-1 -top-1 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-primary shadow-sm">
-              FREE
+              {t("badge")}
             </span>
           </motion.button>
         )}

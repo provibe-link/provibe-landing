@@ -1,44 +1,6 @@
 import Link from "next/link"
 import { Zap } from "lucide-react"
-
-const footerColumns = [
-  {
-    title: "Product",
-    links: [
-      { label: "Features", href: "/#features" },
-      { label: "Roadmap", href: "/#roadmap" },
-    ],
-  },
-  {
-    title: "Creators",
-    links: [
-      { label: "Creator Hub", href: "/creators" },
-      { label: "Digital Store", href: "/creators" },
-      { label: "Analytics", href: "/creators" },
-    ],
-  },
-  {
-    title: "Brands",
-    links: [
-      { label: "Brand Portal", href: "/brands" },
-      { label: "Campaign Manager", href: "/brands" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Blog", href: "/blogs" },
-      { label: "Help Center", href: "/contact" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-]
+import { getTranslations } from "next-intl/server"
 
 const TwitterIcon = () => (
   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -71,7 +33,47 @@ const socialLinks = [
   { icon: GithubIcon, href: "#", label: "GitHub" },
 ]
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations("footer")
+
+  const footerColumns = [
+    {
+      title: t("product"),
+      links: [
+        { label: t("features"), href: "/#features" },
+        { label: t("roadmap"), href: "/#roadmap" },
+      ],
+    },
+    {
+      title: t("creatorsTitle"),
+      links: [
+        { label: t("creatorHub"), href: "/creators" },
+        { label: t("digitalStore"), href: "/creators" },
+        { label: t("analytics"), href: "/creators" },
+      ],
+    },
+    {
+      title: t("brandsTitle"),
+      links: [
+        { label: t("brandPortal"), href: "/brands" },
+        { label: t("campaignManager"), href: "/brands" },
+      ],
+    },
+    {
+      title: t("resources"),
+      links: [
+        { label: "Blog", href: "/blogs" },
+        { label: t("helpCenter"), href: "/contact" },
+      ],
+    },
+    {
+      title: t("company"),
+      links: [
+        { label: t("contact"), href: "/contact" },
+      ],
+    },
+  ]
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="container mx-auto max-w-7xl px-6 py-16">
@@ -87,14 +89,14 @@ export function Footer() {
             </Link>
 
             <p className="max-w-[260px] text-sm leading-relaxed text-muted-foreground">
-              The modern platform for creators to build, monetize, and grow. Launching July 2026.
+              {t("tagline")}
             </p>
 
             <Link
               href="/"
               className="inline-flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80"
             >
-              Join the Waitlist →
+              {t("joinWaitlist")}
             </Link>
 
             <div className="flex gap-3 pt-1">
@@ -137,17 +139,17 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-14 flex flex-col gap-4 border-t border-border pt-8 md:flex-row md:items-center md:justify-between">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} ProVibe, Inc. All rights reserved.
+            {t("copyright", { year: new Date().getFullYear() })}
           </p>
           <div className="flex items-center gap-6 text-xs text-muted-foreground">
             <Link href="#" className="transition-colors hover:text-primary">
-              Privacy Policy
+              {t("privacy")}
             </Link>
             <Link href="#" className="transition-colors hover:text-primary">
-              Terms of Service
+              {t("terms")}
             </Link>
             <Link href="#" className="transition-colors hover:text-primary">
-              Cookies
+              {t("cookies")}
             </Link>
           </div>
         </div>

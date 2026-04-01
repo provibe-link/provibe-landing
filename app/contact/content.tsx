@@ -4,22 +4,24 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Clock, MessageSquare, Send, CheckCircle } from "lucide-react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AnimatedSection } from "@/components/shared/animated-section"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { cn } from "@/lib/utils"
 
-const subjects = [
-  { value: "general", label: "General Inquiry" },
-  { value: "partnership", label: "Partnership" },
-  { value: "creator-support", label: "Creator Support" },
-  { value: "press", label: "Press & Media" },
-  { value: "brand", label: "Brand Inquiry" },
-]
-
 export function ContactContent() {
   const [submitted, setSubmitted] = useState(false)
+  const t = useTranslations("contact")
+
+  const subjects = [
+    { value: "general", label: t("subjectGeneral") },
+    { value: "partnership", label: t("subjectPartnership") },
+    { value: "creator-support", label: t("subjectCreatorSupport") },
+    { value: "press", label: t("subjectPress") },
+    { value: "brand", label: t("subjectBrand") },
+  ]
 
   return (
     <>
@@ -33,7 +35,7 @@ export function ContactContent() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-4 font-mono text-sm font-medium uppercase tracking-widest text-primary"
           >
-            Contact Us
+            {t("eyebrow")}
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -41,7 +43,7 @@ export function ContactContent() {
             transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
             className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
           >
-            Get in <span className="gradient-text">Touch</span>
+            {t("headlinePart1")} <span className="gradient-text">{t("headlineHighlight")}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -49,7 +51,7 @@ export function ContactContent() {
             transition={{ delay: 0.2 }}
             className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground"
           >
-            Have a question, partnership idea, or just want to say hi? We&apos;d love to hear from you.
+            {t("subheadline")}
           </motion.p>
         </div>
       </section>
@@ -68,16 +70,16 @@ export function ContactContent() {
                     className="flex flex-col items-center py-12 text-center"
                   >
                     <CheckCircle className="mb-4 h-16 w-16 text-primary" />
-                    <h3 className="font-heading text-2xl font-bold">Message Sent!</h3>
+                    <h3 className="font-heading text-2xl font-bold">{t("successTitle")}</h3>
                     <p className="mt-2 text-muted-foreground">
-                      We&apos;ll get back to you within 24-48 hours.
+                      {t("successMessage")}
                     </p>
                     <Button
                       variant="outline"
                       className="mt-6"
                       onClick={() => setSubmitted(false)}
                     >
-                      Send Another Message
+                      {t("sendAnother")}
                     </Button>
                   </motion.div>
                 ) : (
@@ -91,21 +93,21 @@ export function ContactContent() {
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div>
                         <label htmlFor="name" className="mb-2 block text-sm font-medium">
-                          Name
+                          {t("labelName")}
                         </label>
-                        <Input id="name" placeholder="Your name" required />
+                        <Input id="name" placeholder={t("placeholderName")} required />
                       </div>
                       <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium">
-                          Email
+                          {t("labelEmail")}
                         </label>
-                        <Input id="email" type="email" placeholder="you@example.com" required />
+                        <Input id="email" type="email" placeholder={t("placeholderEmail")} required />
                       </div>
                     </div>
 
                     <div>
                       <label htmlFor="subject" className="mb-2 block text-sm font-medium">
-                        Subject
+                        {t("labelSubject")}
                       </label>
                       <select
                         id="subject"
@@ -115,7 +117,7 @@ export function ContactContent() {
                         )}
                         required
                       >
-                        <option value="">Select a subject</option>
+                        <option value="">{t("selectSubject")}</option>
                         {subjects.map((s) => (
                           <option key={s.value} value={s.value}>
                             {s.label}
@@ -126,12 +128,12 @@ export function ContactContent() {
 
                     <div>
                       <label htmlFor="message" className="mb-2 block text-sm font-medium">
-                        Message
+                        {t("labelMessage")}
                       </label>
                       <textarea
                         id="message"
                         rows={5}
-                        placeholder="How can we help?"
+                        placeholder={t("placeholderMessage")}
                         required
                         className={cn(
                           "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors",
@@ -147,7 +149,7 @@ export function ContactContent() {
                       className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
                     >
                       <Send className="mr-2 h-4 w-4" />
-                      Send Message
+                      {t("sendMessage")}
                     </Button>
                   </form>
                 )}
@@ -163,7 +165,7 @@ export function ContactContent() {
                     <Mail className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold">Email Us</h3>
+                    <h3 className="font-heading font-bold">{t("emailUs")}</h3>
                     <Link
                       href="mailto:hello@provibe.com"
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -179,9 +181,9 @@ export function ContactContent() {
                     <Clock className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold">Response Time</h3>
+                    <h3 className="font-heading font-bold">{t("responseTime")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      We typically respond within 24-48 hours during business days.
+                      {t("responseTimeDesc")}
                     </p>
                   </div>
                 </div>
@@ -192,11 +194,11 @@ export function ContactContent() {
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold">Check our FAQ</h3>
+                    <h3 className="font-heading font-bold">{t("checkFaq")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Many questions are already answered in our{" "}
+                      {t("faqDesc")}{" "}
                       <Link href="/#faq" className="text-primary hover:underline">
-                        FAQ section
+                        {t("faqLink")}
                       </Link>
                       .
                     </p>
@@ -205,7 +207,7 @@ export function ContactContent() {
 
                 {/* Divider */}
                 <div className="border-t border-border pt-8">
-                  <h3 className="mb-4 font-heading font-bold">Follow Us</h3>
+                  <h3 className="mb-4 font-heading font-bold">{t("followUs")}</h3>
                   <div className="flex gap-3">
                     {["Twitter", "Instagram", "LinkedIn"].map((social) => (
                       <Link

@@ -5,6 +5,8 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { FloatingWaitlistButton } from "@/components/shared/floating-waitlist-button"
 import { cn } from "@/lib/utils"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getMessages } from "next-intl/server"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -36,30 +38,36 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata = {
   title: "ProVibe - Create. Connect. Grow.",
-  description: "Join 10K+ creators building their brand and connecting with opportunities",
+  description:
+    "Join 10K+ creators building their brand and connecting with opportunities",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://provibe.com",
     siteName: "ProVibe",
     title: "ProVibe - Create. Connect. Grow.",
-    description: "Join 10K+ creators building their brand and connecting with opportunities",
+    description:
+      "Join 10K+ creators building their brand and connecting with opportunities",
   },
   twitter: {
     card: "summary_large_image",
     title: "ProVibe - Create. Connect. Grow.",
-    description: "Join 10K+ creators building their brand and connecting with opportunities",
+    description:
+      "Join 10K+ creators building their brand and connecting with opportunities",
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
     <html
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
       className={cn(
         "antialiased",
@@ -70,17 +78,19 @@ export default function RootLayout({
       )}
     >
       <body className="font-body">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          <Navbar />
-          <main className="min-h-screen pt-16">{children}</main>
-          <Footer />
-          <FloatingWaitlistButton />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <Navbar />
+            <main className="min-h-screen pt-16">{children}</main>
+            <Footer />
+            <FloatingWaitlistButton />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
