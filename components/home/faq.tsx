@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
 
 const faqs = [
   {
@@ -54,17 +55,12 @@ export function FAQ() {
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-3xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-16 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Got Questions?
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Frequently Asked <span className="gradient-text">Questions</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-            Everything you need to know about ProVibe. Can&apos;t find what you&apos;re looking for? Contact us.
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Got Questions?"
+          headline="Frequently Asked"
+          headlineHighlight="Questions"
+          description="Everything you need to know about ProVibe. Can't find what you're looking for? Contact us."
+        />
 
         {/* Accordion */}
         <AnimatedSection variant="fade-up" delay={0.2}>

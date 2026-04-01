@@ -1,6 +1,6 @@
 "use client"
 
-import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
 
 // Placeholder brand names (would be logos in production)
 const brandsRow1 = [
@@ -19,14 +19,12 @@ export function BrandScroller() {
   return (
     <section className="py-24 md:py-32 overflow-hidden">
       <div className="container mx-auto max-w-7xl px-6">
-        <AnimatedSection className="mb-12 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Partnerships
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Trusted by <span className="gradient-text">Leading Brands</span>
-          </h2>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Partnerships"
+          headline="Trusted by"
+          headlineHighlight="Leading Brands"
+          className="mb-12"
+        />
       </div>
 
       {/* Scrolling Rows */}

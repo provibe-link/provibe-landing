@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { GradientCard } from "@/components/shared/gradient-card"
-import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
 
 const testimonials = [
   {
@@ -92,14 +92,11 @@ export function Testimonials() {
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-16 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Testimonials
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Loved by <span className="gradient-text">Creators Everywhere</span>
-          </h2>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Testimonials"
+          headline="Loved by"
+          headlineHighlight="Creators Everywhere"
+        />
 
         {/* Carousel */}
         <Carousel
