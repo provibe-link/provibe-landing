@@ -22,6 +22,13 @@ export function useMagneticButton<T extends HTMLElement>() {
 
       // Limit magnetic effect to 20px
       const distance = Math.sqrt(x * x + y * y)
+
+      // Prevent division by zero when cursor is at element center
+      if (distance === 0) {
+        setPosition({ x: 0, y: 0 })
+        return
+      }
+
       const maxDistance = 80
       const strength = Math.min(distance / maxDistance, 1)
 
@@ -96,9 +103,14 @@ export function useCountUp(
  * @returns Boolean indicating reduced motion preference
  */
 export function useReducedMotion() {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  })
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     setPrefersReducedMotion(mediaQuery.matches)
 
@@ -130,8 +142,14 @@ export function useGradientRotation(duration = 10) {
       if (!startTime) startTime = currentTime
       const elapsed = currentTime - startTime
       const progress = (elapsed / (duration * 1000)) % 1
+      const newRotation = progress * 360
 
-      setRotation(progress * 360)
+      // Only update if changed by at least 1 degree to reduce re-renders
+      setRotation(prev => {
+        const diff = Math.abs(newRotation - prev)
+        return diff > 1 ? newRotation : prev
+      })
+
       animationFrame = requestAnimationFrame(animate)
     }
 
