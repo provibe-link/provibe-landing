@@ -1,3 +1,7 @@
+/**
+ * Framer Motion animation variants library
+ * Provides pre-configured animation variants for consistent motion design across the app
+ */
 import { Variants } from "framer-motion"
 
 // Fade Variants

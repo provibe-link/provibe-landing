@@ -61,6 +61,12 @@ const socialLinks = [
   { icon: GithubIcon, href: "#", label: "GitHub" },
 ]
 
+/**
+ * Site footer with navigation links, social media, newsletter signup, and branding
+ *
+ * @example
+ * <Footer />
+ */
 export function Footer() {
   return (
     <footer className="border-t border-border bg-background">

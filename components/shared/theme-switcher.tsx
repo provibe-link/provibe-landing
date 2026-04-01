@@ -11,6 +11,12 @@ interface ThemeSwitcherProps {
   className?: string
 }
 
+/**
+ * Theme toggle button that switches between light and dark modes
+ *
+ * @example
+ * <ThemeSwitcher variant="icon" />
+ */
 export function ThemeSwitcher({
   variant = "icon",
   className,

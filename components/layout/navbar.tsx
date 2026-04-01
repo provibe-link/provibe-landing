@@ -18,6 +18,12 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ]
 
+/**
+ * Main navigation bar with responsive mobile menu, theme switcher, and scroll effects
+ *
+ * @example
+ * <Navbar />
+ */
 export function Navbar() {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)

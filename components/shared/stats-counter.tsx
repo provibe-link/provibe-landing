@@ -12,6 +12,12 @@ interface StatsCounterProps {
   className?: string
 }
 
+/**
+ * Animated counter that counts up to a target value on scroll into view
+ *
+ * @example
+ * <StatsCounter value={1000} suffix="+" prefix="$" duration={2000} />
+ */
 export function StatsCounter({
   value,
   suffix = "",

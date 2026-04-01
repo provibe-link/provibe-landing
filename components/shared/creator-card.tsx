@@ -15,6 +15,12 @@ interface CreatorCardProps {
   className?: string
 }
 
+/**
+ * Card component displaying creator profile with avatar, stats, and featured badge
+ *
+ * @example
+ * <CreatorCard name="Jane Doe" niche="Fashion" avatar="/avatar.jpg" stats={{ followers: 50000, engagement: 8.5 }} featured />
+ */
 export function CreatorCard({
   name,
   niche,

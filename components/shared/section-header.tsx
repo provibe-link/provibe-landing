@@ -9,6 +9,12 @@ interface SectionHeaderProps {
   className?: string
 }
 
+/**
+ * Reusable section header with eyebrow text, headline, optional highlight, and description
+ *
+ * @example
+ * <SectionHeader eyebrow="Features" headline="Why Choose" headlineHighlight="ProVibe" description="Empowering creators worldwide" />
+ */
 export function SectionHeader({
   eyebrow,
   headline,
