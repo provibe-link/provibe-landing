@@ -1,10 +1,11 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { XCircle, Sparkles, AlertTriangle, Link2Off, EyeOff, Zap, Globe, Handshake, CalendarSearch } from "lucide-react"
 import { AnimatedSection } from "@/components/shared/animated-section"
 import { SectionHeader } from "@/components/shared/section-header"
 import { iconBounce, listItem, staggerList } from "@/lib/animations/variants"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const problems = [
   { icon: Link2Off, text: "Generic bio links that don't stand out" },
@@ -21,6 +22,32 @@ const solutions = [
 ]
 
 export function ProblemSolution() {
+  const prefersReducedMotion = useReducedMotion()
+
+  const iconReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
+  const listReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  }
+
+  const itemReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.2 },
+    },
+  }
+
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
@@ -36,7 +63,7 @@ export function ProblemSolution() {
           <AnimatedSection variant="slide-left">
             <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8">
               <motion.div
-                variants={iconBounce}
+                variants={prefersReducedMotion ? iconReduced : iconBounce}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -50,7 +77,7 @@ export function ProblemSolution() {
               </h3>
 
               <motion.ul
-                variants={staggerList}
+                variants={prefersReducedMotion ? listReduced : staggerList}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -59,7 +86,7 @@ export function ProblemSolution() {
                 {problems.map((problem) => (
                   <motion.li
                     key={problem.text}
-                    variants={listItem}
+                    variants={prefersReducedMotion ? itemReduced : listItem}
                     className="flex items-start gap-3"
                   >
                     <problem.icon className="mt-0.5 h-5 w-5 shrink-0 text-red-400/70" />
@@ -74,7 +101,7 @@ export function ProblemSolution() {
           <AnimatedSection variant="slide-right">
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8">
               <motion.div
-                variants={iconBounce}
+                variants={prefersReducedMotion ? iconReduced : iconBounce}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -88,7 +115,7 @@ export function ProblemSolution() {
               </h3>
 
               <motion.ul
-                variants={staggerList}
+                variants={prefersReducedMotion ? listReduced : staggerList}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -97,7 +124,7 @@ export function ProblemSolution() {
                 {solutions.map((solution) => (
                   <motion.li
                     key={solution.text}
-                    variants={listItem}
+                    variants={prefersReducedMotion ? itemReduced : listItem}
                     className="flex items-start gap-3"
                   >
                     <solution.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />

@@ -36,6 +36,19 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "ProVibe - Create. Connect. Grow.",
   description: "Join 10K+ creators building their brand and connecting with opportunities",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://provibe.com",
+    siteName: "ProVibe",
+    title: "ProVibe - Create. Connect. Grow.",
+    description: "Join 10K+ creators building their brand and connecting with opportunities",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ProVibe - Create. Connect. Grow.",
+    description: "Join 10K+ creators building their brand and connecting with opportunities",
+  },
 }
 
 export default function RootLayout({

@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -11,6 +12,14 @@ const fadeUp = {
     opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  },
+}
+
+const fadeUpReduced = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.3 },
   },
 }
 
@@ -22,7 +31,17 @@ const stagger = {
   },
 }
 
+const staggerReduced = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0 },
+  },
+}
+
 export function CTA() {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
       {/* Gradient Background */}
@@ -50,26 +69,26 @@ export function CTA() {
       {/* Content */}
       <div className="container relative mx-auto max-w-4xl px-6 text-center">
         <motion.div
-          variants={stagger}
+          variants={prefersReducedMotion ? staggerReduced : stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
           <motion.h2
-            variants={fadeUp}
+            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
             Ready to Level Up?
           </motion.h2>
 
           <motion.p
-            variants={fadeUp}
+            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mx-auto mt-6 max-w-xl text-lg text-white/80 sm:text-xl"
           >
             Join thousands of creators building their brand and connecting with opportunities on ProVibe.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="mt-10">
+          <motion.div variants={prefersReducedMotion ? fadeUpReduced : fadeUp} className="mt-10">
             <Button
               size="lg"
               className="group h-14 px-10 text-lg bg-white text-primary font-bold shadow-2xl hover:bg-white/90 transition-all animate-glow-pulse"
@@ -80,7 +99,7 @@ export function CTA() {
           </motion.div>
 
           <motion.p
-            variants={fadeUp}
+            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mt-6 text-sm text-white/60"
           >
             No credit card required • Free forever • Setup in 30 seconds

@@ -1,9 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { UserPlus, Paintbrush, TrendingUp, Rocket } from "lucide-react"
 import { SectionHeader } from "@/components/shared/section-header"
 import { iconBounce, fadeUp } from "@/lib/animations/variants"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const steps = [
   {
@@ -33,6 +34,24 @@ const steps = [
 ]
 
 export function HowItWorks() {
+  const prefersReducedMotion = useReducedMotion()
+
+  const fadeUpReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
+  const iconReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
   return (
     <section id="how-it-works" className="py-24 md:py-32">
       <div className="container mx-auto max-w-4xl px-6">
@@ -54,7 +73,7 @@ export function HowItWorks() {
             {steps.map((step, index) => (
               <motion.div
                 key={step.title}
-                variants={fadeUp}
+                variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.5 }}
@@ -70,7 +89,7 @@ export function HowItWorks() {
 
                 {/* Icon Circle */}
                 <motion.div
-                  variants={iconBounce}
+                  variants={prefersReducedMotion ? iconReduced : iconBounce}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}

@@ -159,16 +159,18 @@ export function Footer() {
               </p>
             </div>
 
-            <div className="flex w-full max-w-md gap-2">
+            <form className="flex w-full max-w-md gap-2" aria-label="Newsletter signup">
               <Input
                 type="email"
                 placeholder="Enter your email"
                 className="flex-1"
+                aria-label="Email address"
+                required
               />
-              <Button className="bg-gradient-to-r from-primary to-pink text-white">
+              <Button type="submit" className="bg-gradient-to-r from-primary to-pink text-white">
                 Subscribe
               </Button>
-            </div>
+            </form>
           </div>
         </div>
 

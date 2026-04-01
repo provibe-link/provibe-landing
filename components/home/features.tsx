@@ -1,11 +1,12 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { FileText, Handshake, CalendarDays, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { SectionHeader } from "@/components/shared/section-header"
 import { cardFadeUp, staggerContainer } from "@/lib/animations/variants"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const features = [
   {
@@ -35,6 +36,24 @@ const features = [
 ]
 
 export function Features() {
+  const prefersReducedMotion = useReducedMotion()
+
+  const staggerReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  }
+
+  const cardReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
@@ -48,14 +67,14 @@ export function Features() {
 
         {/* Feature Cards */}
         <motion.div
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? staggerReduced : staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((feature) => (
-            <motion.div key={feature.title} variants={cardFadeUp}>
+            <motion.div key={feature.title} variants={prefersReducedMotion ? cardReduced : cardFadeUp}>
               <GradientCard className="h-full">
                 <div className="flex h-full flex-col">
                   {/* Icon */}
