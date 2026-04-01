@@ -4,7 +4,8 @@ import { motion } from "framer-motion"
 import { FileText, Handshake, CalendarDays, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { GradientCard } from "@/components/shared/gradient-card"
-import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
+import { cardFadeUp, staggerContainer } from "@/lib/animations/variants"
 
 const features = [
   {
@@ -33,53 +34,28 @@ const features = [
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  },
-}
-
 export function Features() {
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-16 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Everything You Need
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            One Platform, <span className="gradient-text">Infinite Possibilities</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Everything creators need to build their brand, connect with opportunities, and grow their community.
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Everything You Need"
+          headline="One Platform,"
+          headlineHighlight="Infinite Possibilities"
+          description="Everything creators need to build their brand, connect with opportunities, and grow their community."
+        />
 
         {/* Feature Cards */}
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((feature) => (
-            <motion.div key={feature.title} variants={cardVariants}>
+            <motion.div key={feature.title} variants={cardFadeUp}>
               <GradientCard className="h-full">
                 <div className="flex h-full flex-col">
                   {/* Icon */}

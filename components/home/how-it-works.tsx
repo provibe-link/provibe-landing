@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion"
 import { UserPlus, Paintbrush, TrendingUp, Rocket } from "lucide-react"
-import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
+import { iconBounce, fadeUp } from "@/lib/animations/variants"
 
 const steps = [
   {
@@ -31,37 +32,17 @@ const steps = [
   },
 ]
 
-const iconBounce = {
-  hidden: { scale: 0, rotate: -180 },
-  visible: {
-    scale: 1,
-    rotate: 0,
-    transition: { type: "spring" as const, stiffness: 260, damping: 20 },
-  },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as any },
-  },
-}
-
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 md:py-32">
       <div className="container mx-auto max-w-4xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-20 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Simple Process
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Get Started in <span className="gradient-text">4 Easy Steps</span>
-          </h2>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Simple Process"
+          headline="Get Started in"
+          headlineHighlight="4 Easy Steps"
+          className="mb-20"
+        />
 
         {/* Timeline */}
         <div className="relative">

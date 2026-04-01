@@ -3,7 +3,8 @@
 import { motion } from "framer-motion"
 import { TrendingUp, Users, Briefcase, Quote } from "lucide-react"
 import { GradientCard } from "@/components/shared/gradient-card"
-import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
+import { cardScale, staggerContainer } from "@/lib/animations/variants"
 
 const stories = [
   {
@@ -52,39 +53,17 @@ const stories = [
   },
 ]
 
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as any },
-  },
-}
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-}
-
 export function SuccessStories() {
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-16 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Real Results
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Creators Who <span className="gradient-text">Leveled Up</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            See how real creators transformed their online presence with ProVibe.
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Real Results"
+          headline="Creators Who"
+          headlineHighlight="Leveled Up"
+          description="See how real creators transformed their online presence with ProVibe."
+        />
 
         {/* Stories Grid */}
         <motion.div
@@ -95,7 +74,7 @@ export function SuccessStories() {
           className="grid grid-cols-1 gap-8 md:grid-cols-2"
         >
           {stories.map((story) => (
-            <motion.div key={story.name} variants={cardVariants}>
+            <motion.div key={story.name} variants={cardScale}>
               <GradientCard variant="glass" className="h-full">
                 <div className="space-y-5">
                   {/* Header */}

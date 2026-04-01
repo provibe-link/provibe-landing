@@ -181,3 +181,52 @@ export const bounceScale: Variants = {
     },
   },
 }
+
+// Icon bounce animation (used in how-it-works, problem-solution)
+export const iconBounce: Variants = {
+  hidden: { scale: 0, rotate: -180 },
+  visible: {
+    scale: 1,
+    rotate: 0,
+    transition: { type: "spring", stiffness: 260, damping: 20 },
+  },
+}
+
+// List item slide-in animation
+export const listItem: Variants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+// Stagger list container
+export const staggerList: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+// Card fade-up animation (for grids)
+export const cardFadeUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+// Card scale animation (for featured content)
+export const cardScale: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+}

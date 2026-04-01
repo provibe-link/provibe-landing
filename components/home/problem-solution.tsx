@@ -3,6 +3,8 @@
 import { motion } from "framer-motion"
 import { XCircle, Sparkles, AlertTriangle, Link2Off, EyeOff, Zap, Globe, Handshake, CalendarSearch } from "lucide-react"
 import { AnimatedSection } from "@/components/shared/animated-section"
+import { SectionHeader } from "@/components/shared/section-header"
+import { iconBounce, listItem, staggerList } from "@/lib/animations/variants"
 
 const problems = [
   { icon: Link2Off, text: "Generic bio links that don't stand out" },
@@ -18,49 +20,16 @@ const solutions = [
   { icon: Zap, text: "Grow your audience with built-in analytics" },
 ]
 
-const iconBounce = {
-  hidden: { scale: 0, rotate: -180 },
-  visible: {
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 260,
-      damping: 20,
-    },
-  },
-}
-
-const listItemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
-  },
-}
-
-const staggerList = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-}
-
 export function ProblemSolution() {
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <AnimatedSection className="mb-16 text-center">
-          <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Why ProVibe?
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            The Creator Economy is <span className="gradient-text">Broken</span>
-          </h2>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow="Why ProVibe?"
+          headline="The Creator Economy is"
+          headlineHighlight="Broken"
+        />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
           {/* Problem Side */}
@@ -90,7 +59,7 @@ export function ProblemSolution() {
                 {problems.map((problem) => (
                   <motion.li
                     key={problem.text}
-                    variants={listItemVariants}
+                    variants={listItem}
                     className="flex items-start gap-3"
                   >
                     <problem.icon className="mt-0.5 h-5 w-5 shrink-0 text-red-400/70" />
@@ -128,7 +97,7 @@ export function ProblemSolution() {
                 {solutions.map((solution) => (
                   <motion.li
                     key={solution.text}
-                    variants={listItemVariants}
+                    variants={listItem}
                     className="flex items-start gap-3"
                   >
                     <solution.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
