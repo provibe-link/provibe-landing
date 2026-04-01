@@ -2,7 +2,6 @@
 
 import { motion, useInView, Variants } from "framer-motion"
 import { useRef, ReactNode } from "react"
-import { cn } from "@/lib/utils"
 import {
   fadeUp,
   slideLeft,
@@ -11,6 +10,23 @@ import {
 } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
+// Variant map is defined outside the component to prevent recreation on each render
+const VARIANT_MAP: Record<string, Variants> = {
+  "fade-up": fadeUp,
+  "slide-left": slideLeft,
+  "slide-right": slideRight,
+  scale: scale,
+}
+
+/**
+ * Wrapper component that animates children on scroll into view
+ * Respects user's reduced motion preferences
+ *
+ * @example
+ * <AnimatedSection variant="fade-up" delay={0.2}>
+ *   <h1>Hello World</h1>
+ * </AnimatedSection>
+ */
 interface AnimatedSectionProps {
   children: ReactNode
   variant?: "fade-up" | "slide-left" | "slide-right" | "scale" | "custom"
@@ -28,7 +44,7 @@ export function AnimatedSection({
   className,
   customVariants,
 }: AnimatedSectionProps) {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, {
     once: true,
     amount: threshold,
@@ -36,15 +52,8 @@ export function AnimatedSection({
   const prefersReducedMotion = useReducedMotion()
 
   // Select variant based on prop
-  const variantMap: Record<string, Variants> = {
-    "fade-up": fadeUp,
-    "slide-left": slideLeft,
-    "slide-right": slideRight,
-    scale: scale,
-    custom: customVariants || fadeUp,
-  }
-
-  const selectedVariant = variantMap[variant]
+  const selectedVariant =
+    variant === "custom" ? (customVariants || fadeUp) : VARIANT_MAP[variant]
 
   // If user prefers reduced motion, just fade in
   const variants: Variants = prefersReducedMotion
@@ -61,7 +70,7 @@ export function AnimatedSection({
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
       transition={{ delay }}
-      className={cn(className)}
+      className={className}
     >
       {children}
     </motion.div>
