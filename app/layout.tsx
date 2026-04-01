@@ -1,6 +1,8 @@
 import { Space_Grotesk, Outfit, DM_Sans, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Navbar } from "@/components/layout/navbar"
+import { Footer } from "@/components/layout/footer"
 import { cn } from "@/lib/utils"
 
 const spaceGrotesk = Space_Grotesk({
@@ -60,7 +62,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          {children}
+          <Navbar />
+          <main className="min-h-screen pt-16">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
