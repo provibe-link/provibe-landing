@@ -11,42 +11,42 @@ const faqs = [
   {
     question: "What is ProVibe?",
     answer:
-      "ProVibe is a creator marketplace platform that helps influencers and creators build stunning bio pages, connect with brands, and discover local events. Think of it as your all-in-one creator toolkit.",
+      "ProVibe is an all-in-one creator platform that combines bio link pages, a digital storefront, audience analytics, lead capture, and brand partnerships — everything you need to build, monetize, and grow your creator business.",
   },
   {
-    question: "How much does it cost?",
+    question: "When does ProVibe launch?",
     answer:
-      "ProVibe is free to get started! Our free plan includes a customizable bio page, basic analytics, and event discovery. Premium plans with advanced features like brand matching and priority support start at $9/month.",
+      "ProVibe launches in July 2026. Join the waitlist now to get early access and be among the first creators on the platform.",
   },
   {
-    question: "How do brand connections work?",
+    question: "Is it free to join the waitlist?",
     answer:
-      "Our smart matching system connects you with brands based on your niche, audience size, and engagement rate. Brands can discover your profile, review your stats, and reach out directly through the platform.",
+      "Absolutely! Joining the waitlist is completely free. We'll notify you as soon as we launch so you can be first in line.",
   },
   {
-    question: "Can I use my existing bio links?",
+    question: "What features will be available at launch?",
     answer:
-      "Absolutely! You can import your existing links and content into ProVibe. Our bio page builder lets you customize everything while keeping all your important links in one place.",
+      "At launch, you'll get customizable bio link pages, a digital storefront for selling products and services, audience analytics, lead capture forms, email broadcasting, and affiliate link management.",
   },
   {
-    question: "What events are available?",
+    question: "How is ProVibe different from Linktree?",
     answer:
-      "ProVibe features creator meetups, brand networking events, workshops, and community gatherings in cities worldwide. You can also host your own events and invite other creators.",
+      "ProVibe goes far beyond link-in-bio. While Linktree focuses on links, ProVibe includes a full digital store, lead generation tools, audience analytics, campaign broadcasting, and a brand partnership marketplace — all in one platform.",
   },
   {
-    question: "Is there a mobile app?",
+    question: "Will there be a free plan?",
     answer:
-      "We're currently focused on delivering the best web experience. A mobile app is in our roadmap and will be available soon. Our website is fully responsive and works great on mobile browsers.",
+      "Yes! ProVibe will offer a generous free plan that includes a customizable bio page, basic analytics, and essential monetization tools. Premium plans will unlock advanced features like detailed analytics, priority brand matching, and more.",
   },
   {
-    question: "How do I get started?",
+    question: "How do brand partnerships work?",
     answer:
-      "Getting started takes less than 30 seconds! Click 'Start Creating Free', sign up with your email or social account, choose a template for your bio page, and start customizing. No credit card required.",
+      "After our Phase 2 launch, brands will be able to discover creators based on niche, audience size, and engagement. Creators can browse opportunities, apply to campaigns, and manage collaborations directly through ProVibe.",
   },
   {
-    question: "How do I contact support?",
+    question: "Can I sell products on ProVibe?",
     answer:
-      "You can reach our support team through the Contact page, email us at support@provibe.com, or use the in-app chat. We typically respond within 2 hours during business hours.",
+      "Yes! You can sell digital products (ebooks, courses, templates), physical products, services (consultations, coaching), and subscription-based content — all from your ProVibe page with built-in payments.",
   },
 ]
 

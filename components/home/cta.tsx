@@ -1,9 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
+import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
 const fadeUp = {
@@ -41,6 +43,7 @@ const staggerReduced = {
 
 export function CTA() {
   const prefersReducedMotion = useReducedMotion()
+  const [waitlistOpen, setWaitlistOpen] = useState(false)
 
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
@@ -78,24 +81,24 @@ export function CTA() {
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            Start Building Your Creator{" "}
-            <span className="underline decoration-white/40 underline-offset-4 decoration-2">Blueprint</span>{" "}
-            Today
+            Ready to Build Your Creator{" "}
+            <span className="underline decoration-white/40 underline-offset-4 decoration-2">Empire?</span>
           </motion.h2>
 
           <motion.p
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mx-auto mt-6 max-w-xl text-lg text-white/80 sm:text-xl"
           >
-            Join thousands of creators already growing with ProVibe. Free to start, no credit card required.
+            Join 10,000+ creators on the waitlist. Be first when we launch July 2026.
           </motion.p>
 
           <motion.div variants={prefersReducedMotion ? fadeUpReduced : fadeUp} className="mt-10">
             <Button
               size="lg"
               className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90 transition-all"
+              onClick={() => setWaitlistOpen(true)}
             >
-              Create Your Page
+              Join the Waitlist
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </motion.div>
@@ -104,10 +107,12 @@ export function CTA() {
             variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
             className="mt-6 text-sm text-white/60"
           >
-            Free to start • No credit card required • Setup in 30 seconds
+            Free to join • No credit card required • Launch July 2026
           </motion.p>
         </motion.div>
       </div>
+
+      <WaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </section>
   )
 }

@@ -1,7 +1,15 @@
 "use client"
 
 import { motion, Variants } from "framer-motion"
-import { Zap, DollarSign, Handshake, ArrowRight } from "lucide-react"
+import {
+  Link2,
+  ShoppingCart,
+  BarChart3,
+  Mail,
+  Handshake,
+  Megaphone,
+  ArrowRight,
+} from "lucide-react"
 import Link from "next/link"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -10,25 +18,46 @@ import { useReducedMotion } from "@/lib/animations/hooks"
 
 const features = [
   {
-    icon: Zap,
-    title: "Start Fast",
+    icon: Link2,
+    title: "Bio Link Pages",
     description:
-      "Launch your creator page in minutes. No technical skills needed, just your content and creativity.",
-    link: { label: "Get Started", href: "/creators" },
+      "Custom SEO-friendly pages with drag-and-drop blocks for links, media, and products.",
+    link: { label: "Learn More", href: "/creators" },
   },
   {
-    icon: DollarSign,
-    title: "Earn Income",
+    icon: ShoppingCart,
+    title: "Digital Store",
     description:
-      "Sell digital products, accept tips, and monetize your audience with built-in payment tools.",
+      "Sell digital and physical products, services, bookings, and subscriptions.",
+    link: { label: "Learn More", href: "/creators" },
+  },
+  {
+    icon: BarChart3,
+    title: "Analytics",
+    description:
+      "Track link clicks, conversions, revenue, and audience growth in real-time.",
+    link: { label: "Learn More", href: "/creators" },
+  },
+  {
+    icon: Mail,
+    title: "Lead Capture",
+    description:
+      "Grow your subscriber list with forms, email capture, and broadcast campaigns.",
     link: { label: "Learn More", href: "/creators" },
   },
   {
     icon: Handshake,
-    title: "Grow With Brands",
+    title: "Brand Deals",
     description:
-      "Get discovered by brands looking for authentic creators. Turn your influence into real partnerships.",
+      "Get discovered by brands looking for authentic creators in your niche.",
     link: { label: "See Brands", href: "/brands" },
+  },
+  {
+    icon: Megaphone,
+    title: "Campaigns",
+    description:
+      "Broadcast promotions to your audience and manage affiliate link tracking.",
+    link: { label: "Learn More", href: "/creators" },
   },
 ]
 
@@ -52,44 +81,37 @@ export function Features() {
   }
 
   return (
-    <section className="py-24 md:py-32">
+    <section id="features" className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
-        {/* Section Header */}
         <SectionHeader
-          eyebrow="Built For You"
-          headline="For Every"
-          headlineHighlight="Creator"
+          eyebrow="Platform Features"
+          headline="Everything You Need to"
+          headlineHighlight="Monetize"
         />
 
-        {/* Feature Cards */}
         <motion.div
           variants={prefersReducedMotion ? staggerReduced : staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((feature) => (
-            <motion.div key={feature.title} variants={prefersReducedMotion ? cardReduced : cardFadeUp}>
+            <motion.div
+              key={feature.title}
+              variants={prefersReducedMotion ? cardReduced : cardFadeUp}
+            >
               <GradientCard className="h-full">
                 <div className="flex h-full flex-col">
-                  {/* Image placeholder */}
-                  <div className="mb-5 h-40 rounded-lg bg-muted/20" />
-
-                  {/* Icon */}
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
                     <feature.icon className="h-6 w-6 text-primary" />
                   </div>
-
-                  {/* Content */}
                   <h3 className="mb-3 font-heading text-xl font-bold">
                     {feature.title}
                   </h3>
                   <p className="mb-6 flex-1 text-muted-foreground">
                     {feature.description}
                   </p>
-
-                  {/* Link */}
                   <Link
                     href={feature.link.href}
                     className="group inline-flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80"

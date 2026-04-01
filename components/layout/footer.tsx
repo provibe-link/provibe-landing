@@ -5,33 +5,30 @@ const footerColumns = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "#" },
-      { label: "Pricing", href: "#" },
-      { label: "Changelog", href: "#" },
+      { label: "Features", href: "/#features" },
+      { label: "Roadmap", href: "/#roadmap" },
     ],
   },
   {
     title: "Creators",
     links: [
       { label: "Creator Hub", href: "/creators" },
-      { label: "Digital Store", href: "#" },
-      { label: "Analytics", href: "#" },
+      { label: "Digital Store", href: "/creators" },
+      { label: "Analytics", href: "/creators" },
     ],
   },
   {
     title: "Brands",
     links: [
       { label: "Brand Portal", href: "/brands" },
-      { label: "Campaign Manager", href: "#" },
-      { label: "Case Studies", href: "#" },
+      { label: "Campaign Manager", href: "/brands" },
     ],
   },
   {
     title: "Resources",
     links: [
       { label: "Blog", href: "/blogs" },
-      { label: "Help Center", href: "#" },
-      { label: "Community", href: "#" },
+      { label: "Help Center", href: "/contact" },
     ],
   },
   {
@@ -39,7 +36,6 @@ const footerColumns = [
     links: [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
-      { label: "Careers", href: "#" },
     ],
   },
 ]
@@ -91,8 +87,15 @@ export function Footer() {
             </Link>
 
             <p className="max-w-[260px] text-sm leading-relaxed text-muted-foreground">
-              The modern platform for creators to build, monetize, and grow.
+              The modern platform for creators to build, monetize, and grow. Launching July 2026.
             </p>
+
+            <Link
+              href="/"
+              className="inline-flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+            >
+              Join the Waitlist →
+            </Link>
 
             <div className="flex gap-3 pt-1">
               {socialLinks.map((social) => {
