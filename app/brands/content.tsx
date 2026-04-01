@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { ArrowRight, Search, Send, Rocket, BarChart3, Users, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -11,6 +11,7 @@ import { CreatorCard } from "@/components/shared/creator-card"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { CTA } from "@/components/home/cta"
 import { staggerContainer, cardFadeUp, iconBounce } from "@/lib/animations/variants"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const benefits = [
   {
@@ -45,6 +46,32 @@ const featuredCreators = [
 ]
 
 export function BrandsContent() {
+  const prefersReducedMotion = useReducedMotion()
+
+  const staggerReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  }
+
+  const cardReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
+  const iconReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
   return (
     <>
       {/* Hero */}
@@ -54,33 +81,34 @@ export function BrandsContent() {
 
         <div className="container relative mx-auto max-w-5xl px-6 text-center">
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0.3 : 0.6 }}
             className="mb-4 font-mono text-sm font-medium uppercase tracking-widest text-primary"
           >
             For Brands
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.1, duration: prefersReducedMotion ? 0.3 : 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Connect with{" "}
             <span className="gradient-text">Authentic Creators</span>
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0.3 : 0.6 }}
             className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
           >
             Partner with creators who genuinely resonate with your audience. Smart matching, streamlined campaigns, measurable results.
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 20 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.4, type: prefersReducedMotion ? undefined : "spring", duration: prefersReducedMotion ? 0.3 : undefined, stiffness: 200, damping: 20 }}
             className="mt-10"
           >
             <Button
@@ -103,14 +131,14 @@ export function BrandsContent() {
             headlineHighlight="Creator Partnerships"
           />
           <motion.div
-            variants={staggerContainer}
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             className="grid grid-cols-1 gap-8 md:grid-cols-3"
           >
             {benefits.map((b) => (
-              <motion.div key={b.title} variants={cardFadeUp}>
+              <motion.div key={b.title} variants={prefersReducedMotion ? cardReduced : cardFadeUp}>
                 <GradientCard className="h-full">
                   <div className="space-y-4">
                     <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-pink/10">
@@ -140,7 +168,7 @@ export function BrandsContent() {
               <AnimatedSection key={step.title} variant="fade-up" delay={i * 0.1}>
                 <div className="flex items-start gap-6">
                   <motion.div
-                    variants={iconBounce}
+                    variants={prefersReducedMotion ? iconReduced : iconBounce}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
@@ -172,14 +200,14 @@ export function BrandsContent() {
             description="Browse our curated selection of top-performing creators."
           />
           <motion.div
-            variants={staggerContainer}
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
           >
             {featuredCreators.map((c) => (
-              <motion.div key={c.name} variants={cardFadeUp}>
+              <motion.div key={c.name} variants={prefersReducedMotion ? cardReduced : cardFadeUp}>
                 <CreatorCard {...c} />
               </motion.div>
             ))}

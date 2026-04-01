@@ -1,10 +1,11 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { TrendingUp, Users, Briefcase, Quote } from "lucide-react"
 import { GradientCard } from "@/components/shared/gradient-card"
 import { SectionHeader } from "@/components/shared/section-header"
 import { cardScale, staggerContainer } from "@/lib/animations/variants"
+import { useReducedMotion } from "@/lib/animations/hooks"
 
 const stories = [
   {
@@ -54,6 +55,24 @@ const stories = [
 ]
 
 export function SuccessStories() {
+  const prefersReducedMotion = useReducedMotion()
+
+  const staggerReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  }
+
+  const cardReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  }
+
   return (
     <section className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-6">
@@ -67,14 +86,14 @@ export function SuccessStories() {
 
         {/* Stories Grid */}
         <motion.div
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? staggerReduced : staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2"
         >
           {stories.map((story) => (
-            <motion.div key={story.name} variants={cardScale}>
+            <motion.div key={story.name} variants={prefersReducedMotion ? cardReduced : cardScale}>
               <GradientCard variant="glass" className="h-full">
                 <div className="space-y-5">
                   {/* Header */}
