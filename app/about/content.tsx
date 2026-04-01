@@ -1,459 +1,331 @@
 "use client"
 
+import { useState } from "react"
 import { motion, Variants } from "framer-motion"
 import {
   Heart,
   Lightbulb,
-  Eye,
+  Shield,
   Users,
-  Globe,
-  Megaphone,
-  DollarSign,
   ArrowRight,
-  Zap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/shared/section-header"
 import { AnimatedSection } from "@/components/shared/animated-section"
-import { GradientCard } from "@/components/shared/gradient-card"
-import { StatsCounter } from "@/components/shared/stats-counter"
 import { GrainOverlay } from "@/components/shared/grain-overlay"
+import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
-/* ------------------------------------------------------------------ */
-/*  Reduced-motion-aware variants                                      */
-/* ------------------------------------------------------------------ */
-
-const reducedFadeOnly: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-}
-
-const heroFadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-  },
-}
-
-const heroStagger: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.15 },
-  },
-}
-
-const reducedStagger: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0, delayChildren: 0 },
-  },
-}
-
-/* ------------------------------------------------------------------ */
-/*  Data                                                               */
-/* ------------------------------------------------------------------ */
-
 const stats = [
-  { icon: Users, value: 50000, suffix: "+", label: "Active Creators" },
-  { icon: Globe, value: 150, suffix: "+", label: "Countries" },
-  { icon: Megaphone, value: 10000, suffix: "+", label: "Campaigns" },
-  { icon: DollarSign, value: null, static: "$2B+", label: "Paid to Creators" },
-] as const
-
-const values = [
-  {
-    icon: Heart,
-    title: "Creator First",
-    description:
-      "Every decision we make starts with the creator. We build tools that empower, not exploit.",
-  },
-  {
-    icon: Heart,
-    title: "Authenticity",
-    description:
-      "We believe real influence comes from genuine connections, not vanity metrics.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Innovation",
-    description:
-      "We push the boundaries of what's possible in creator-brand collaboration with AI and data.",
-  },
-  {
-    icon: Eye,
-    title: "Transparency",
-    description:
-      "Fair payments, fair expectations, fair compensation \u2014 we keep negotiations fair and transparent for us.",
-  },
+  { value: "2026", label: "Founded" },
+  { value: "10K+", label: "Waitlist" },
+  { value: "3", label: "Phases planned" },
 ]
 
-const milestones = [
+const phases = [
   {
-    year: "2024",
-    title: "Founded",
-    description:
-      "ProVibe launched with a mission to revolutionize creator-brand connections.",
+    badge: "JULY 2026",
+    title: "Creator Platform Launch",
+    description: "Bio links, digital store, analytics, lead capture, monetization tools.",
+    highlighted: true,
   },
   {
-    year: "2024",
-    title: "10K Creators",
-    description:
-      "Reached our first major milestone of 10,000 active creators on the platform.",
+    badge: "COMING SOON",
+    title: "Brand Marketplace",
+    description: "Creator-brand matching, campaign management, collaboration tools.",
+    highlighted: false,
   },
   {
-    year: "2025",
-    title: "AI Matching",
-    description:
-      "Launched AI-powered creator-brand matching, increasing campaign ROI by 3x.",
-  },
-  {
-    year: "2025",
-    title: "Global Expansion",
-    description:
-      "Expanded to 150+ countries with localized payment and language support.",
+    badge: "2027",
+    title: "AI Growth Engine",
+    description: "Smart scheduling, AI content assistant, predictive analytics.",
+    highlighted: false,
   },
 ]
 
 const team = [
-  { initials: "AR", name: "Alex Rivera", role: "CEO & Co-Founder" },
-  { initials: "PS", name: "Priya Sharma", role: "CTO & Co-Founder" },
-  { initials: "MC", name: "Marcus Chen", role: "Head of Product" },
-  { initials: "SM", name: "Sofia Martinez", role: "VP of Partnerships" },
+  {
+    name: "Coming Soon",
+    role: "Founder & CEO",
+    bio: "Passionate about empowering creators with tools to build sustainable businesses.",
+  },
+  {
+    name: "Coming Soon",
+    role: "CTO",
+    bio: "Building the infrastructure that powers the next generation of creator economy.",
+  },
+  {
+    name: "Coming Soon",
+    role: "Head of Design",
+    bio: "Crafting beautiful, intuitive experiences that creators love to use.",
+  },
 ]
 
-/* ================================================================== */
-/*  Component                                                          */
-/* ================================================================== */
+const values = [
+  {
+    icon: Heart,
+    title: "Creator-First",
+    description: "Every decision starts with asking: how does this help creators succeed?",
+  },
+  {
+    icon: Shield,
+    title: "Transparency",
+    description: "Clear pricing, honest communication, and no hidden fees or surprises.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Innovation",
+    description: "Constantly pushing boundaries to give creators the best tools available.",
+  },
+  {
+    icon: Users,
+    title: "Community",
+    description: "Building a supportive network where creators help each other grow.",
+  },
+]
 
 export function AboutContent() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
 
-  const stagger = prefersReducedMotion ? reducedStagger : heroStagger
-  const fadeUp = prefersReducedMotion ? reducedFadeOnly : heroFadeUp
-  const cardStagger = prefersReducedMotion ? reducedStagger : staggerContainer
-  const cardItem = prefersReducedMotion ? reducedFadeOnly : cardFadeUp
+  const staggerReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+  }
+
+  const cardReduced: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+  }
 
   return (
-    <main>
-      {/* ---------------------------------------------------------- */}
-      {/*  Hero Section                                               */}
-      {/* ---------------------------------------------------------- */}
+    <>
+      {/* Hero */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <div className="absolute inset-0 bg-primary/5" />
-        <GrainOverlay />
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute -top-40 left-1/4 h-[500px] w-[600px] rounded-full bg-primary/8 blur-[120px]" />
+          <div className="absolute right-0 top-20 h-[300px] w-[400px] rounded-full bg-primary/5 blur-[100px]" />
+        </div>
+        <GrainOverlay className="-z-10" />
 
-        <div className="container relative mx-auto max-w-5xl px-4">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            animate="visible"
-            className="text-center"
-          >
-            <motion.p
-              variants={fadeUp}
-              className="mb-4 font-mono text-sm font-medium uppercase tracking-widest text-primary"
-            >
+        <div className="container mx-auto max-w-4xl px-6 text-center">
+          <AnimatedSection>
+            <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
+              Our Story
+            </p>
+            <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              Built{" "}
+              <span className="gradient-text">By Creators,</span>
+              <br />
+              For Creators
+            </h1>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+              We believe every creator deserves tools to turn passion into
+              profession — without needing technical skills or a big budget.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto max-w-3xl px-6 text-center">
+          <AnimatedSection>
+            <h2 className="font-heading text-2xl font-bold sm:text-3xl">
               Our Mission
-            </motion.p>
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Empowering creators with an all-in-one platform to build their
+              online presence, monetize their audience, and connect with brands —
+              no technical skills needed. We&apos;re building the infrastructure
+              for the next generation of the creator economy.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
 
-            <motion.h1
-              variants={fadeUp}
-              className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
-            >
-              About <span className="gradient-text">ProVibe</span>
-            </motion.h1>
-
-            <motion.p
-              variants={fadeUp}
-              className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
-            >
-              We&apos;re on a mission to make creator-brand collaboration
-              effortless, transparent, and impactful. Founded in 2024, ProVibe
-              connects the world&apos;s best creators with forward-thinking
-              brands.
-            </motion.p>
-          </motion.div>
-
-          {/* Stat cards */}
+      {/* Stats */}
+      <section className="py-16">
+        <div className="container mx-auto max-w-4xl px-6">
           <motion.div
-            variants={cardStagger}
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4"
+            className="grid grid-cols-3 gap-6"
           >
-            {stats.map((stat) => {
-              const Icon = stat.icon
-              return (
-                <motion.div
-                  key={stat.label}
-                  variants={cardItem}
-                  className="rounded-xl border border-border bg-card p-6 text-center transition-colors duration-300 hover:border-primary"
-                >
-                  <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                    <Icon className="h-5 w-5 text-primary" />
-                  </div>
-                  {stat.value !== null ? (
-                    <StatsCounter value={stat.value} suffix={stat.suffix} />
-                  ) : (
-                    <span className="font-mono text-4xl font-bold gradient-text">
-                      {stat.static}
-                    </span>
-                  )}
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {stat.label}
-                  </p>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- */}
-      {/*  Story Section                                              */}
-      {/* ---------------------------------------------------------- */}
-      <section className="bg-card/30 py-24 md:py-32">
-        <div className="container mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-            {/* Left */}
-            <AnimatedSection variant="slide-left">
-              <p className="mb-3 font-mono text-sm font-medium uppercase tracking-widest text-primary">
-                OUR STORY
-              </p>
-              <h2 className="font-heading text-3xl font-bold md:text-4xl">
-                Built by creators, for creators
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                ProVibe was born from a simple frustration: the creator economy
-                was booming, but the tools connecting creators and brands were
-                stuck in the past.
-              </p>
-              <p className="mt-4 text-muted-foreground">
-                We built ProVibe to change that &mdash; combining AI-powered
-                matching, transparent analytics, and secure payments into one
-                seamless platform. Today, we&apos;re the trusted partner for
-                over 50,000 creators and thousands of brands worldwide.
-              </p>
-            </AnimatedSection>
-
-            {/* Right - mockup */}
-            <AnimatedSection variant="slide-right">
-              <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-border/50 bg-primary/5">
-                {/* Top bar */}
-                <div className="flex items-center justify-between border-b border-border/30 px-4 py-2.5">
-                  <span className="font-mono text-xs text-muted-foreground">
-                    provibe.com/username
-                  </span>
-                  <button className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-white">
-                    Claim your username
-                  </button>
-                </div>
-
-                {/* Center content */}
-                <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                    <Zap className="h-8 w-8 text-primary" />
-                  </div>
-                  <p className="font-display text-xl font-bold">Since 2024</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Empowering creators globally
-                  </p>
-                </div>
-
-                {/* Top-right label */}
-                <div className="px-4 pb-3 text-right">
-                  <span className="text-[10px] text-muted-foreground/60">
-                    Edit with ProVibe
-                  </span>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- */}
-      {/*  Values Section                                             */}
-      {/* ---------------------------------------------------------- */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto max-w-6xl px-4">
-          <SectionHeader
-            eyebrow="WHAT DRIVES US"
-            headline="Our Core"
-            headlineHighlight="Values"
-          />
-
-          <motion.div
-            variants={cardStagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
-          >
-            {values.map((v) => {
-              const Icon = v.icon
-              return (
-                <motion.div key={v.title} variants={cardItem}>
-                  <GradientCard>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                      <Icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-heading text-lg font-bold">
-                      {v.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {v.description}
-                    </p>
-                  </GradientCard>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- */}
-      {/*  Milestones Section                                         */}
-      {/* ---------------------------------------------------------- */}
-      <section className="bg-card/30 py-24 md:py-32">
-        <div className="container mx-auto max-w-6xl px-4">
-          <SectionHeader
-            eyebrow="OUR JOURNEY"
-            headline="Key"
-            headlineHighlight="Milestones"
-          />
-
-          <div className="relative mx-auto max-w-3xl">
-            {/* Vertical line */}
-            <div className="absolute bottom-0 left-5 top-0 w-px bg-border" />
-
-            <div className="space-y-10">
-              {milestones.map((m, i) => (
-                <AnimatedSection
-                  key={m.title}
-                  variant="fade-up"
-                  delay={prefersReducedMotion ? 0 : i * 0.12}
-                >
-                  <div className="flex gap-6">
-                    {/* Dot */}
-                    <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary">
-                      <span className="text-xs font-bold text-white">PV</span>
-                    </div>
-
-                    {/* Content */}
-                    <div className="pb-2">
-                      <p className="text-sm font-bold text-primary">{m.year}</p>
-                      <h3 className="font-heading text-lg font-bold">
-                        {m.title}
-                      </h3>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {m.description}
-                      </p>
-                    </div>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- */}
-      {/*  Team Section                                               */}
-      {/* ---------------------------------------------------------- */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto max-w-6xl px-4">
-          <SectionHeader
-            eyebrow="THE PEOPLE"
-            headline="Meet Our"
-            headlineHighlight="Team"
-            description="A diverse group of builders, creators, and dreamers united by a shared vision."
-          />
-
-          <motion.div
-            variants={cardStagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-2 gap-8 lg:grid-cols-4"
-          >
-            {team.map((member) => (
+            {stats.map((stat) => (
               <motion.div
-                key={member.name}
-                variants={cardItem}
-                className="text-center"
+                key={stat.label}
+                variants={prefersReducedMotion ? cardReduced : cardFadeUp}
+                className="rounded-xl border border-primary/15 bg-primary/[0.03] p-6 text-center"
               >
-                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
-                  {member.initials}
+                <div className="font-display text-3xl font-bold text-primary sm:text-4xl">
+                  {stat.value}
                 </div>
-                <h3 className="font-heading font-bold">{member.name}</h3>
-                <p className="text-sm text-muted-foreground">{member.role}</p>
+                <div className="mt-1 text-sm text-muted-foreground">
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ---------------------------------------------------------- */}
-      {/*  CTA Section (inline)                                       */}
-      {/* ---------------------------------------------------------- */}
-      <section className="relative overflow-hidden bg-primary py-24 md:py-32">
-        {/* Floating orbs */}
-        <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-white/30 blur-3xl animate-float" />
-        <div className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-white/30 blur-3xl animate-float [animation-delay:2s]" />
-        <div className="pointer-events-none absolute left-1/2 top-1/3 h-48 w-48 -translate-x-1/2 rounded-full bg-white/20 blur-3xl animate-float [animation-delay:4s]" />
+      {/* Vision / Roadmap */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto max-w-3xl px-6">
+          <SectionHeader
+            eyebrow="Vision"
+            headline="Our"
+            headlineHighlight="Roadmap"
+          />
 
-        <div className="container relative mx-auto max-w-4xl px-4 text-center">
           <motion.div
-            variants={stagger}
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="space-y-4"
           >
-            <motion.h2
-              variants={fadeUp}
-              className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl"
-            >
-              Ready to Join the Movement?
-            </motion.h2>
-
-            <motion.p
-              variants={fadeUp}
-              className="mx-auto mt-6 max-w-2xl text-lg text-white/80"
-            >
-              Whether you&apos;re a creator looking to grow or a brand seeking
-              authentic partnerships, ProVibe is your platform.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              className="mt-10 flex flex-wrap items-center justify-center gap-4"
-            >
-              <Button
-                size="lg"
-                className="bg-white font-bold text-primary hover:bg-white/90"
+            {phases.map((phase, i) => (
+              <motion.div
+                key={phase.title}
+                variants={prefersReducedMotion ? cardReduced : cardFadeUp}
+                className={`rounded-xl border p-6 transition-colors ${
+                  phase.highlighted
+                    ? "border-primary bg-primary/[0.06]"
+                    : "border-border bg-card"
+                }`}
+                style={{ opacity: phase.highlighted ? 1 : 0.7 - i * 0.1 }}
               >
-                Join as Creator
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-white text-white hover:bg-white/10"
-              >
-                Partner as Brand
-              </Button>
-            </motion.div>
+                <span
+                  className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+                    phase.highlighted
+                      ? "bg-primary text-white"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {phase.badge}
+                </span>
+                <h3 className="mt-3 font-heading text-lg font-bold">
+                  {phase.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {phase.description}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
-    </main>
+
+      {/* Team */}
+      <section className="bg-card/30 py-24 md:py-32">
+        <div className="container mx-auto max-w-5xl px-6">
+          <SectionHeader
+            eyebrow="Team"
+            headline="The People"
+            headlineHighlight="Behind ProVibe"
+          />
+
+          <motion.div
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-3"
+          >
+            {team.map((member) => (
+              <motion.div
+                key={member.role}
+                variants={prefersReducedMotion ? cardReduced : cardFadeUp}
+                className="rounded-xl border border-border bg-card p-6 text-center"
+              >
+                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted/30">
+                  <Users className="h-8 w-8 text-muted-foreground/50" />
+                </div>
+                <h3 className="font-heading text-lg font-bold">
+                  {member.name}
+                </h3>
+                <p className="text-sm font-medium text-primary">
+                  {member.role}
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {member.bio}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto max-w-5xl px-6">
+          <SectionHeader
+            eyebrow="Values"
+            headline="What We"
+            headlineHighlight="Stand For"
+          />
+
+          <motion.div
+            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+          >
+            {values.map((value) => (
+              <motion.div
+                key={value.title}
+                variants={prefersReducedMotion ? cardReduced : cardFadeUp}
+                className="rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary"
+              >
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                  <value.icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-heading text-lg font-bold">
+                  {value.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="relative overflow-hidden py-24 md:py-32">
+        <div className="absolute inset-0 bg-primary" />
+        <GrainOverlay opacity={0.05} />
+        <div className="container relative mx-auto max-w-4xl px-6 text-center">
+          <AnimatedSection>
+            <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+              Join Our Journey
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
+              Be part of the movement that&apos;s redefining how creators build
+              and grow their businesses.
+            </p>
+            <div className="mt-8">
+              <Button
+                size="lg"
+                className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90"
+                onClick={() => setWaitlistOpen(true)}
+              >
+                Join the Waitlist
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <WaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
+    </>
   )
 }

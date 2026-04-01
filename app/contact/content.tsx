@@ -12,9 +12,10 @@ import { cn } from "@/lib/utils"
 
 const subjects = [
   { value: "general", label: "General Inquiry" },
-  { value: "partnership", label: "Brand Partnership" },
-  { value: "support", label: "Technical Support" },
+  { value: "partnership", label: "Partnership" },
+  { value: "creator-support", label: "Creator Support" },
   { value: "press", label: "Press & Media" },
+  { value: "brand", label: "Brand Inquiry" },
 ]
 
 export function ContactContent() {

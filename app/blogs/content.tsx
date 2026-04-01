@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils"
 
 const categories = [
   "All Posts",
-  "Creator Tips",
-  "Brand Partnerships",
-  "Events & Community",
-  "Platform Updates",
+  "Monetization",
+  "Growth",
+  "Brand Deals",
+  "Tools & Tips",
 ]
 
 const posts = [
