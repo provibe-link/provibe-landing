@@ -40,6 +40,7 @@ export function CreatorCard({
               src={avatar}
               alt={name}
               fill
+              sizes="96px"
               className="object-cover"
             />
           </motion.div>
@@ -63,7 +64,7 @@ export function CreatorCard({
             <div className="flex items-center gap-1 text-sm font-semibold">
               <Users className="h-4 w-4 text-primary" />
               {stats.followers >= 1000
-                ? `${(stats.followers / 1000).toFixed(1)}K`
+                ? `${(stats.followers / 1000).toFixed(stats.followers % 1000 === 0 ? 0 : 1)}K`
                 : stats.followers}
             </div>
             <span className="text-xs text-muted-foreground">Followers</span>
