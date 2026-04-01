@@ -93,9 +93,9 @@ export function Testimonials() {
       <div className="container mx-auto max-w-7xl px-6">
         {/* Section Header */}
         <SectionHeader
-          eyebrow="Testimonials"
+          eyebrow="Social Proof"
           headline="Loved by"
-          headlineHighlight="Creators Everywhere"
+          headlineHighlight="creators"
         />
 
         {/* Carousel */}
@@ -112,7 +112,7 @@ export function Testimonials() {
                 key={testimonial.name}
                 className="pl-4 md:basis-1/2 lg:basis-1/3"
               >
-                <GradientCard variant="solid" hoverEffect={false} className="h-full">
+                <GradientCard className="h-full">
                   <div className="flex h-full flex-col space-y-4">
                     {/* Rating */}
                     <StarRating rating={testimonial.rating} />
@@ -124,7 +124,7 @@ export function Testimonials() {
 
                     {/* Author */}
                     <div className="flex items-center gap-3 border-t border-border pt-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-pink text-sm font-bold text-white">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                         {testimonial.initials}
                       </div>
                       <div>

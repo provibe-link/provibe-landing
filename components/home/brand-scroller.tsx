@@ -1,7 +1,5 @@
 "use client"
 
-import { SectionHeader } from "@/components/shared/section-header"
-
 // Placeholder brand names (would be logos in production)
 const brandsRow1 = [
   "Nike", "Spotify", "Adobe", "Shopify", "Notion",
@@ -19,12 +17,9 @@ export function BrandScroller() {
   return (
     <section className="py-24 md:py-32 overflow-hidden">
       <div className="container mx-auto max-w-7xl px-6">
-        <SectionHeader
-          eyebrow="Partnerships"
-          headline="Trusted by"
-          headlineHighlight="Leading Brands"
-          className="mb-12"
-        />
+        <p className="text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground mb-12">
+          Trusted by Industry Leading Worldwide
+        </p>
       </div>
 
       {/* Scrolling Rows */}

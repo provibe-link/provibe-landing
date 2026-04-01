@@ -37,7 +37,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
     <>
       {/* Hero */}
       <section className="relative overflow-hidden py-20 md:py-28">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+        <div className="absolute inset-0 bg-primary/5" />
         <GrainOverlay className="-z-10" />
         <div className="container relative mx-auto max-w-3xl px-6">
           <Link
@@ -59,7 +59,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
 
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-pink text-xs font-bold text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                   {post.author.initials}
                 </div>
                 <span className="font-medium text-foreground">{post.author.name}</span>
@@ -107,9 +107,9 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
       {/* Author Bio */}
       <section className="border-t border-border py-12">
         <div className="container mx-auto max-w-3xl px-6">
-          <GradientCard variant="glass">
+          <GradientCard>
             <div className="flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-pink text-xl font-bold text-white">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
                 {post.author.initials}
               </div>
               <div>
@@ -129,7 +129,7 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
           <p className="mt-2 text-sm text-muted-foreground">Join 5,000+ creators getting weekly insights.</p>
           <div className="mx-auto mt-6 flex max-w-md gap-2">
             <Input type="email" placeholder="Enter your email" className="flex-1" />
-            <Button className="bg-gradient-to-r from-primary to-pink text-white">Subscribe</Button>
+            <Button className="bg-primary text-white hover:bg-primary/90">Subscribe</Button>
           </div>
         </div>
       </section>
@@ -141,8 +141,8 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {relatedPosts.map((related) => (
               <Link key={related.slug} href={`/blogs/${related.slug}`}>
-                <GradientCard variant="solid" className="group h-full">
-                  <div className="h-32 rounded-lg border border-border/50 bg-gradient-to-br from-primary/5 to-pink/5 mb-4" />
+                <GradientCard className="group h-full">
+                  <div className="h-32 rounded-lg border border-border/50 bg-primary/5 mb-4" />
                   <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium mb-3", categoryColors[related.category] || "bg-primary/10 text-primary")}>
                     {related.category}
                   </span>

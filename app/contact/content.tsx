@@ -24,7 +24,7 @@ export function ContactContent() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+        <div className="absolute inset-0 bg-primary/5" />
         <GrainOverlay className="-z-10" />
         <div className="container relative mx-auto max-w-4xl px-6 text-center">
           <motion.p
@@ -143,7 +143,7 @@ export function ContactContent() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full bg-gradient-to-r from-primary to-pink text-white hover:opacity-90 sm:w-auto"
+                      className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
                     >
                       <Send className="mr-2 h-4 w-4" />
                       Send Message

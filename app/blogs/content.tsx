@@ -147,7 +147,7 @@ export function BlogsContent() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+        <div className="absolute inset-0 bg-primary/5" />
         <GrainOverlay className="-z-10" />
         <div className="container relative mx-auto max-w-4xl px-6 text-center">
           <motion.h1
@@ -214,7 +214,7 @@ export function BlogsContent() {
               className="mb-12"
             >
               <Link href={`/blogs/${featured.slug}`}>
-                <GradientCard variant="glass" className="group">
+                <GradientCard className="group">
                   <div className="flex flex-col gap-6 md:flex-row md:items-center">
                     <div className="flex-1 space-y-4">
                       <div className="flex items-center gap-3">
@@ -243,7 +243,7 @@ export function BlogsContent() {
                       </div>
                     </div>
                     <div className="hidden md:block">
-                      <div className="h-48 w-64 rounded-xl border border-border/50 bg-gradient-to-br from-primary/10 to-pink/10" />
+                      <div className="h-48 w-64 rounded-xl border border-border/50 bg-primary/5" />
                     </div>
                   </div>
                 </GradientCard>
@@ -262,10 +262,10 @@ export function BlogsContent() {
             {filteredPosts.map((post) => (
               <motion.div key={post.slug} variants={cardFadeUp}>
                 <Link href={`/blogs/${post.slug}`}>
-                  <GradientCard variant="solid" className="group h-full">
+                  <GradientCard className="group h-full">
                     <div className="flex h-full flex-col">
                       {/* Thumbnail Placeholder */}
-                      <div className="mb-4 h-40 rounded-lg border border-border/50 bg-gradient-to-br from-primary/5 to-pink/5" />
+                      <div className="mb-4 h-40 rounded-lg border border-border/50 bg-primary/5" />
 
                       {/* Category */}
                       <span className={cn("mb-3 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category])}>

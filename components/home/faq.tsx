@@ -56,10 +56,9 @@ export function FAQ() {
       <div className="container mx-auto max-w-3xl px-6">
         {/* Section Header */}
         <SectionHeader
-          eyebrow="Got Questions?"
-          headline="Frequently Asked"
-          headlineHighlight="Questions"
-          description="Everything you need to know about ProVibe. Can't find what you're looking for? Contact us."
+          eyebrow="FAQ"
+          headline="Questions?"
+          headlineHighlight="Answers."
         />
 
         {/* Accordion */}
@@ -69,7 +68,7 @@ export function FAQ() {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="rounded-lg border border-border bg-card/50 px-6 data-[state=open]:border-primary/30 data-[state=open]:bg-primary/5 transition-colors"
+                className="rounded-xl border border-border bg-card px-6 transition-colors hover:border-primary data-[state=open]:border-primary"
               >
                 <AccordionTrigger className="text-left font-heading text-base font-semibold hover:text-primary hover:no-underline py-5">
                   {faq.question}

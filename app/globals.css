@@ -91,10 +91,6 @@
     --pink-light: #ff85b3;
     --pink-dark: #e5507c;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #fa6f62 0%, #ff6b9d 100%);
-    --gradient-vibrant: linear-gradient(135deg, #ff8a7a 0%, #fa6f62 50%, #ff6b9d 100%);
-    --gradient-subtle: linear-gradient(135deg, #fa6f62 0%, #ff85b3 100%);
 }
 
 .dark {
@@ -202,14 +198,6 @@
     }
   }
 
-  @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
 
   @keyframes scroll-left {
     0% {
@@ -246,10 +234,6 @@
     animation: rotate-slow 20s linear infinite;
   }
 
-  .animate-gradient {
-    animation: gradient-shift 3s ease infinite;
-    background-size: 200% 200%;
-  }
 
   .animate-scroll-left {
     animation: scroll-left 30s linear infinite;
@@ -270,19 +254,15 @@
     .animate-shimmer,
     .animate-glow-pulse,
     .animate-rotate-slow,
-    .animate-gradient,
     .animate-scroll-left,
     .animate-scroll-right {
       animation: none;
     }
   }
 
-  /* Gradient Text */
+  /* Primary colored text */
   .gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--primary);
   }
 
   /* Glass Morphism */
@@ -296,5 +276,14 @@
     backdrop-filter: blur(24px) saturate(200%);
     background-color: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Floating card style for Hero section */
+  .floating-card {
+    transition: border-color 0.3s ease;
+  }
+
+  .floating-card:hover {
+    border-color: var(--primary);
   }
 }

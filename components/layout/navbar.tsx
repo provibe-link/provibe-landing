@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ArrowRight, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeSwitcher } from "@/components/shared/theme-switcher"
 import { cn } from "@/lib/utils"
@@ -15,15 +15,8 @@ const navLinks = [
   { href: "/brands", label: "Brands" },
   { href: "/blogs", label: "Blog" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ]
 
-/**
- * Main navigation bar with responsive mobile menu, theme switcher, and scroll effects
- *
- * @example
- * <Navbar />
- */
 export function Navbar() {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -31,7 +24,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
+      setIsScrolled(window.scrollY > 20)
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
@@ -40,54 +33,70 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className={cn(
-        "fixed left-0 right-0 top-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
-      )}
+      className="fixed left-0 right-0 top-0 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="container mx-auto max-w-7xl px-6">
+      {/* Glass background — fades in on scroll */}
+      <div
+        className={cn(
+          "absolute inset-0 border-b transition-all duration-500",
+          isScrolled
+            ? "border-border/50 bg-background/60 backdrop-blur-xl backdrop-saturate-150"
+            : "border-transparent bg-transparent"
+        )}
+      />
+
+      <div className="container relative mx-auto max-w-7xl px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold gradient-text">
-            ProVibe
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15">
+              <Zap className="h-4 w-4 text-primary" />
+            </span>
+            <span className="text-lg font-bold">ProVibe</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "relative text-sm font-medium transition-colors hover:text-primary",
-                  pathname === link.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                {link.label}
-                {pathname === link.href && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-pink"
-                    layoutId="navbar-indicator"
-                  />
-                )}
-              </Link>
-            ))}
+          {/* Desktop Navigation — pill container */}
+          <div className="hidden md:flex">
+            <div className="flex items-center gap-1 rounded-full border border-border/40 bg-background/40 backdrop-blur-md px-1.5 py-1.5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200",
+                    pathname === link.href
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {pathname === link.href && (
+                    <motion.div
+                      className="absolute inset-0 rounded-full bg-muted/80"
+                      layoutId="navbar-pill"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-5 md:flex">
             <ThemeSwitcher />
-            <Button
-              className="bg-gradient-to-r from-primary to-pink text-white hover:opacity-90"
+            <Link
+              href="#"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Get Started
+              Log in
+            </Link>
+            <Button className="rounded-full bg-primary text-white hover:bg-primary/90 px-5">
+              Create Page
+              <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           </div>
 
@@ -116,31 +125,38 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="bg-background/95 backdrop-blur-md px-6 pb-6 shadow-lg">
-              <div className="flex flex-col space-y-4">
+            <div className="border-t border-border/30 bg-background/80 backdrop-blur-xl px-6 pb-6">
+              <div className="flex flex-col space-y-1 pt-3">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
-                      "text-sm font-medium transition-colors",
+                      "rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                       pathname === link.href
-                        ? "text-primary"
-                        : "text-muted-foreground"
+                        ? "bg-muted text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {link.label}
                   </Link>
                 ))}
 
-                <div className="flex items-center gap-4 pt-4">
+                <div className="flex items-center gap-4 border-t border-border/30 pt-4 mt-2">
                   <ThemeSwitcher />
+                  <Link
+                    href="#"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                  >
+                    Log in
+                  </Link>
                   <Button
-                    className="flex-1 bg-gradient-to-r from-primary to-pink text-white"
+                    className="flex-1 rounded-full bg-primary text-white hover:bg-primary/90"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Get Started
+                    Create Page
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Button>
                 </div>
               </div>

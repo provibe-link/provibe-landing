@@ -31,8 +31,7 @@ export function CreatorCard({
 }: CreatorCardProps) {
   return (
     <GradientCard
-      variant={featured ? "glass" : "default"}
-      className={cn("group cursor-pointer", className)}
+      className={cn("cursor-pointer", className)}
     >
       <div className="flex flex-col items-center space-y-4 text-center">
         {/* Avatar */}
@@ -52,7 +51,7 @@ export function CreatorCard({
           </motion.div>
 
           {featured && (
-            <div className="absolute -right-2 -top-2 rounded-full bg-gradient-to-r from-primary to-pink px-2 py-1 text-xs font-bold text-white">
+            <div className="absolute -right-2 -top-2 rounded-full bg-primary px-2 py-1 text-xs font-bold text-white">
               Featured
             </div>
           )}
