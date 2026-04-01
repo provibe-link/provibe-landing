@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, RefObject } from "react"
+import { useEffect, useState, useRef, RefObject } from "react"
 import { useInView } from "framer-motion"
 
 /**
@@ -27,16 +27,31 @@ export function useScrollAnimation(
  * @returns Y transform value
  */
 export function useParallax(speed = 0.5) {
-  const [offsetY, setOffsetY] = useState(0)
+  const [offsetY, setOffsetY] = useState(() =>
+    typeof window !== 'undefined' ? window.scrollY * speed : 0
+  )
 
   useEffect(() => {
+    let rafId: number
+    let lastScrollY = window.scrollY
+
     const handleScroll = () => {
-      setOffsetY(window.scrollY * speed)
+      const currentScrollY = window.scrollY
+      if (currentScrollY !== lastScrollY) {
+        lastScrollY = currentScrollY
+        rafId = requestAnimationFrame(() => {
+          setOffsetY(currentScrollY * speed)
+        })
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll() // Initial calculation
 
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [speed])
 
   return offsetY
@@ -47,20 +62,34 @@ export function useParallax(speed = 0.5) {
  * @returns Scroll progress from 0 to 1
  */
 export function useScrollProgress() {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(() =>
+    typeof window !== 'undefined' ? 0 : 0
+  )
 
   useEffect(() => {
+    let rafId: number
+    let lastScrollY = window.scrollY
+
     const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight
-      const currentProgress = window.scrollY / totalHeight
-      setProgress(Math.min(Math.max(currentProgress, 0), 1))
+      const currentScrollY = window.scrollY
+      if (currentScrollY !== lastScrollY) {
+        lastScrollY = currentScrollY
+        rafId = requestAnimationFrame(() => {
+          const totalHeight =
+            document.documentElement.scrollHeight - window.innerHeight
+          const currentProgress = totalHeight > 0 ? currentScrollY / totalHeight : 0
+          setProgress(Math.min(Math.max(currentProgress, 0), 1))
+        })
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll() // Initial calculation
 
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   return progress
@@ -72,32 +101,32 @@ export function useScrollProgress() {
  * @returns "up" | "down" | null
  */
 export function useScrollDirection(threshold = 10) {
-  const [scrollDirection, setScrollDirection] = useState<
-    "up" | "down" | null
-  >(null)
-  const [lastScrollY, setLastScrollY] = useState(0)
+  const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(null)
+  const lastScrollYRef = useRef(0)
 
   useEffect(() => {
+    lastScrollYRef.current = typeof window !== 'undefined' ? window.scrollY : 0
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY
 
-      if (Math.abs(currentScrollY - lastScrollY) < threshold) {
+      if (Math.abs(currentScrollY - lastScrollYRef.current) < threshold) {
         return
       }
 
-      if (currentScrollY > lastScrollY) {
+      if (currentScrollY > lastScrollYRef.current) {
         setScrollDirection("down")
       } else {
         setScrollDirection("up")
       }
 
-      setLastScrollY(currentScrollY)
+      lastScrollYRef.current = currentScrollY
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
 
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [lastScrollY, threshold])
+  }, [threshold])
 
   return scrollDirection
 }

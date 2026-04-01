@@ -61,6 +61,12 @@ const socialLinks = [
   { icon: GithubIcon, href: "#", label: "GitHub" },
 ]
 
+/**
+ * Site footer with navigation links, social media, newsletter signup, and branding
+ *
+ * @example
+ * <Footer />
+ */
 export function Footer() {
   return (
     <footer className="border-t border-border bg-background">
@@ -153,16 +159,18 @@ export function Footer() {
               </p>
             </div>
 
-            <div className="flex w-full max-w-md gap-2">
+            <form className="flex w-full max-w-md gap-2" aria-label="Newsletter signup">
               <Input
                 type="email"
                 placeholder="Enter your email"
                 className="flex-1"
+                aria-label="Email address"
+                required
               />
-              <Button className="bg-gradient-to-r from-primary to-pink text-white">
+              <Button type="submit" className="bg-gradient-to-r from-primary to-pink text-white">
                 Subscribe
               </Button>
-            </div>
+            </form>
           </div>
         </div>
 
