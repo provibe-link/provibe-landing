@@ -127,15 +127,22 @@ provibe-landing/
 - Foreground: `oklch(0.987 0.002 197.1)` - High contrast white
 - Surface: `oklch(0.18 0.008 240)` - Slightly lighter for cards
 
-**Gradient Accents (Energetic & Bold):**
-- Purple: `#8B5CF6` (oklch equivalent)
-- Pink: `#EC4899`
-- Orange: `#F97316`
-- Primary gradient: `linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F97316 100%)`
+**Primary Color Palette (Orange-Pink Range):**
+- Primary: `#fa6f62` (coral-orange)
+- Orange Light: `#ff8a7a`
+- Orange Dark: `#e55548`
+- Pink: `#ff6b9d`
+- Pink Light: `#ff85b3`
+- Pink Dark: `#e5507c`
+
+**Gradient System:**
+- Primary gradient: `linear-gradient(135deg, #fa6f62 0%, #ff6b9d 100%)`
+- Vibrant gradient: `linear-gradient(135deg, #ff8a7a 0%, #fa6f62 50%, #ff6b9d 100%)`
+- Subtle gradient: `linear-gradient(135deg, #fa6f62 0%, #ff85b3 100%)`
 
 **Interactive Elements:**
-- Cyan: `#06B6D4` - Links, hover states
-- Electric Violet: `#A855F7` - Active states, CTAs
+- Links, hover states: Primary color variants
+- Active states, CTAs: Primary gradient
 - Glow effects on hover with gradient borders
 
 **Semantic Colors:**
@@ -512,7 +519,7 @@ interface CreatorCardProps {
 
 **9. CTA Section (Final)**
 - **Layout:** Full-width, centered content
-- **Background:** Vibrant gradient (purple → pink → orange)
+- **Background:** Vibrant gradient (orange → coral → pink)
 - **Content:**
   - Headline: "Ready to Level Up?"
   - Subheadline: "Join thousands of creators building their brand"
