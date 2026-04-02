@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
-import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { WaitlistDialog } from "@/components/shared/waitlist-dialog"
 import { useReducedMotion } from "@/lib/animations/hooks"
 
@@ -48,69 +47,60 @@ export function CTA() {
   const t = useTranslations("cta")
 
   return (
-    <section className="relative overflow-hidden py-24 md:py-32">
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-primary" />
-
-      {/* Floating Orbs */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute left-[10%] top-[20%] h-64 w-64 rounded-full animate-float opacity-20 bg-white/30"
-          style={{ filter: "blur(40px)" }}
-        />
-        <div
-          className="absolute right-[15%] bottom-[15%] h-48 w-48 rounded-full animate-float opacity-15 bg-white/40"
-          style={{ filter: "blur(30px)", animationDelay: "2s" }}
-        />
-        <div
-          className="absolute left-[50%] top-[10%] h-32 w-32 rounded-full animate-float opacity-10 bg-white/50"
-          style={{ filter: "blur(20px)", animationDelay: "4s" }}
-        />
-      </div>
-
-      {/* Grain Overlay */}
-      <GrainOverlay opacity={0.05} />
-
-      {/* Content */}
-      <div className="container relative mx-auto max-w-4xl px-6 text-center">
+    <section className="py-24 md:py-32">
+      <div className="container mx-auto max-w-5xl px-6">
         <motion.div
           variants={prefersReducedMotion ? staggerReduced : stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
+          className="relative overflow-hidden rounded-3xl px-8 py-20 text-center sm:px-16 md:py-24"
+          style={{
+            background:
+              "linear-gradient(135deg, hsl(25, 40%, 20%) 0%, hsl(20, 50%, 25%) 30%, hsl(15, 45%, 30%) 60%, hsl(30, 35%, 22%) 100%)",
+          }}
         >
-          <motion.h2
-            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
-            className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
-          >
-            {t("headline")}{" "}
-            <span className="underline decoration-white/40 underline-offset-4 decoration-2">{t("headlineHighlight")}</span>
-          </motion.h2>
+          {/* Subtle glow */}
+          <div
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[500px] rounded-full opacity-30"
+            style={{
+              background:
+                "radial-gradient(ellipse, hsl(20, 60%, 40%) 0%, transparent 70%)",
+            }}
+          />
 
-          <motion.p
-            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
-            className="mx-auto mt-6 max-w-xl text-lg text-white/80 sm:text-xl"
-          >
-            {t("subtitle")}
-          </motion.p>
-
-          <motion.div variants={prefersReducedMotion ? fadeUpReduced : fadeUp} className="mt-10">
-            <Button
-              size="lg"
-              className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90 transition-all"
-              onClick={() => setWaitlistOpen(true)}
+          <div className="relative z-10">
+            <motion.h2
+              variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
+              className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
             >
-              {t("button")}
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </motion.div>
+              {t("headline")}
+              <br />
+              <span className="text-primary">{t("headlineHighlight")}</span>{" "}
+              Today
+            </motion.h2>
 
-          <motion.p
-            variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
-            className="mt-6 text-sm text-white/60"
-          >
-            {t("tagline")}
-          </motion.p>
+            <motion.p
+              variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
+              className="mx-auto mt-6 max-w-lg text-base text-white/60 sm:text-lg"
+            >
+              {t("subtitle")}
+            </motion.p>
+
+            <motion.div
+              variants={prefersReducedMotion ? fadeUpReduced : fadeUp}
+              className="mt-10"
+            >
+              <Button
+                size="lg"
+                className="group h-14 px-10 text-lg bg-primary text-white font-bold hover:bg-primary/90 transition-all rounded-full shadow-lg shadow-primary/25"
+                onClick={() => setWaitlistOpen(true)}
+              >
+                {t("button")}
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
 
