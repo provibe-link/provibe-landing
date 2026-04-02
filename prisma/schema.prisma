@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum post_status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  posts      Post[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id         Int       @id @default(autoincrement())
+  name       String
+  slug       String    @unique
+  created_at DateTime  @default(now())
+  post_tags  PostTag[]
+
+  @@map("tags")
+}
+
+model Post {
+  id           Int         @id @default(autoincrement())
+  title        String
+  slug         String      @unique
+  excerpt      String?
+  content      String?     @db.Text
+  content_json Json?
+  cover_image  String?
+  category_id  Int?
+  category     Category?   @relation(fields: [category_id], references: [id])
+  status       post_status @default(DRAFT)
+  featured     Boolean     @default(false)
+  read_time    String?
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  published_at DateTime?
+  post_tags    PostTag[]
+
+  @@map("posts")
+}
+
+model PostTag {
+  post_id Int
+  tag_id  Int
+  post    Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  tag     Tag  @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@id([post_id, tag_id])
+  @@map("post_tags")
+}
+
+model WaitlistEntry {
+  id         Int      @id @default(autoincrement())
+  name       String?
+  email      String   @unique
+  handle     String?
+  created_at DateTime @default(now())
+
+  @@map("waitlist_entries")
+}
