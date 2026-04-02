@@ -68,10 +68,28 @@ const scaleVariants = {
 // Floating orb positions and colors
 const orbs = [
   { size: 300, color: "rgba(250, 111, 98, 0.3)", x: "15%", y: "20%", delay: 0 },
-  { size: 250, color: "rgba(255, 107, 157, 0.25)", x: "75%", y: "15%", delay: 1 },
+  {
+    size: 250,
+    color: "rgba(255, 107, 157, 0.25)",
+    x: "75%",
+    y: "15%",
+    delay: 1,
+  },
   { size: 200, color: "rgba(250, 111, 98, 0.2)", x: "60%", y: "70%", delay: 2 },
-  { size: 350, color: "rgba(255, 133, 179, 0.15)", x: "25%", y: "75%", delay: 0.5 },
-  { size: 180, color: "rgba(229, 85, 72, 0.2)", x: "85%", y: "55%", delay: 1.5 },
+  {
+    size: 350,
+    color: "rgba(255, 133, 179, 0.15)",
+    x: "25%",
+    y: "75%",
+    delay: 0.5,
+  },
+  {
+    size: 180,
+    color: "rgba(229, 85, 72, 0.2)",
+    x: "85%",
+    y: "55%",
+    delay: 1.5,
+  },
 ]
 
 export function Hero() {
@@ -101,18 +119,15 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 sm:pt-12 pb-16 min-h-[200vh]"
+      className="relative min-h-[200vh] pt-8 pb-16 sm:pt-12"
     >
       {/* Background layer */}
-      <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none">
-        <motion.div
-          className="absolute inset-0"
-          style={{ y: rm ? 0 : bgY }}
-        >
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <motion.div className="absolute inset-0" style={{ y: rm ? 0 : bgY }}>
           {orbs.map((orb, i) => (
             <div
               key={i}
-              className="absolute rounded-full animate-float"
+              className="animate-float absolute rounded-full"
               style={{
                 width: orb.size,
                 height: orb.size,
@@ -128,19 +143,22 @@ export function Hero() {
         </motion.div>
 
         <div className="absolute -top-40 left-1/4 h-[600px] w-[700px] rounded-full bg-primary/8 blur-[140px]" />
-        <div className="absolute top-20 right-0 h-[400px] w-[500px] rounded-full bg-pink/6 blur-[120px]" />
+        <div className="bg-pink/6 absolute top-20 right-0 h-[400px] w-[500px] rounded-full blur-[120px]" />
       </div>
 
       <GrainOverlay className="-z-10" />
 
       {/* Sticky wrapper — keeps everything in viewport while scrolling */}
-      <div className="sticky top-16 overflow-x-clip" style={{ height: "calc(100vh - 4rem)" }}>
+      <div
+        className="sticky top-16 overflow-x-clip"
+        style={{ height: "calc(100vh - 4rem)" }}
+      >
         {/* Text layer — stays in place, fades out on scroll, z-10 (behind phone) */}
         <motion.div
-          style={{ 
+          style={{
             opacity: rm ? 1 : textOpacity,
             scale: rm ? 1 : textScale,
-            y: rm ? 0 : textY
+            y: rm ? 0 : textY,
           }}
           className="relative z-10 container mx-auto max-w-5xl px-6 pt-8 sm:pt-12"
         >
@@ -148,21 +166,21 @@ export function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-center max-w-3xl mx-auto"
+            className="mx-auto max-w-3xl text-center"
           >
             {/* Badge */}
             <motion.div
               variants={scaleVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 text-xs font-medium text-secondary-foreground cursor-pointer hover:bg-secondary/60 transition-colors"
+              className="mb-5 inline-flex cursor-pointer items-center gap-2 rounded-full border border-border/60 bg-secondary/40 px-4 py-1.5 text-xs font-medium text-secondary-foreground backdrop-blur-sm transition-colors hover:bg-secondary/60"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
               {t("badge")}
             </motion.div>
 
             {/* Headline */}
-            <h1 className="mb-6 font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05]">
+            <h1 className="mb-6 font-display text-5xl leading-[1.05] font-bold tracking-tight sm:text-6xl md:text-5xl lg:text-6xl">
               <motion.span variants={wordVariants} className="block">
                 {t("headlineLine1")}
               </motion.span>
@@ -174,7 +192,7 @@ export function Hero() {
             {/* Subheadline */}
             <motion.p
               variants={fadeUpVariants}
-              className="mx-auto mb-8 max-w-lg text-base sm:text-lg lg:text-xl text-muted-foreground"
+              className="lg:text-md mx-auto mb-8 max-w-lg text-base text-muted-foreground sm:text-lg"
             >
               {t("subheadline")}
             </motion.p>
@@ -186,7 +204,7 @@ export function Hero() {
             >
               <Button
                 size="lg"
-                className="group h-12 px-8 text-base bg-primary text-white hover:bg-primary/90"
+                className="group h-12 bg-primary px-8 text-base text-white hover:bg-primary/90"
                 onClick={() => setWaitlistOpen(true)}
               >
                 {t("joinWaitlist")}
@@ -207,7 +225,7 @@ export function Hero() {
             </motion.div>
 
             {/* Social Proof Counters */}
-            <motion.div
+            {/* <motion.div
               variants={fadeUpVariants}
               className="mt-10 flex items-center justify-center gap-8 sm:gap-12"
             >
@@ -225,15 +243,14 @@ export function Hero() {
                   </div>
                 </div>
               ))}
-            </motion.div>
-
+            </motion.div> */}
           </motion.div>
         </motion.div>
 
         {/* Phone + Cards layer — z-30 so it scrolls OVER the text */}
         <motion.div
           style={{ y: rm ? 0 : phoneAreaY }}
-          className="absolute inset-x-0 top-[75%] z-30"
+          className="absolute inset-x-0 top-[55%] z-30"
         >
           <div className="relative min-h-[800px]">
             {/* Cards — z-20, visible alongside phone */}
@@ -241,7 +258,7 @@ export function Hero() {
               <FloatingCards scrollProgress={scrollYProgress} />
             </div>
             {/* Phone — z-30, in front of cards so cards emerge from behind */}
-            <div className="absolute inset-x-0 top-0 flex justify-center z-30 scale-[0.85] sm:scale-100 origin-top">
+            <div className="absolute inset-x-0 top-0 z-30 flex origin-top scale-[0.85] justify-center sm:scale-100">
               <PhoneMockup />
             </div>
           </div>

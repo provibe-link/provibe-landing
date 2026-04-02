@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { FloatingWaitlistButton } from "@/components/shared/floating-waitlist-button"
+import { ScrollProgress } from "@/components/shared/scroll-progress"
 import { cn } from "@/lib/utils"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
@@ -85,6 +86,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange={false}
           >
+            <ScrollProgress />
             <Navbar />
             <main className="min-h-screen pt-16">{children}</main>
             <Footer />
