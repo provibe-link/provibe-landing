@@ -297,26 +297,41 @@ export function AboutContent() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden py-24 md:py-32">
-        <div className="absolute inset-0 bg-primary" />
-        <GrainOverlay opacity={0.05} />
-        <div className="container relative mx-auto max-w-4xl px-6 text-center">
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto max-w-5xl px-6">
           <AnimatedSection>
-            <h2 className="font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-              {t("ctaHeadline")}
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
-              {t("ctaSubtitle")}
-            </p>
-            <div className="mt-8">
-              <Button
-                size="lg"
-                className="group h-14 px-10 text-lg bg-white text-primary font-bold hover:bg-white/90"
-                onClick={() => setWaitlistOpen(true)}
-              >
-                {t("ctaButton")}
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+            <div
+              className="relative overflow-hidden rounded-3xl px-8 py-20 text-center sm:px-16 md:py-24"
+              style={{
+                background:
+                  "linear-gradient(135deg, hsl(25, 40%, 20%) 0%, hsl(20, 50%, 25%) 30%, hsl(15, 45%, 30%) 60%, hsl(30, 35%, 22%) 100%)",
+              }}
+            >
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[500px] rounded-full opacity-30"
+                style={{
+                  background:
+                    "radial-gradient(ellipse, hsl(20, 60%, 40%) 0%, transparent 70%)",
+                }}
+              />
+              <div className="relative z-10">
+                <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+                  {t("ctaHeadline")}
+                </h2>
+                <p className="mx-auto mt-4 max-w-lg text-base text-white/60 sm:text-lg">
+                  {t("ctaSubtitle")}
+                </p>
+                <div className="mt-10">
+                  <Button
+                    size="lg"
+                    className="group h-14 px-10 text-lg bg-primary text-white font-bold hover:bg-primary/90 rounded-full shadow-lg shadow-primary/25"
+                    onClick={() => setWaitlistOpen(true)}
+                  >
+                    {t("ctaButton")}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </AnimatedSection>
         </div>
