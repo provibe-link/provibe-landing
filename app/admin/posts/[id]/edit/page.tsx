@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
-import { PostForm } from "@/components/admin/post-form"
+import { PostEditor } from "@/components/admin/post-editor"
 
 export default function EditPostPage({
   params,
@@ -27,7 +27,7 @@ export default function EditPostPage({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div className="flex h-screen items-center justify-center">
         <Loader2 className="size-6 animate-spin text-muted-foreground" />
       </div>
     )
@@ -35,16 +35,13 @@ export default function EditPostPage({
 
   if (error) {
     return (
-      <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-400">
-        {error}
+      <div className="p-8">
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
       </div>
     )
   }
 
-  return (
-    <div>
-      <h1 className="mb-8 font-display text-3xl font-bold">Edit Post</h1>
-      {post && <PostForm initialData={post} />}
-    </div>
-  )
+  return post ? <PostEditor initialData={post} /> : null
 }
