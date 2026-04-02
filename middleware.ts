@@ -1,21 +1,35 @@
 import { NextRequest, NextResponse } from "next/server"
 import { defaultLocale } from "@/i18n/config"
 
-export function middleware(request: NextRequest) {
-  const localeCookie = request.cookies.get("NEXT_LOCALE")
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
+  // Admin auth check
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
+    const token = request.cookies.get("admin_token")?.value
+    if (!token) {
+      return NextResponse.redirect(new URL("/admin/login", request.url))
+    }
+    try {
+      const { jwtVerify } = await import("jose")
+      const secret = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET)
+      await jwtVerify(token, secret)
+    } catch {
+      const response = NextResponse.redirect(new URL("/admin/login", request.url))
+      response.cookies.delete("admin_token")
+      return response
+    }
+  }
+
+  // Locale cookie (existing logic)
+  const localeCookie = request.cookies.get("NEXT_LOCALE")
   if (!localeCookie) {
     const response = NextResponse.next()
-    response.cookies.set("NEXT_LOCALE", defaultLocale, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 365,
-    })
+    response.cookies.set("NEXT_LOCALE", defaultLocale, { path: "/", maxAge: 60 * 60 * 24 * 365 })
     return response
   }
 
   return NextResponse.next()
 }
 
-export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
-}
+export const config = { matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"] }
