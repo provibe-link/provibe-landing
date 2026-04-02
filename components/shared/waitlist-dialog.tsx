@@ -35,19 +35,16 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
     setErrorMessage("")
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_WAITLIST_API_URL
-      if (!apiUrl) {
-        // Simulate success in dev when no API URL is configured
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        setStatus("success")
-        return
-      }
-
-      const res = await fetch(apiUrl, {
+      const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, handle }),
       })
+
+      if (res.status === 409) {
+        setStatus("success") // Already on list — still show success
+        return
+      }
 
       if (!res.ok) throw new Error("Failed to submit")
       setStatus("success")

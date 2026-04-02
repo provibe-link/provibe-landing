@@ -12,30 +12,47 @@ import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { cn } from "@/lib/utils"
 
 interface BlogPost {
+  id: number
   title: string
-  excerpt: string
-  category: string
-  author: { name: string; role: string; bio: string; initials: string }
-  date: string
-  readTime: string
-  content: string[]
+  slug: string
+  excerpt: string | null
+  content: string | null
+  cover_image: string | null
+  read_time: string | null
+  featured: boolean
+  created_at: Date
+  published_at: Date | null
+  category: { id: number; name: string; slug: string } | null
+}
+
+interface RelatedPost {
+  id: number
+  title: string
+  slug: string
+  cover_image: string | null
+  read_time: string | null
+  category: { id: number; name: string; slug: string } | null
 }
 
 const categoryColors: Record<string, string> = {
-  "Creator Tips": "bg-primary/10 text-primary",
-  "Brand Partnerships": "bg-pink/10 text-pink",
-  "Events & Community": "bg-green-500/10 text-green-500",
+  "Monetization": "bg-primary/10 text-primary",
+  "Growth": "bg-green-500/10 text-green-500",
+  "Brand Deals": "bg-pink/10 text-pink",
+  "Tools & Tips": "bg-primary/10 text-primary",
   "Platform Updates": "bg-blue-500/10 text-blue-500",
 }
 
-const relatedPosts = [
-  { slug: "bio-page-optimization", title: "Optimize Your Bio Page for Maximum Conversions", category: "Creator Tips", readTime: "6 min", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop" },
-  { slug: "monetization-strategies", title: "5 Monetization Strategies Beyond Sponsorships", category: "Creator Tips", readTime: "7 min", image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop" },
-  { slug: "creator-events-networking", title: "How Creator Events Can Transform Your Career", category: "Events & Community", readTime: "4 min", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop" },
-]
-
-export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }) {
+export function BlogPostContent({ post, slug, relatedPosts }: { post: BlogPost; slug: string; relatedPosts: RelatedPost[] }) {
   const t = useTranslations("blog")
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return ""
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
 
   return (
     <>
@@ -53,8 +70,8 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
           </Link>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category] || "bg-primary/10 text-primary")}>
-              {post.category}
+            <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category?.name ?? ""] ?? "bg-primary/10 text-primary")}>
+              {post.category?.name}
             </span>
 
             <h1 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
@@ -62,19 +79,13 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
             </h1>
 
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
-                  {post.author.initials}
-                </div>
-                <span className="font-medium text-foreground">{post.author.name}</span>
-              </div>
               <span className="flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5" />
-                {post.date}
+                {formatDate(post.published_at)}
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
-                {post.readTime} {t("read")}
+                {post.read_time} {t("read")}
               </span>
             </div>
           </motion.div>
@@ -82,18 +93,20 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
       </section>
 
       {/* Hero Image */}
-      <div className="container mx-auto max-w-3xl px-6">
-        <div className="relative -mt-8 mb-12 aspect-[2/1] overflow-hidden rounded-2xl">
-          <Image
-            src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=1200&h=600&fit=crop"
-            alt={post.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 768px"
-            priority
-          />
+      {post.cover_image && (
+        <div className="container mx-auto max-w-3xl px-6">
+          <div className="relative -mt-8 mb-12 aspect-[2/1] overflow-hidden rounded-2xl">
+            <Image
+              src={post.cover_image}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Article Content */}
       <article className="pb-16">
@@ -104,41 +117,12 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
             transition={{ delay: 0.2 }}
             className="prose prose-lg dark:prose-invert max-w-none"
           >
-            {post.content.map((block, i) => {
-              if (block.startsWith("## ")) {
-                return (
-                  <h2 key={i} className="mt-10 mb-4 font-heading text-2xl font-bold">
-                    {block.replace("## ", "")}
-                  </h2>
-                )
-              }
-              return (
-                <p key={i} className="mb-4 leading-relaxed text-muted-foreground">
-                  {block}
-                </p>
-              )
-            })}
+            {post.content && (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            )}
           </motion.div>
         </div>
       </article>
-
-      {/* Author Bio */}
-      <section className="border-t border-border py-12">
-        <div className="container mx-auto max-w-3xl px-6">
-          <GradientCard>
-            <div className="flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
-                {post.author.initials}
-              </div>
-              <div>
-                <h3 className="font-heading text-lg font-bold">{post.author.name}</h3>
-                <p className="text-sm text-primary">{post.author.role}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{post.author.bio}</p>
-              </div>
-            </div>
-          </GradientCard>
-        </div>
-      </section>
 
       {/* Newsletter */}
       <section className="border-t border-border py-12">
@@ -153,29 +137,33 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
       </section>
 
       {/* Related Posts */}
-      <section className="border-t border-border py-16">
-        <div className="container mx-auto max-w-7xl px-6">
-          <h3 className="mb-8 text-center font-heading text-2xl font-bold">{t("relatedPosts")}</h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {relatedPosts.map((related) => (
-              <Link key={related.slug} href={`/blogs/${related.slug}`}>
-                <GradientCard className="group h-full">
-                  <div className="relative h-32 w-full overflow-hidden rounded-lg mb-4">
-                    <Image src={related.image} alt={related.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </div>
-                  <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium mb-3", categoryColors[related.category] || "bg-primary/10 text-primary")}>
-                    {related.category}
-                  </span>
-                  <h4 className="font-heading font-bold transition-colors group-hover:text-primary line-clamp-2">
-                    {related.title}
-                  </h4>
-                  <p className="mt-2 text-xs text-muted-foreground">{related.readTime} {t("read")}</p>
-                </GradientCard>
-              </Link>
-            ))}
+      {relatedPosts.length > 0 && (
+        <section className="border-t border-border py-16">
+          <div className="container mx-auto max-w-7xl px-6">
+            <h3 className="mb-8 text-center font-heading text-2xl font-bold">{t("relatedPosts")}</h3>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {relatedPosts.map((related) => (
+                <Link key={related.slug} href={`/blogs/${related.slug}`}>
+                  <GradientCard className="group h-full">
+                    {related.cover_image && (
+                      <div className="relative h-32 w-full overflow-hidden rounded-lg mb-4">
+                        <Image src={related.cover_image} alt={related.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                      </div>
+                    )}
+                    <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium mb-3", categoryColors[related.category?.name ?? ""] ?? "bg-primary/10 text-primary")}>
+                      {related.category?.name}
+                    </span>
+                    <h4 className="font-heading font-bold transition-colors group-hover:text-primary line-clamp-2">
+                      {related.title}
+                    </h4>
+                    <p className="mt-2 text-xs text-muted-foreground">{related.read_time} {t("read")}</p>
+                  </GradientCard>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   )
 }

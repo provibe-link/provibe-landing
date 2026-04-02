@@ -13,127 +13,36 @@ import { GrainOverlay } from "@/components/shared/grain-overlay"
 import { staggerContainer, cardFadeUp } from "@/lib/animations/variants"
 import { cn } from "@/lib/utils"
 
-const posts = [
-  {
-    slug: "10-tips-grow-creator-brand",
-    title: "10 Tips to Grow Your Creator Brand in 2024",
-    excerpt: "Discover proven strategies that top creators use to build their personal brand and attract loyal followers.",
-    category: "Creator Tips",
-    author: "Maya Thompson",
-    date: "Mar 28, 2024",
-    readTime: "5 min",
-    featured: true,
-    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "brand-partnership-guide",
-    title: "The Ultimate Guide to Brand Partnerships",
-    excerpt: "Everything you need to know about landing your first brand deal and building long-term partnerships.",
-    category: "Brand Partnerships",
-    author: "Alex Rivera",
-    date: "Mar 25, 2024",
-    readTime: "8 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "bio-page-optimization",
-    title: "Optimize Your Bio Page for Maximum Conversions",
-    excerpt: "Learn how to design a bio page that converts visitors into followers, subscribers, and customers.",
-    category: "Creator Tips",
-    author: "Jordan Kim",
-    date: "Mar 22, 2024",
-    readTime: "6 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "creator-events-networking",
-    title: "How Creator Events Can Transform Your Career",
-    excerpt: "From local meetups to industry conferences — why in-person networking is still king for creators.",
-    category: "Events & Community",
-    author: "Lucia Santos",
-    date: "Mar 18, 2024",
-    readTime: "4 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "monetization-strategies",
-    title: "5 Monetization Strategies Beyond Sponsorships",
-    excerpt: "Diversify your income with these proven revenue streams that top creators swear by.",
-    category: "Creator Tips",
-    author: "Ryan Chang",
-    date: "Mar 15, 2024",
-    readTime: "7 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "provibe-spring-update",
-    title: "ProVibe Spring 2024 Update: What's New",
-    excerpt: "Exciting new features including AI-powered brand matching, event hosting tools, and redesigned analytics.",
-    category: "Platform Updates",
-    author: "Samira Patel",
-    date: "Mar 12, 2024",
-    readTime: "3 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "content-calendar-template",
-    title: "Free Content Calendar Template for Creators",
-    excerpt: "Stay organized and consistent with our free content planning template used by 1000+ creators.",
-    category: "Creator Tips",
-    author: "Maya Thompson",
-    date: "Mar 8, 2024",
-    readTime: "4 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "brand-collaboration-mistakes",
-    title: "7 Brand Collaboration Mistakes to Avoid",
-    excerpt: "Common pitfalls that new creators face when working with brands and how to navigate them.",
-    category: "Brand Partnerships",
-    author: "Alex Rivera",
-    date: "Mar 5, 2024",
-    readTime: "6 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "building-community-online",
-    title: "Building a Loyal Community from Scratch",
-    excerpt: "The secrets behind creators who've built engaged, passionate communities around their content.",
-    category: "Events & Community",
-    author: "Lucia Santos",
-    date: "Mar 1, 2024",
-    readTime: "5 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=400&fit=crop",
-  },
-  {
-    slug: "analytics-guide-creators",
-    title: "Understanding Your Analytics: A Creator's Guide",
-    excerpt: "Which metrics actually matter and how to use data to grow your audience strategically.",
-    category: "Creator Tips",
-    author: "David Okonkwo",
-    date: "Feb 26, 2024",
-    readTime: "8 min",
-    featured: false,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
-  },
-]
+interface BlogPost {
+  id: number
+  title: string
+  slug: string
+  excerpt: string | null
+  cover_image: string | null
+  read_time: string | null
+  featured: boolean
+  created_at: Date
+  published_at: Date | null
+  category: { id: number; name: string; slug: string } | null
+}
 
 const categoryColors: Record<string, string> = {
-  "Creator Tips": "bg-primary/10 text-primary",
-  "Brand Partnerships": "bg-pink/10 text-pink",
-  "Events & Community": "bg-green-500/10 text-green-500",
+  "Monetization": "bg-primary/10 text-primary",
+  "Growth": "bg-green-500/10 text-green-500",
+  "Brand Deals": "bg-pink/10 text-pink",
+  "Tools & Tips": "bg-primary/10 text-primary",
   "Platform Updates": "bg-blue-500/10 text-blue-500",
 }
 
-export function BlogsContent() {
+// Map filter keys to category slugs
+const filterToSlug: Record<string, string> = {
+  monetization: "monetization",
+  growth: "growth",
+  brandDeals: "brand-deals",
+  toolsTips: "tools-tips",
+}
+
+export function BlogsContent({ posts }: { posts: BlogPost[] }) {
   const [search, setSearch] = useState("")
   const [activeCategory, setActiveCategory] = useState("all")
   const t = useTranslations("blog")
@@ -149,12 +58,25 @@ export function BlogsContent() {
   const featured = posts.find((p) => p.featured)
   const filteredPosts = posts
     .filter((p) => !p.featured)
-    .filter((p) => activeCategory === "all" || p.category === activeCategory)
+    .filter((p) => {
+      if (activeCategory === "all") return true
+      const slugMatch = filterToSlug[activeCategory]
+      return p.category?.slug === slugMatch
+    })
     .filter((p) =>
       search === "" ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.excerpt.toLowerCase().includes(search.toLowerCase())
+      (p.excerpt ?? "").toLowerCase().includes(search.toLowerCase())
     )
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return ""
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
 
   return (
     <>
@@ -231,8 +153,8 @@ export function BlogsContent() {
                   <div className="flex flex-col gap-6 md:flex-row md:items-center">
                     <div className="flex-1 space-y-4">
                       <div className="flex items-center gap-3">
-                        <span className={cn("rounded-full px-3 py-1 text-xs font-medium", categoryColors[featured.category])}>
-                          {featured.category}
+                        <span className={cn("rounded-full px-3 py-1 text-xs font-medium", categoryColors[featured.category?.name ?? ""] ?? "bg-primary/10 text-primary")}>
+                          {featured.category?.name}
                         </span>
                         <span className="text-xs text-muted-foreground">{t("featured")}</span>
                       </div>
@@ -242,22 +164,20 @@ export function BlogsContent() {
                       <p className="text-muted-foreground">{featured.excerpt}</p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <User className="h-3.5 w-3.5" />
-                          {featured.author}
-                        </span>
-                        <span className="flex items-center gap-1">
                           <Calendar className="h-3.5 w-3.5" />
-                          {featured.date}
+                          {formatDate(featured.published_at)}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5" />
-                          {featured.readTime}
+                          {featured.read_time}
                         </span>
                       </div>
                     </div>
-                    <div className="relative hidden h-48 w-64 overflow-hidden rounded-xl md:block">
-                      <Image src={featured.image} alt={featured.title} fill className="object-cover" sizes="256px" />
-                    </div>
+                    {featured.cover_image && (
+                      <div className="relative hidden h-48 w-64 overflow-hidden rounded-xl md:block">
+                        <Image src={featured.cover_image} alt={featured.title} fill className="object-cover" sizes="256px" />
+                      </div>
+                    )}
                   </div>
                 </GradientCard>
               </Link>
@@ -278,13 +198,15 @@ export function BlogsContent() {
                   <GradientCard className="group h-full">
                     <div className="flex h-full flex-col">
                       {/* Thumbnail */}
-                      <div className="relative mb-4 h-40 w-full overflow-hidden rounded-lg">
-                        <Image src={post.image} alt={post.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                      </div>
+                      {post.cover_image && (
+                        <div className="relative mb-4 h-40 w-full overflow-hidden rounded-lg">
+                          <Image src={post.cover_image} alt={post.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                        </div>
+                      )}
 
                       {/* Category */}
-                      <span className={cn("mb-3 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category])}>
-                        {post.category}
+                      <span className={cn("mb-3 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category?.name ?? ""] ?? "bg-primary/10 text-primary")}>
+                        {post.category?.name}
                       </span>
 
                       {/* Title */}
@@ -299,11 +221,9 @@ export function BlogsContent() {
 
                       {/* Meta */}
                       <div className="flex items-center gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
-                        <span>{post.author}</span>
+                        <span>{formatDate(post.published_at)}</span>
                         <span>•</span>
-                        <span>{post.date}</span>
-                        <span>•</span>
-                        <span>{post.readTime}</span>
+                        <span>{post.read_time}</span>
                       </div>
                     </div>
                   </GradientCard>
