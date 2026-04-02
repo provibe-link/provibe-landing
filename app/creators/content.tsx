@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { motion, Variants } from "framer-motion"
 import {
   Link2,
@@ -173,12 +174,24 @@ export function CreatorsContent() {
           />
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {[t("templateMinimal"), t("templateBold"), t("templateCreative")].map((name) => (
-              <AnimatedSection key={name}>
+            {[
+              { name: t("templateMinimal"), image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=533&fit=crop" },
+              { name: t("templateBold"), image: "https://images.unsplash.com/photo-1634942537034-2531766767d1?w=400&h=533&fit=crop" },
+              { name: t("templateCreative"), image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=533&fit=crop" },
+            ].map((template) => (
+              <AnimatedSection key={template.name}>
                 <div className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary">
-                  <div className="aspect-[3/4] bg-muted/20" />
+                  <div className="relative aspect-[3/4]">
+                    <Image
+                      src={template.image}
+                      alt={template.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
                   <div className="p-4 text-center">
-                    <h3 className="font-heading font-semibold">{name}</h3>
+                    <h3 className="font-heading font-semibold">{template.name}</h3>
                   </div>
                 </div>
               </AnimatedSection>

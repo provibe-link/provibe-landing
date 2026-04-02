@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { Search, ArrowRight, Calendar, Clock, User } from "lucide-react"
 import Link from "next/link"
@@ -22,6 +23,7 @@ const posts = [
     date: "Mar 28, 2024",
     readTime: "5 min",
     featured: true,
+    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=400&fit=crop",
   },
   {
     slug: "brand-partnership-guide",
@@ -32,6 +34,7 @@ const posts = [
     date: "Mar 25, 2024",
     readTime: "8 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
   },
   {
     slug: "bio-page-optimization",
@@ -42,6 +45,7 @@ const posts = [
     date: "Mar 22, 2024",
     readTime: "6 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
   },
   {
     slug: "creator-events-networking",
@@ -52,6 +56,7 @@ const posts = [
     date: "Mar 18, 2024",
     readTime: "4 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop",
   },
   {
     slug: "monetization-strategies",
@@ -62,6 +67,7 @@ const posts = [
     date: "Mar 15, 2024",
     readTime: "7 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop",
   },
   {
     slug: "provibe-spring-update",
@@ -72,6 +78,7 @@ const posts = [
     date: "Mar 12, 2024",
     readTime: "3 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
   },
   {
     slug: "content-calendar-template",
@@ -82,6 +89,7 @@ const posts = [
     date: "Mar 8, 2024",
     readTime: "4 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=800&h=400&fit=crop",
   },
   {
     slug: "brand-collaboration-mistakes",
@@ -92,6 +100,7 @@ const posts = [
     date: "Mar 5, 2024",
     readTime: "6 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1434626881859-194d67b2b86f?w=800&h=400&fit=crop",
   },
   {
     slug: "building-community-online",
@@ -102,6 +111,7 @@ const posts = [
     date: "Mar 1, 2024",
     readTime: "5 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=400&fit=crop",
   },
   {
     slug: "analytics-guide-creators",
@@ -112,6 +122,7 @@ const posts = [
     date: "Feb 26, 2024",
     readTime: "8 min",
     featured: false,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
   },
 ]
 
@@ -244,8 +255,8 @@ export function BlogsContent() {
                         </span>
                       </div>
                     </div>
-                    <div className="hidden md:block">
-                      <div className="h-48 w-64 rounded-xl border border-border/50 bg-primary/5" />
+                    <div className="relative hidden h-48 w-64 overflow-hidden rounded-xl md:block">
+                      <Image src={featured.image} alt={featured.title} fill className="object-cover" sizes="256px" />
                     </div>
                   </div>
                 </GradientCard>
@@ -266,8 +277,10 @@ export function BlogsContent() {
                 <Link href={`/blogs/${post.slug}`}>
                   <GradientCard className="group h-full">
                     <div className="flex h-full flex-col">
-                      {/* Thumbnail Placeholder */}
-                      <div className="mb-4 h-40 rounded-lg border border-border/50 bg-primary/5" />
+                      {/* Thumbnail */}
+                      <div className="relative mb-4 h-40 w-full overflow-hidden rounded-lg">
+                        <Image src={post.image} alt={post.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                      </div>
 
                       {/* Category */}
                       <span className={cn("mb-3 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium", categoryColors[post.category])}>

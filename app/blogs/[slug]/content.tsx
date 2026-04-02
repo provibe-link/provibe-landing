@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
 import Link from "next/link"
@@ -28,9 +29,9 @@ const categoryColors: Record<string, string> = {
 }
 
 const relatedPosts = [
-  { slug: "bio-page-optimization", title: "Optimize Your Bio Page for Maximum Conversions", category: "Creator Tips", readTime: "6 min" },
-  { slug: "monetization-strategies", title: "5 Monetization Strategies Beyond Sponsorships", category: "Creator Tips", readTime: "7 min" },
-  { slug: "creator-events-networking", title: "How Creator Events Can Transform Your Career", category: "Events & Community", readTime: "4 min" },
+  { slug: "bio-page-optimization", title: "Optimize Your Bio Page for Maximum Conversions", category: "Creator Tips", readTime: "6 min", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop" },
+  { slug: "monetization-strategies", title: "5 Monetization Strategies Beyond Sponsorships", category: "Creator Tips", readTime: "7 min", image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop" },
+  { slug: "creator-events-networking", title: "How Creator Events Can Transform Your Career", category: "Events & Community", readTime: "4 min", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop" },
 ]
 
 export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }) {
@@ -79,6 +80,20 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
           </motion.div>
         </div>
       </section>
+
+      {/* Hero Image */}
+      <div className="container mx-auto max-w-3xl px-6">
+        <div className="relative -mt-8 mb-12 aspect-[2/1] overflow-hidden rounded-2xl">
+          <Image
+            src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=1200&h=600&fit=crop"
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 768px"
+            priority
+          />
+        </div>
+      </div>
 
       {/* Article Content */}
       <article className="pb-16">
@@ -145,7 +160,9 @@ export function BlogPostContent({ post, slug }: { post: BlogPost; slug: string }
             {relatedPosts.map((related) => (
               <Link key={related.slug} href={`/blogs/${related.slug}`}>
                 <GradientCard className="group h-full">
-                  <div className="h-32 rounded-lg border border-border/50 bg-primary/5 mb-4" />
+                  <div className="relative h-32 w-full overflow-hidden rounded-lg mb-4">
+                    <Image src={related.image} alt={related.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  </div>
                   <span className={cn("inline-block rounded-full px-3 py-1 text-xs font-medium mb-3", categoryColors[related.category] || "bg-primary/10 text-primary")}>
                     {related.category}
                   </span>

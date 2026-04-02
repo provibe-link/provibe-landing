@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion, Variants } from "framer-motion"
 import { Zap, DollarSign, Handshake } from "lucide-react"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -27,19 +28,19 @@ export function ValueProps() {
       icon: Zap,
       title: t("startFastTitle"),
       description: t("startFastDesc"),
-      image: "/assets/start-fast.png",
+      image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&h=600&fit=crop",
     },
     {
       icon: DollarSign,
       title: t("earnIncomeTitle"),
       description: t("earnIncomeDesc"),
-      image: "/assets/earn-income.png",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
     },
     {
       icon: Handshake,
       title: t("workWithBrandsTitle"),
       description: t("workWithBrandsDesc"),
-      image: "/assets/work-with-brands.png",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
     },
   ]
 
@@ -68,10 +69,14 @@ export function ValueProps() {
               <GradientCard className="h-full">
                 <div className="flex h-full flex-col">
                   {/* Image */}
-                  <div className="relative mb-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg bg-muted/10">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                      <prop.icon className="h-6 w-6 text-primary" />
-                    </div>
+                  <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-lg">
+                    <Image
+                      src={prop.image}
+                      alt={prop.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                   </div>
 
                   {/* Content */}
