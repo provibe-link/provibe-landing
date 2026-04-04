@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { defaultLocale } from "@/i18n/config"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Admin auth check
@@ -12,10 +12,12 @@ export async function middleware(request: NextRequest) {
     }
     try {
       const { jwtVerify } = await import("jose")
-      const secret = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET)
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET)
       await jwtVerify(token, secret)
     } catch {
-      const response = NextResponse.redirect(new URL("/admin/login", request.url))
+      const response = NextResponse.redirect(
+        new URL("/admin/login", request.url)
+      )
       response.cookies.delete("admin_token")
       return response
     }
@@ -25,7 +27,10 @@ export async function middleware(request: NextRequest) {
   const localeCookie = request.cookies.get("NEXT_LOCALE")
   if (!localeCookie) {
     const response = NextResponse.next()
-    response.cookies.set("NEXT_LOCALE", defaultLocale, { path: "/", maxAge: 60 * 60 * 24 * 365 })
+    response.cookies.set("NEXT_LOCALE", defaultLocale, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    })
     return response
   }
 

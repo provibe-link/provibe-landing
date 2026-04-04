@@ -5,15 +5,16 @@ import { cookies } from "next/headers"
 const COOKIE_NAME = "admin_token"
 
 function getJwtSecret() {
-  const secret = process.env.ADMIN_JWT_SECRET
-  if (!secret) throw new Error("ADMIN_JWT_SECRET is not set")
+  const secret = process.env.JWT_SECRET
+  if (!secret) throw new Error("JWT_SECRET is not set")
   return new TextEncoder().encode(secret)
 }
 
 export async function validateCredentials(email: string, password: string) {
   const adminEmail = process.env.ADMIN_EMAIL
-  const adminPasswordHash = process.env.ADMIN_PASSWORD
-  if (!adminEmail || !adminPasswordHash) throw new Error("Admin credentials not configured")
+  const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH
+  if (!adminEmail || !adminPasswordHash)
+    throw new Error("Admin credentials not configured")
   if (email !== adminEmail) return false
   return bcrypt.compare(password, adminPasswordHash)
 }
