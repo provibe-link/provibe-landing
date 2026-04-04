@@ -50,23 +50,12 @@ export function AboutContent() {
     },
   ]
 
-  const team = [
-    {
-      name: t("team1Name"),
-      role: t("team1Role"),
-      bio: t("team1Bio"),
-    },
-    {
-      name: t("team2Name"),
-      role: t("team2Role"),
-      bio: t("team2Bio"),
-    },
-    {
-      name: t("team3Name"),
-      role: t("team3Role"),
-      bio: t("team3Bio"),
-    },
-  ]
+  const founder = {
+    name: t("team1Name"),
+    role: t("team1Role"),
+    bio: t("team1Bio"),
+    initials: t("team1Initials"),
+  }
 
   const values = [
     {
@@ -219,43 +208,37 @@ export function AboutContent() {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Founder */}
       <section className="bg-card/30 py-24 md:py-32">
-        <div className="container mx-auto max-w-5xl px-6">
+        <div className="container mx-auto max-w-3xl px-6">
           <SectionHeader
             eyebrow={t("teamEyebrow")}
             headline={t("teamHeadline")}
             headlineHighlight={t("teamHighlight")}
           />
 
-          <motion.div
-            variants={prefersReducedMotion ? staggerReduced : staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 gap-6 sm:grid-cols-3"
-          >
-            {team.map((member) => (
-              <motion.div
-                key={member.role}
-                variants={prefersReducedMotion ? cardReduced : cardFadeUp}
-                className="rounded-xl border border-border bg-card p-6 text-center"
+          <AnimatedSection>
+            <div className="rounded-xl border border-border bg-card p-8 text-center sm:p-10">
+              <div
+                className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full text-2xl font-bold text-white"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #fa6f62 0%, #ff8a7a 40%, #e55548 100%)",
+                }}
               >
-                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted/30">
-                  <Users className="h-8 w-8 text-muted-foreground/50" />
-                </div>
-                <h3 className="font-heading text-lg font-bold">
-                  {member.name}
-                </h3>
-                <p className="text-sm font-medium text-primary">
-                  {member.role}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {member.bio}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+                {founder.initials}
+              </div>
+              <h3 className="font-heading text-xl font-bold">
+                {founder.name}
+              </h3>
+              <p className="text-sm font-medium text-primary">
+                {founder.role}
+              </p>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+                {founder.bio}
+              </p>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 

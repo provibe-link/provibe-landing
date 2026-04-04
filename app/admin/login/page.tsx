@@ -1,7 +1,8 @@
 "use client"
 
 import { useActionState } from "react"
-import { Zap, Loader2 } from "lucide-react"
+import Image from "next/image"
+import { Loader2 } from "lucide-react"
 import { loginAction } from "@/lib/actions/auth"
 
 export default function AdminLoginPage() {
@@ -18,9 +19,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Zap className="h-6 w-6" />
-          </div>
+          <Image src="/logo-icon.webp" alt="ProVibe" width={48} height={48} className="h-12 w-12 rounded-xl" />
           <h1 className="text-2xl font-bold tracking-tight">Admin Login</h1>
           <p className="text-sm text-muted-foreground">Sign in to access the admin dashboard</p>
         </div>

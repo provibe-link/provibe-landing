@@ -66,11 +66,25 @@ model PostTag {
 }
 
 model WaitlistEntry {
-  id         Int      @id @default(autoincrement())
-  name       String?
-  email      String   @unique
-  handle     String?
-  created_at DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  name           String?
+  email          String   @unique
+  handle         String?
+  referral_code  String?  @unique
+  referred_by    String?
+  referral_count Int      @default(0)
+  created_at     DateTime @default(now())
 
   @@map("waitlist_entries")
+}
+
+model ContactSubmission {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  subject    String
+  message    String   @db.Text
+  created_at DateTime @default(now())
+
+  @@map("contact_submissions")
 }

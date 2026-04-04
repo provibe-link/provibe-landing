@@ -224,26 +224,6 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            {/* Social Proof Counters */}
-            {/* <motion.div
-              variants={fadeUpVariants}
-              className="mt-10 flex items-center justify-center gap-8 sm:gap-12"
-            >
-              {[
-                { value: t("stat1Value"), label: t("stat1Label") },
-                { value: t("stat2Value"), label: t("stat2Label") },
-                { value: t("stat3Value"), label: t("stat3Label") },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="font-display text-2xl font-bold text-primary sm:text-3xl">
-                    {stat.value}
-                  </div>
-                  <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div> */}
           </motion.div>
         </motion.div>
 

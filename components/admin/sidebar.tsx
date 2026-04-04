@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 import {
-  Zap,
   LayoutDashboard,
   FolderOpen,
   Tags,
@@ -31,7 +31,7 @@ export function AdminSidebar() {
     <aside className="flex h-full w-64 flex-col border-r border-border bg-card">
       {/* Logo */}
       <div className="flex items-center gap-2 border-b border-border px-6 py-5">
-        <Zap className="size-5 text-primary" />
+        <Image src="/logo-icon.webp" alt="ProVibe" width={20} height={20} className="size-5" />
         <span className="font-display text-lg font-bold">ProVibe Admin</span>
       </div>
 

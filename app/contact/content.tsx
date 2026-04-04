@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, FormEvent } from "react"
 import { motion } from "framer-motion"
-import { Mail, Clock, MessageSquare, Send, CheckCircle } from "lucide-react"
+import { Mail, Clock, MessageSquare, Send, CheckCircle, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,34 @@ import { cn } from "@/lib/utils"
 
 export function ContactContent() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
   const t = useTranslations("contact")
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setSubmitting(true)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+        setFormData({ name: "", email: "", subject: "", message: "" })
+      }
+    } catch {
+      // Silently fail — form will remain visible for retry
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   const subjects = [
     { value: "general", label: t("subjectGeneral") },
@@ -83,25 +110,32 @@ export function ContactContent() {
                     </Button>
                   </motion.div>
                 ) : (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      setSubmitted(true)
-                    }}
-                    className="space-y-6"
-                  >
+                  <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div>
                         <label htmlFor="name" className="mb-2 block text-sm font-medium">
                           {t("labelName")}
                         </label>
-                        <Input id="name" placeholder={t("placeholderName")} required />
+                        <Input
+                          id="name"
+                          placeholder={t("placeholderName")}
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        />
                       </div>
                       <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium">
                           {t("labelEmail")}
                         </label>
-                        <Input id="email" type="email" placeholder={t("placeholderEmail")} required />
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder={t("placeholderEmail")}
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        />
                       </div>
                     </div>
 
@@ -116,6 +150,8 @@ export function ContactContent() {
                           "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         )}
                         required
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       >
                         <option value="">{t("selectSubject")}</option>
                         {subjects.map((s) => (
@@ -135,6 +171,8 @@ export function ContactContent() {
                         rows={5}
                         placeholder={t("placeholderMessage")}
                         required
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         className={cn(
                           "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors",
                           "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
@@ -147,8 +185,13 @@ export function ContactContent() {
                       type="submit"
                       size="lg"
                       className="w-full bg-primary text-white hover:bg-primary/90 sm:w-auto"
+                      disabled={submitting}
                     >
-                      <Send className="mr-2 h-4 w-4" />
+                      {submitting ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Send className="mr-2 h-4 w-4" />
+                      )}
                       {t("sendMessage")}
                     </Button>
                   </form>

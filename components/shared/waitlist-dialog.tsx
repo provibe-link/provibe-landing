@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, FormEvent } from "react"
+import { useState, FormEvent, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, CheckCircle, Loader2 } from "lucide-react"
+import { ArrowRight, CheckCircle, Loader2, Copy, Check } from "lucide-react"
 
 interface WaitlistDialogProps {
   open: boolean
@@ -28,6 +28,20 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
     "idle" | "loading" | "success" | "error"
   >("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const [referralCode, setReferralCode] = useState("")
+  const [copied, setCopied] = useState(false)
+  const [ref, setRef] = useState<string | null>(null)
+
+  // Read referral code from URL on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search)
+      const refParam = params.get("ref")
+      if (refParam) {
+        setRef(refParam)
+      }
+    }
+  }, [])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -38,15 +52,21 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, handle }),
+        body: JSON.stringify({ name, email, handle, ref }),
       })
 
+      const data = await res.json()
+
       if (res.status === 409) {
-        setStatus("success") // Already on list — still show success
+        // Already on list — still show success with their existing referral code
+        setReferralCode(data.referral_code || "")
+        setStatus("success")
         return
       }
 
       if (!res.ok) throw new Error("Failed to submit")
+
+      setReferralCode(data.referral_code || "")
       setStatus("success")
     } catch {
       setStatus("error")
@@ -63,8 +83,37 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
         setEmail("")
         setHandle("")
         setErrorMessage("")
+        setReferralCode("")
+        setCopied(false)
       }, 300)
     }
+  }
+
+  const referralLink = referralCode
+    ? `${typeof window !== "undefined" ? window.location.origin : ""}?ref=${referralCode}`
+    : ""
+
+  const handleCopy = async () => {
+    if (!referralLink) return
+    await navigator.clipboard.writeText(referralLink)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleShareWhatsApp = () => {
+    const text = `Join ProVibe — the all-in-one platform for creators. Sign up for early access and get 0% fees: ${referralLink}`
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(text)}`,
+      "_blank"
+    )
+  }
+
+  const handleShareTwitter = () => {
+    const text = `I just joined the @provibeapp waitlist — 0% commission for early creators! Join through my link:`
+    window.open(
+      `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`,
+      "_blank"
+    )
   }
 
   return (
@@ -76,7 +125,7 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
               key="success"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex flex-col items-center py-8 text-center"
+              className="flex flex-col items-center py-6 text-center"
             >
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <CheckCircle className="h-8 w-8 text-primary" />
@@ -87,6 +136,46 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
               <p className="text-sm text-muted-foreground">
                 {t("successDescription")}
               </p>
+
+              {/* Referral section */}
+              {referralCode && (
+                <div className="mt-6 w-full space-y-3">
+                  <p className="text-sm font-medium">{t("shareTitle")}</p>
+                  <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+                    <span className="flex-1 truncate text-left text-xs text-muted-foreground">
+                      {referralLink}
+                    </span>
+                    <button
+                      onClick={handleCopy}
+                      className="shrink-0 rounded-md p-1.5 transition-colors hover:bg-muted"
+                    >
+                      {copied ? (
+                        <Check className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Copy className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 text-xs"
+                      onClick={handleShareWhatsApp}
+                    >
+                      {t("shareWhatsApp")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 text-xs"
+                      onClick={handleShareTwitter}
+                    >
+                      {t("shareTwitter")}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </motion.div>
           ) : (
             <motion.div

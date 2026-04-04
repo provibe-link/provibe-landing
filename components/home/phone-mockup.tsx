@@ -2,8 +2,11 @@
 
 import { motion } from "framer-motion"
 import { Globe, CirclePlay, Heart, MessageCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export function PhoneMockup() {
+  const t = useTranslations("phoneMockup")
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -28,18 +31,20 @@ export function PhoneMockup() {
         </div>
 
         {/* Screen content */}
-        <div
-          className="relative bg-primary"
-        >
+        <div className="relative bg-primary">
           {/* Creator profile area */}
           <div className="relative flex flex-col items-center pt-10 pb-3">
             {/* Profile image */}
             <div className="relative h-[280px] w-full overflow-hidden">
               <div className="absolute inset-0 bg-primary-dark" />
-              {/* Silhouette placeholder */}
+              {/* Gradient avatar — intentional abstract design */}
               <div className="absolute inset-0 flex items-end justify-center">
                 <div
-                  className="h-[82%] w-[65%] rounded-t-full bg-black/20 backdrop-blur-[1px]"
+                  className="h-[82%] w-[65%] rounded-t-full"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.15) 60%, rgba(255,255,255,0.05) 100%)",
+                  }}
                 />
               </div>
               {/* Decorative sparkles */}
@@ -57,10 +62,10 @@ export function PhoneMockup() {
             {/* Creator name */}
             <div className="mt-3 px-4 text-center">
               <p className="font-heading text-base font-semibold text-white">
-                @elizabeth.creates
+                {t("handle")}
               </p>
               <p className="mt-0.5 text-[10px] text-white/60">
-                Beauty & Lifestyle Creator
+                {t("tagline")}
               </p>
             </div>
           </div>
@@ -80,12 +85,12 @@ export function PhoneMockup() {
           {/* Shop section */}
           <div className="px-4 pb-4">
             <p className="mb-3 text-center font-heading text-sm font-semibold text-white">
-              Shop my faves
+              {t("shopTitle")}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { label: "Makeup favorites", count: "12 items" },
-                { label: "Skincare picks", count: "8 items" },
+                { label: t("product1"), count: t("product1Count") },
+                { label: t("product2"), count: t("product2Count") },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -103,14 +108,14 @@ export function PhoneMockup() {
             </div>
           </div>
 
-          {/* Coupon section */}
+          {/* Affiliate link section */}
           <div className="px-4 pb-6">
             <p className="mb-2 text-center font-heading text-sm font-semibold text-white">
-              Coupon Codes
+              {t("affiliateTitle")}
             </p>
             <div className="rounded-xl bg-white/15 px-4 py-3 text-center backdrop-blur-sm">
               <p className="font-mono text-sm font-bold tracking-[0.2em] text-white">
-                ELIZABETH25
+                {t("affiliateCode")}
               </p>
             </div>
           </div>

@@ -5,7 +5,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ArrowRight, Zap } from "lucide-react"
+import Image from "next/image"
+import { Menu, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeSwitcher } from "@/components/shared/theme-switcher"
 import { LanguageSwitcher } from "@/components/shared/language-switcher"
@@ -57,10 +58,14 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15">
-              <Zap className="h-4 w-4 text-primary" />
-            </span>
-            <span className="text-lg font-bold">ProVibe</span>
+            <Image
+              src="/logo.webp"
+              alt="ProVibe"
+              width={120}
+              height={32}
+              className="h-8 w-auto dark:brightness-0 dark:invert"
+              priority
+            />
             <span className="hidden items-center rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-medium text-primary sm:inline-flex">
               {t("launchBadge")}
             </span>

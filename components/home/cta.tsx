@@ -76,8 +76,7 @@ export function CTA() {
             >
               {t("headline")}
               <br />
-              <span className="text-primary">{t("headlineHighlight")}</span>{" "}
-              Today
+              <span className="text-primary">{t("headlineHighlight")}</span>
             </motion.h2>
 
             <motion.p

@@ -40,7 +40,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "ProVibe - Create. Connect. Grow.",
   description:
-    "Join 10K+ creators building their brand and connecting with opportunities",
+    "The all-in-one creator platform — bio links, digital store, analytics, and brand deals. Launching July 2026.",
+  icons: {
+    icon: "/logo-icon.webp",
+    apple: "/logo-icon.webp",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -48,13 +52,13 @@ export const metadata = {
     siteName: "ProVibe",
     title: "ProVibe - Create. Connect. Grow.",
     description:
-      "Join 10K+ creators building their brand and connecting with opportunities",
+      "The all-in-one creator platform — bio links, digital store, analytics, and brand deals. Launching July 2026.",
   },
   twitter: {
     card: "summary_large_image",
     title: "ProVibe - Create. Connect. Grow.",
     description:
-      "Join 10K+ creators building their brand and connecting with opportunities",
+      "The all-in-one creator platform — bio links, digital store, analytics, and brand deals. Launching July 2026.",
   },
 }
 
