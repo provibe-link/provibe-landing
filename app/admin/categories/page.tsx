@@ -5,10 +5,10 @@ import { Plus, Pencil, Trash2, Loader2, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
-  createCategory,
   updateCategory,
   deleteCategory,
 } from "@/lib/actions/categories"
+import { CategoryCreateDialog } from "@/components/admin/category-create-dialog"
 
 interface Category {
   id: number
@@ -21,13 +21,12 @@ interface Category {
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
-  const [newName, setNewName] = useState("")
-  const [creating, setCreating] = useState(false)
   const [error, setError] = useState("")
   const [editingId, setEditingId] = useState<number | null>(null)
   const [editingName, setEditingName] = useState("")
   const [saving, setSaving] = useState(false)
   const [deletingId, setDeletingId] = useState<number | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -42,22 +41,6 @@ export default function CategoriesPage() {
   useEffect(() => {
     fetchCategories()
   }, [fetchCategories])
-
-  async function handleCreate() {
-    if (!newName.trim()) return
-    setCreating(true)
-    setError("")
-    const fd = new FormData()
-    fd.set("name", newName)
-    const result = await createCategory(fd)
-    if (result?.error) {
-      setError(result.error)
-    } else {
-      setNewName("")
-    }
-    setCreating(false)
-    await fetchCategories()
-  }
 
   async function handleUpdate(id: number) {
     if (!editingName.trim()) return
@@ -100,34 +83,24 @@ export default function CategoriesPage() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-bold">Categories</h1>
-      <p className="mt-1 text-muted-foreground">
-        Manage blog post categories.
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-display text-3xl font-bold">Categories</h1>
+          <p className="mt-1 text-muted-foreground">
+            Manage blog post categories.
+          </p>
+        </div>
+        <Button onClick={() => setDialogOpen(true)}>
+          <Plus className="mr-2 size-4" />
+          Add Category
+        </Button>
+      </div>
 
       {error && (
         <div className="mt-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-400">
           {error}
         </div>
       )}
-
-      <div className="mt-6 flex items-center gap-3">
-        <Input
-          placeholder="New category name..."
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-          className="max-w-xs"
-        />
-        <Button onClick={handleCreate} disabled={creating || !newName.trim()}>
-          {creating ? (
-            <Loader2 className="mr-2 size-4 animate-spin" />
-          ) : (
-            <Plus className="mr-2 size-4" />
-          )}
-          Add
-        </Button>
-      </div>
 
       <div className="mt-6 overflow-hidden rounded-xl border border-border">
         <table className="w-full">
@@ -243,6 +216,13 @@ export default function CategoriesPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Category Create Dialog */}
+      <CategoryCreateDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onCreated={() => fetchCategories()}
+      />
     </div>
   )
 }

@@ -21,7 +21,7 @@ export function Navbar() {
     { href: "/", label: t("home") },
     { href: "/creators", label: t("creators") },
     { href: "/brands", label: t("brands") },
-    { href: "/blogs", label: t("blog") },
+    // { href: "/blogs", label: t("blog") },
     { href: "/about", label: t("about") },
   ]
   const [isScrolled, setIsScrolled] = useState(false)
@@ -39,7 +39,7 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className="fixed left-0 right-0 top-0 z-50"
+      className="fixed top-0 right-0 left-0 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
@@ -54,7 +54,7 @@ export function Navbar() {
         )}
       />
 
-      <div className="container relative mx-auto max-w-7xl px-6">
+      <div className="relative container mx-auto max-w-7xl px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
@@ -63,7 +63,7 @@ export function Navbar() {
               alt="ProVibe"
               width={120}
               height={32}
-              className="h-8 w-auto dark:brightness-0 dark:invert"
+              className="h-8 w-auto"
               priority
             />
             <span className="hidden items-center rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-medium text-primary sm:inline-flex">
@@ -104,7 +104,7 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden items-center gap-5 md:flex">
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
             <ThemeSwitcher />
             <Button
               className="rounded-full bg-primary px-5 text-white hover:bg-primary/90"
@@ -159,7 +159,7 @@ export function Navbar() {
                 ))}
 
                 <div className="mt-2 flex items-center gap-4 border-t border-border/30 pt-4">
-                  <LanguageSwitcher />
+                  {/* <LanguageSwitcher /> */}
                   <ThemeSwitcher />
                   <Button
                     className="flex-1 rounded-full bg-primary text-white hover:bg-primary/90"

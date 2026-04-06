@@ -56,9 +56,24 @@ CREATE TABLE "waitlist_entries" (
     "name" TEXT,
     "email" TEXT NOT NULL,
     "handle" TEXT,
+    "referral_code" TEXT,
+    "referred_by" TEXT,
+    "referral_count" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "waitlist_entries_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "contact_submissions" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "contact_submissions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -72,6 +87,9 @@ CREATE UNIQUE INDEX "posts_slug_key" ON "posts"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "waitlist_entries_email_key" ON "waitlist_entries"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "waitlist_entries_referral_code_key" ON "waitlist_entries"("referral_code");
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
