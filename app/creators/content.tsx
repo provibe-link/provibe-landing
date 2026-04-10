@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { motion, Variants } from "framer-motion"
 import {
   Link2,
@@ -25,6 +24,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  MinimalTemplate,
+  BoldTemplate,
+  CreativeTemplate,
+} from "@/components/shared/storefront-templates"
 
 export function CreatorsContent() {
   const [waitlistOpen, setWaitlistOpen] = useState(false)
@@ -173,26 +177,20 @@ export function CreatorsContent() {
             description={t("templatesDesc")}
           />
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {[
-              { name: t("templateMinimal"), image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=533&fit=crop" },
-              { name: t("templateBold"), image: "https://images.unsplash.com/photo-1634942537034-2531766767d1?w=400&h=533&fit=crop" },
-              { name: t("templateCreative"), image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=533&fit=crop" },
+              { name: t("templateMinimal"), component: <MinimalTemplate /> },
+              { name: t("templateBold"), component: <BoldTemplate /> },
+              { name: t("templateCreative"), component: <CreativeTemplate /> },
             ].map((template) => (
               <AnimatedSection key={template.name}>
-                <div className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary">
-                  <div className="relative aspect-[3/4]">
-                    <Image
-                      src={template.image}
-                      alt={template.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
+                <div className="space-y-4">
+                  <div className="transition-transform duration-300 hover:scale-[1.02]">
+                    {template.component}
                   </div>
-                  <div className="p-4 text-center">
-                    <h3 className="font-heading font-semibold">{template.name}</h3>
-                  </div>
+                  <p className="text-center font-heading text-sm font-semibold text-muted-foreground">
+                    {template.name}
+                  </p>
                 </div>
               </AnimatedSection>
             ))}

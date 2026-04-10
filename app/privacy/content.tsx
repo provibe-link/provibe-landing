@@ -54,7 +54,7 @@ export function PrivacyContent() {
                   <strong className="text-foreground">
                     Information you provide:
                   </strong>{" "}
-                  name, email, phone number, profile details, bio page content,
+                  name, email, phone number, profile details, storefront content,
                   products you list, session and booking details, event
                   details, payment details, brand deal information, and any
                   content you upload or publish on ProVibe.
@@ -64,7 +64,7 @@ export function PrivacyContent() {
                     Information collected automatically:
                   </strong>{" "}
                   device type, browser, IP address, pages viewed, clicks on
-                  your bio page, product views, booking flows, campaign
+                  your storefront page, product views, booking flows, campaign
                   responses, and general usage analytics.
                 </li>
                 <li>
@@ -128,7 +128,7 @@ export function PrivacyContent() {
               <List>
                 <li>
                   <strong className="text-foreground">Publicly:</strong> Content
-                  you publish on your bio page, storefront, events, or public
+                  you publish on your creator storefront, events, or public
                   listings is visible to anyone with the link.
                 </li>
                 <li>
@@ -178,7 +178,7 @@ export function PrivacyContent() {
                 personal information. You can:
               </p>
               <List>
-                <li>Edit or remove profile and bio page content at any time.</li>
+                <li>Edit or remove profile and storefront content at any time.</li>
                 <li>Unsubscribe from marketing emails from the email footer.</li>
                 <li>
                   Disconnect connected social accounts from your settings.

@@ -75,7 +75,7 @@ export function TermsContent() {
               <List>
                 <li>
                   <strong className="text-foreground">Creators</strong> can
-                  build a bio/profile page, add promotional content, sell
+                  build a creator storefront, add promotional content, sell
                   products, offer paid sessions and bookings, manage brand
                   deals and collaborations, and promote events and meetups.
                 </li>
