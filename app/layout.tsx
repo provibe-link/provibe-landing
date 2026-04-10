@@ -1,14 +1,21 @@
 import Script from "next/script"
-import { Space_Grotesk, Outfit, DM_Sans, JetBrains_Mono } from "next/font/google"
+import {
+  Space_Grotesk,
+  Outfit,
+  DM_Sans,
+  JetBrains_Mono,
+} from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { FloatingWaitlistButton } from "@/components/shared/floating-waitlist-button"
+import { EarlyJoinTrigger } from "@/components/shared/early-join-trigger"
 import { ScrollProgress } from "@/components/shared/scroll-progress"
 import { cn } from "@/lib/utils"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
+import { OpenPanelComponent } from "@openpanel/nextjs"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -121,6 +128,14 @@ export default async function RootLayout({
         </noscript>
       </head>
       <body className="font-body">
+        <OpenPanelComponent
+          apiUrl="https://logger.signaturetech.in/api"
+          scriptUrl="https://logger.signaturetech.in/op1.js"
+          clientId="acd81eb3-bf1f-48da-9cb7-ced0a40e67d7"
+          trackScreenViews={true}
+          trackAttributes={true}
+          trackOutgoingLinks={true}
+        />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
@@ -133,6 +148,7 @@ export default async function RootLayout({
             <main className="min-h-screen pt-16">{children}</main>
             <Footer />
             <FloatingWaitlistButton />
+            <EarlyJoinTrigger />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -387,18 +387,74 @@
     "newsletterSubtitle": "Get weekly creator economy insights delivered to your inbox."
   },
   "phoneMockup": {
-    "handle": "@priya.creates",
-    "tagline": "Content Creator & Coach",
-    "shopTitle": "My Products & Bookings",
-    "product1": "Editing presets",
-    "product1Count": "6 items",
-    "product2": "1:1 Coaching",
-    "product2Count": "Book a session",
-    "affiliateTitle": "Promo Content",
-    "affiliateCode": "PRIYA20"
+    "name": "Indian Collections",
+    "handle": "@provibe",
+    "tagline": "Lifestyle Designer & Creator",
+    "newArrivals": "New Arrivals",
+    "product1Name": "Silk Saree · Green",
+    "product1Price": "₹1199.00",
+    "product2Name": "Red Cordset",
+    "product2Price": "₹999.00",
+    "product3Name": "Multicolor Kurti",
+    "product3Price": "₹1499.00",
+    "linksTitle": "Links",
+    "linkPortfolio": "Portfolio",
+    "linkFullStore": "Full Store"
   },
   "common": {
     "joinWaitlist": "Join the Waitlist",
     "learnMore": "Learn More"
+  },
+  "earlyJoin": {
+    "dialog": {
+      "badge": "Early Access",
+      "title": "Join ProVibe Early",
+      "description": "Be among the first creators on ProVibe and unlock exclusive perks reserved for early joiners.",
+      "exploreCta": "Explore Benefits",
+      "laterCta": "Maybe later"
+    },
+    "page": {
+      "metaTitle": "Join Early — ProVibe",
+      "metaDescription": "Join ProVibe early and unlock lifetime perks: lower commissions, free events, free delivery, brand discovery, and more.",
+      "eyebrow": "Early Access",
+      "heroTitle": "Join ProVibe",
+      "heroTitleHighlight": "Early",
+      "heroSubtitle": "Lock in perks that only early joiners get. From reduced commissions to free events and brand discovery — this is your founder-level advantage.",
+      "primaryCta": "Claim Your Spot",
+      "secondaryCtaTitle": "Ready to claim your early access?",
+      "secondaryCtaSubtitle": "Spots are limited. Join now and lock in every benefit below.",
+      "secondaryCtaButton": "Join Early"
+    },
+    "benefits": {
+      "heading": "What You Get as an Early Joiner",
+      "subheading": "Perks reserved for the creators who believed first.",
+      "items": {
+        "earlyAccess": {
+          "title": "Early Access",
+          "description": "Be first in line when ProVibe launches — skip the waitlist and start building from day one."
+        },
+        "lessCommission": {
+          "title": "Lower Commission for 1 Year",
+          "description": "Pay less commission on product sales and service bookings for a full year after launch."
+        },
+        "freeEvents": {
+          "title": "Free Events & Meetups for 1 Year",
+          "description": "Free access to every event and meetup hosted by ProVibe for a full year."
+        },
+        "freeDelivery": {
+          "title": "Free Product Delivery for 6 Months",
+          "description": "We cover delivery on your product orders for the first six months after launch."
+        },
+        "brandDiscovery": {
+          "title": "Free Brand Discovery for 6 Months",
+          "description": "Get discovered by brands for six months at no cost — zero listing fees."
+        },
+        "noHostCommission": {
+          "title": "0% Host Commission for 1 Year",
+          "description": "Host your own events and meetups with no ProVibe commission for a full year."
+        }
+      },
+      "more": "…and many more perks to come"
+    }
   }
 }

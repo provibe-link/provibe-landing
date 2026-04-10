@@ -3,6 +3,7 @@
 import { useState, FormEvent, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
+import { useOpenPanel } from "@openpanel/nextjs"
 import {
   Dialog,
   DialogContent,
@@ -17,10 +18,16 @@ import { ArrowRight, CheckCircle, Loader2, Copy, Check } from "lucide-react"
 interface WaitlistDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  source?: string
 }
 
-export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
+export function WaitlistDialog({
+  open,
+  onOpenChange,
+  source = "floating-button",
+}: WaitlistDialogProps) {
   const t = useTranslations("waitlist")
+  const { track } = useOpenPanel()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [handle, setHandle] = useState("")
@@ -43,10 +50,17 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
     }
   }, [])
 
+  useEffect(() => {
+    if (open) {
+      track("waitlist_dialog_opened", { source })
+    }
+  }, [open, source, track])
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setStatus("loading")
     setErrorMessage("")
+    track("waitlist_submit_attempted", { source, hasHandle: Boolean(handle) })
 
     try {
       const res = await fetch("/api/waitlist", {
@@ -61,6 +75,7 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
         // Already on list — still show success with their existing referral code
         setReferralCode(data.referral_code || "")
         setStatus("success")
+        track("waitlist_submit_already_exists", { source })
         return
       }
 
@@ -68,9 +83,14 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
 
       setReferralCode(data.referral_code || "")
       setStatus("success")
+      track("waitlist_submit_succeeded", {
+        source,
+        referred: Boolean(ref),
+      })
     } catch {
       setStatus("error")
       setErrorMessage(t("error"))
+      track("waitlist_submit_failed", { source })
     }
   }
 
@@ -97,10 +117,12 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
     if (!referralLink) return
     await navigator.clipboard.writeText(referralLink)
     setCopied(true)
+    track("waitlist_referral_copied", { source })
     setTimeout(() => setCopied(false), 2000)
   }
 
   const handleShareWhatsApp = () => {
+    track("waitlist_referral_shared", { source, channel: "whatsapp" })
     const text = `Join ProVibe — the all-in-one platform for creators. Sign up for early access and get 0% fees: ${referralLink}`
     window.open(
       `https://wa.me/?text=${encodeURIComponent(text)}`,
@@ -109,6 +131,7 @@ export function WaitlistDialog({ open, onOpenChange }: WaitlistDialogProps) {
   }
 
   const handleShareTwitter = () => {
+    track("waitlist_referral_shared", { source, channel: "twitter" })
     const text = `I just joined the @provibeapp waitlist — 0% commission for early creators! Join through my link:`
     window.open(
       `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`,
