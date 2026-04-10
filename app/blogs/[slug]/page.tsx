@@ -4,12 +4,17 @@ import { prisma } from "@/lib/prisma"
 import { BlogPostContent } from "./content"
 
 // Generate static params for all published posts
+// Gracefully returns empty array if DB is unreachable (e.g. during Vercel build)
 export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true },
-  })
-  return posts.map((post) => ({ slug: post.slug }))
+  try {
+    const posts = await prisma.post.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true },
+    })
+    return posts.map((post) => ({ slug: post.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
