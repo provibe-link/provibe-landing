@@ -1,6 +1,8 @@
 import { FileText, FolderOpen, Tags, Users } from "lucide-react"
 import { prisma } from "@/lib/prisma"
 
+export const dynamic = "force-dynamic"
+
 const statCards = [
   { label: "Posts", icon: FileText, countKey: "posts" as const },
   { label: "Categories", icon: FolderOpen, countKey: "categories" as const },

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { BlogPostContent } from "./content"
 
+export const dynamic = "force-dynamic"
+
 // Generate static params for all published posts
 // Gracefully returns empty array if DB is unreachable (e.g. during Vercel build)
 export async function generateStaticParams() {
