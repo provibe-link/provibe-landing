@@ -99,13 +99,20 @@ export async function Footer() {
       title: t("company"),
       links: [{ label: t("contact"), href: "/contact" }],
     },
+    {
+      title: t("legal"),
+      links: [
+        { label: t("privacy"), href: "/privacy" },
+        { label: t("terms"), href: "/terms" },
+      ],
+    },
   ]
 
   return (
     <footer className="border-t border-border bg-background">
       <div className="container mx-auto max-w-7xl px-6 py-16">
         {/* Top: Brand + Columns */}
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-7">
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-8">
           {/* Brand — spans 2 cols on lg */}
           <div className="col-span-2 space-y-5">
             <Link href="/" className="inline-flex items-center gap-2.5">
@@ -167,10 +174,24 @@ export async function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 border-t border-border pt-8">
-          <p className="text-center text-xs text-muted-foreground">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+          <p className="text-xs text-muted-foreground">
             {t("copyright", { year: new Date().getFullYear() })}
           </p>
+          <div className="flex items-center gap-5">
+            <Link
+              href="/privacy"
+              className="text-xs text-muted-foreground transition-colors hover:text-primary"
+            >
+              {t("privacy")}
+            </Link>
+            <Link
+              href="/terms"
+              className="text-xs text-muted-foreground transition-colors hover:text-primary"
+            >
+              {t("terms")}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

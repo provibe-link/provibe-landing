@@ -1,13 +1,15 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
+import type { Value } from "platejs"
 import {
   Loader2,
   ImageIcon,
   X,
   Save,
   Plus,
+  Link as LinkIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,11 +24,12 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import { TiptapEditor } from "@/components/admin/tiptap-editor"
-import { TagInput } from "@/components/admin/tag-input"
+import { EditorField } from "@/components/editor/plate-editor"
 import { CategoryCreateDialog } from "@/components/admin/category-create-dialog"
 import { createPost, updatePost } from "@/lib/actions/posts"
 import { createTag } from "@/lib/actions/tags"
+
+/* ── Types ── */
 
 interface PostData {
   id: number
@@ -34,7 +37,7 @@ interface PostData {
   slug: string
   excerpt: string | null
   content: string | null
-  content_json: object | null
+  content_json: Value | null
   cover_image: string | null
   category_id: number | null
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
@@ -58,6 +61,8 @@ interface PostEditorProps {
   initialData?: PostData
 }
 
+/* ── Helpers ── */
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -65,6 +70,86 @@ function slugify(text: string): string {
     .replace(/[^\w\s-]/g, "")
     .replace(/\s+/g, "-")
 }
+
+/* ── Chip Input (reusable for tags & keywords) ── */
+
+function ChipInput({
+  chips,
+  onChange,
+  placeholder = "Type and press Enter...",
+}: {
+  chips: string[]
+  onChange: (chips: string[]) => void
+  placeholder?: string
+}) {
+  const [inputValue, setInputValue] = useState("")
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function addChip() {
+    const value = inputValue.trim()
+    if (value && !chips.includes(value)) {
+      onChange([...chips, value])
+    }
+    setInputValue("")
+  }
+
+  function removeChip(index: number) {
+    onChange(chips.filter((_, i) => i !== index))
+    inputRef.current?.focus()
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault()
+      addChip()
+    } else if (e.key === "Backspace" && !inputValue && chips.length > 0) {
+      removeChip(chips.length - 1)
+    }
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex min-h-[2.5rem] flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-3 py-1.5 text-sm transition-colors",
+        "focus-within:ring-1 focus-within:ring-ring"
+      )}
+      onClick={() => inputRef.current?.focus()}
+    >
+      {chips.map((chip, i) => (
+        <span
+          key={`${chip}-${i}`}
+          className="inline-flex items-center gap-1 rounded-md bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary ring-1 ring-primary/30 transition-colors hover:bg-primary/25"
+        >
+          {chip}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              removeChip(i)
+            }}
+            className="rounded-sm p-0.5 transition-colors hover:bg-primary/20"
+          >
+            <X className="size-3" />
+          </button>
+        </span>
+      ))}
+      <input
+        ref={inputRef}
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={() => {
+          if (inputValue.trim()) addChip()
+        }}
+        placeholder={chips.length === 0 ? placeholder : ""}
+        className="min-w-[80px] flex-1 bg-transparent text-sm placeholder:text-muted-foreground/50 focus:outline-none"
+      />
+    </div>
+  )
+}
+
+/* ── Post Editor ── */
 
 export function PostEditor({ initialData }: PostEditorProps) {
   const router = useRouter()
@@ -77,24 +162,25 @@ export function PostEditor({ initialData }: PostEditorProps) {
   )
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "")
   const [coverImage, setCoverImage] = useState(initialData?.cover_image || "")
+  const [coverImageUrl, setCoverImageUrl] = useState("")
   const [categoryId, setCategoryId] = useState<string>(
     initialData?.category_id?.toString() || ""
   )
-  const [selectedTags, setSelectedTags] = useState<Tag[]>(
-    initialData?.post_tags?.map((pt) => pt.tag) || []
+  const [tagNames, setTagNames] = useState<string[]>(
+    initialData?.post_tags?.map((pt) => pt.tag.name) || []
   )
-  const [status, setStatus] = useState<string>(initialData?.status || "DRAFT")
+  const status = initialData?.status || "DRAFT"
   const [featured, setFeatured] = useState(initialData?.featured || false)
   const [readTime, setReadTime] = useState(initialData?.read_time || "")
   const [content, setContent] = useState(initialData?.content || "")
-  const [contentJson, setContentJson] = useState<object | null>(
-    initialData?.content_json || null
+  const [contentJson, setContentJson] = useState<Value | null>(
+    (initialData?.content_json as Value) || null
   )
 
   // ── SEO state ──
   const [seoTitle, setSeoTitle] = useState("")
   const [seoDescription, setSeoDescription] = useState("")
-  const [seoKeywords, setSeoKeywords] = useState("")
+  const [seoKeywords, setSeoKeywords] = useState<string[]>([])
 
   // ── UI state ──
   const [saving, setSaving] = useState(false)
@@ -109,15 +195,11 @@ export function PostEditor({ initialData }: PostEditorProps) {
 
   // ── Metadata ──
   const [categories, setCategories] = useState<Category[]>([])
-  const [allTags, setAllTags] = useState<Tag[]>([])
 
   useEffect(() => {
     fetch("/api/admin/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data))
-    fetch("/api/admin/tags")
-      .then((res) => res.json())
-      .then((data) => setAllTags(data))
   }, [])
 
   // ── Handlers ──
@@ -131,9 +213,9 @@ export function PostEditor({ initialData }: PostEditorProps) {
     setSlug(value)
   }
 
-  function handleEditorChange(html: string, json: object) {
+  async function handleEditorChange(value: Value, html: string) {
     setContent(html)
-    setContentJson(json)
+    setContentJson(value)
   }
 
   async function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -153,6 +235,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
         setCoverUploadError(data.error || "Upload failed")
       } else {
         setCoverImage(data.url)
+        setCoverImageUrl("")
       }
     } catch {
       setCoverUploadError("Upload failed. Please try again.")
@@ -162,21 +245,12 @@ export function PostEditor({ initialData }: PostEditorProps) {
     }
   }
 
-  async function handleCreateTag(name: string): Promise<Tag | null> {
-    const fd = new FormData()
-    fd.set("name", name)
-    const result = await createTag(fd)
-    if (result?.error) return null
-
-    // Refresh tags list and find the new one
-    const res = await fetch("/api/admin/tags")
-    const freshTags = await res.json()
-    setAllTags(freshTags)
-
-    const created = freshTags.find(
-      (t: Tag) => t.name.toLowerCase() === name.toLowerCase()
-    )
-    return created || null
+  function handleApplyUrl() {
+    const url = coverImageUrl.trim()
+    if (url) {
+      setCoverImage(url)
+      setCoverImageUrl("")
+    }
   }
 
   function handleCategoryCreated(category: {
@@ -187,6 +261,38 @@ export function PostEditor({ initialData }: PostEditorProps) {
     setCategories((prev) => [...prev, category])
     setCategoryId(category.id.toString())
   }
+
+  const resolveTagIds = useCallback(
+    async (names: string[]): Promise<number[]> => {
+      const res = await fetch("/api/admin/tags")
+      const allTags: Tag[] = await res.json()
+      const ids: number[] = []
+
+      for (const name of names) {
+        const existing = allTags.find(
+          (t) => t.name.toLowerCase() === name.toLowerCase()
+        )
+        if (existing) {
+          ids.push(existing.id)
+        } else {
+          const fd = new FormData()
+          fd.set("name", name)
+          const result = await createTag(fd)
+          if (!result?.error) {
+            const freshRes = await fetch("/api/admin/tags")
+            const freshTags: Tag[] = await freshRes.json()
+            const created = freshTags.find(
+              (t) => t.name.toLowerCase() === name.toLowerCase()
+            )
+            if (created) ids.push(created.id)
+          }
+        }
+      }
+
+      return ids
+    },
+    []
+  )
 
   async function handleSave(publishStatus?: string) {
     if (!title.trim()) {
@@ -199,6 +305,13 @@ export function PostEditor({ initialData }: PostEditorProps) {
     setError("")
 
     const finalStatus = publishStatus || status
+
+    // Resolve tag names to IDs (create if needed)
+    let tagIds: number[] = []
+    if (tagNames.length > 0) {
+      tagIds = await resolveTagIds(tagNames)
+    }
+
     const data = {
       title: title.trim(),
       slug: slug.trim() || undefined,
@@ -210,10 +323,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
       status: finalStatus as "DRAFT" | "PUBLISHED" | "ARCHIVED",
       featured,
       read_time: readTime.trim() || undefined,
-      tag_ids:
-        selectedTags.length > 0
-          ? selectedTags.map((t) => t.id)
-          : undefined,
+      tag_ids: tagIds.length > 0 ? tagIds : undefined,
     }
 
     const result = initialData
@@ -250,7 +360,6 @@ export function PostEditor({ initialData }: PostEditorProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Save status indicator */}
           {saveStatus !== "idle" && (
             <div className="flex items-center gap-1.5 px-3">
               <div
@@ -312,13 +421,13 @@ export function PostEditor({ initialData }: PostEditorProps) {
         </div>
       )}
 
-      {/* ── Two Column Layout ── */}
+      {/* ── Main Layout ── */}
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-7xl px-6 py-6">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
             {/* ── Left Column ── */}
             <div className="space-y-6">
-              {/* Title, Slug, Description Card */}
+              {/* Title, Slug, Description */}
               <div className="rounded-xl border border-border bg-card p-6">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div className="space-y-2">
@@ -356,15 +465,16 @@ export function PostEditor({ initialData }: PostEditorProps) {
                 </div>
               </div>
 
-              {/* Banner / Cover Image Card */}
+              {/* Banner Card (upload + URL) */}
               <div className="rounded-xl border border-border bg-card p-6">
                 <Label className="mb-3 block">Banner</Label>
+
                 {coverImage ? (
                   <div className="group relative overflow-hidden rounded-lg">
                     <img
                       src={coverImage}
                       alt="Cover preview"
-                      className="max-h-[280px] w-full object-cover"
+                      className="max-h-[360px] w-full object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
                       <Button
@@ -389,7 +499,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                 ) : (
                   <div
                     className={cn(
-                      "flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/20 transition-colors hover:border-primary/40 hover:bg-muted/30",
+                      "flex min-h-[360px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/20 transition-colors hover:border-primary/40 hover:bg-muted/30",
                       coverUploading && "pointer-events-none opacity-60"
                     )}
                     onClick={() => coverInputRef.current?.click()}
@@ -406,11 +516,13 @@ export function PostEditor({ initialData }: PostEditorProps) {
                     </p>
                   </div>
                 )}
+
                 {coverUploadError && (
                   <p className="mt-3 text-sm text-destructive">
                     {coverUploadError}
                   </p>
                 )}
+
                 <input
                   ref={coverInputRef}
                   type="file"
@@ -418,27 +530,53 @@ export function PostEditor({ initialData }: PostEditorProps) {
                   className="hidden"
                   onChange={handleCoverUpload}
                 />
-              </div>
 
-              {/* Content Editor Card */}
-              <div className="rounded-xl border border-border bg-card p-6">
-                <Label className="mb-3 block">Content</Label>
-                <TiptapEditor
-                  content={content}
-                  onChange={handleEditorChange}
-                />
+                {/* OR divider + URL input */}
+                <div className="mt-4 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-border" />
+                  <span className="text-xs font-medium text-muted-foreground">
+                    OR
+                  </span>
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <LinkIcon className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground/50" />
+                    <Input
+                      value={coverImageUrl}
+                      onChange={(e) => setCoverImageUrl(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault()
+                          handleApplyUrl()
+                        }
+                      }}
+                      placeholder="Paste image URL..."
+                      className="h-9 pl-9 text-sm"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleApplyUrl}
+                    disabled={!coverImageUrl.trim()}
+                  >
+                    Apply
+                  </Button>
+                </div>
               </div>
             </div>
 
             {/* ── Right Column ── */}
             <div className="space-y-6">
-              {/* General Card */}
+              {/* General & Settings */}
               <div className="rounded-xl border border-border bg-card p-6">
                 <h3 className="mb-4 font-display text-base font-semibold">
-                  General
+                  General & Settings
                 </h3>
 
-                {/* Category */}
                 <div className="space-y-2">
                   <Label>Category</Label>
                   <div className="flex items-center gap-2">
@@ -449,10 +587,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                       <SelectContent>
                         <SelectItem value="none">No category</SelectItem>
                         {categories.map((cat) => (
-                          <SelectItem
-                            key={cat.id}
-                            value={cat.id.toString()}
-                          >
+                          <SelectItem key={cat.id} value={cat.id.toString()}>
                             {cat.name}
                           </SelectItem>
                         ))}
@@ -469,20 +604,36 @@ export function PostEditor({ initialData }: PostEditorProps) {
                   </div>
                 </div>
 
-                {/* Tags */}
+                <div className="mt-5 space-y-2">
+                  <Label htmlFor="read-time">Read Time</Label>
+                  <Input
+                    id="read-time"
+                    value={readTime}
+                    onChange={(e) => setReadTime(e.target.value)}
+                    placeholder="5 min"
+                    className="h-9 text-sm"
+                  />
+                </div>
+
                 <div className="mt-5 space-y-2">
                   <Label>Tags</Label>
-                  <TagInput
-                    allTags={allTags}
-                    selectedTags={selectedTags}
-                    onChange={setSelectedTags}
-                    onCreateTag={handleCreateTag}
-                    placeholder="New tag..."
+                  <ChipInput
+                    chips={tagNames}
+                    onChange={setTagNames}
+                    placeholder="Add tag..."
                   />
+                  <p className="text-xs text-muted-foreground/60">
+                    Press Enter or comma to add. Tags are created on save.
+                  </p>
+                </div>
+
+                <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+                  <Label className="text-sm">Featured post</Label>
+                  <Switch checked={featured} onCheckedChange={setFeatured} />
                 </div>
               </div>
 
-              {/* SEO Card */}
+              {/* SEO */}
               <div className="rounded-xl border border-border bg-card p-6">
                 <h3 className="mb-4 font-display text-base font-semibold">
                   SEO
@@ -511,73 +662,27 @@ export function PostEditor({ initialData }: PostEditorProps) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="seo-keywords">SEO Keywords</Label>
-                    <Input
-                      id="seo-keywords"
-                      value={seoKeywords}
-                      onChange={(e) => setSeoKeywords(e.target.value)}
-                      placeholder="keyword1, keyword2..."
+                    <Label>SEO Keywords</Label>
+                    <ChipInput
+                      chips={seoKeywords}
+                      onChange={setSeoKeywords}
+                      placeholder="Add keyword..."
                     />
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Settings Card */}
-              <div className="rounded-xl border border-border bg-card p-6">
-                <h3 className="mb-4 font-display text-base font-semibold">
-                  Settings
-                </h3>
-
-                {/* Status */}
-                <div className="space-y-2">
-                  <Label>Status</Label>
-                  <div className="flex gap-1.5">
-                    {(["DRAFT", "PUBLISHED", "ARCHIVED"] as const).map(
-                      (s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          onClick={() => setStatus(s)}
-                          className={cn(
-                            "flex-1 rounded-md px-3 py-2 text-xs font-medium transition-colors",
-                            status === s
-                              ? "bg-primary/15 text-primary ring-1 ring-primary/30"
-                              : "text-muted-foreground ring-1 ring-border hover:text-foreground"
-                          )}
-                        >
-                          {s.charAt(0) + s.slice(1).toLowerCase()}
-                        </button>
-                      )
-                    )}
-                  </div>
-                </div>
-
-                {/* Read Time */}
-                <div className="mt-4 space-y-2">
-                  <Label htmlFor="read-time">Read Time</Label>
-                  <Input
-                    id="read-time"
-                    value={readTime}
-                    onChange={(e) => setReadTime(e.target.value)}
-                    placeholder="5 min"
-                    className="h-9 text-sm"
-                  />
-                </div>
-
-                {/* Featured */}
-                <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                  <Label className="text-sm">Featured post</Label>
-                  <Switch checked={featured} onCheckedChange={setFeatured} />
-                </div>
-
-                {/* Cover Image URL fallback */}
-                <div className="mt-4 space-y-2 border-t border-border pt-4">
-                  <Label>Cover Image URL</Label>
-                  <Input
-                    value={coverImage}
-                    onChange={(e) => setCoverImage(e.target.value)}
-                    placeholder="https://example.com/image.jpg"
-                    className="h-9 text-sm"
+            <div className="col-span-2">
+              {/* Content Editor */}
+              <div className="flex min-h-[600px] flex-col rounded-xl border border-border bg-card p-6">
+                <Label className="mb-3 block">Content</Label>
+                <div className="flex-1">
+                  <EditorField
+                    value={contentJson ?? undefined}
+                    onChange={handleEditorChange}
+                    placeholder="Write your content..."
+                    className="h-full min-h-[500px]"
                   />
                 </div>
               </div>
@@ -586,7 +691,6 @@ export function PostEditor({ initialData }: PostEditorProps) {
         </div>
       </div>
 
-      {/* ── Category Create Dialog ── */}
       <CategoryCreateDialog
         open={categoryDialogOpen}
         onOpenChange={setCategoryDialogOpen}

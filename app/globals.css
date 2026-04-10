@@ -302,3 +302,12 @@
     border-color: var(--primary);
   }
 }
+
+.slate-editor {
+  padding: 0 1rem !important;
+  min-height: 400px !important;
+}
+
+.slate-editor:focus-visible {
+  outline: none !important;
+}
