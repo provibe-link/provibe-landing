@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { EarlyJoinGraphic } from "@/components/shared/early-join-graphic"
 import { ArrowRight, Check } from "lucide-react"
 import { useReducedMotion } from "@/lib/animations/hooks"
+import { cn } from "@/lib/utils"
 
 interface EarlyJoinDialogProps {
   open: boolean
@@ -47,8 +48,21 @@ export function EarlyJoinDialog({ open, onOpenChange }: EarlyJoinDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg overflow-hidden p-0">
-        <div className="relative">
+      <DialogContent
+        className={cn(
+          "flex flex-col overflow-hidden p-0",
+          // Mobile: bottom sheet
+          "!top-auto !left-0 !bottom-0 !translate-x-0 !translate-y-0",
+          "!max-w-none !w-full !rounded-t-3xl !rounded-b-none",
+          "max-h-[92dvh]",
+          "data-open:!slide-in-from-bottom data-closed:!slide-out-to-bottom",
+          // Desktop: recenter + card shape
+          "sm:!top-1/2 sm:!left-1/2 sm:!bottom-auto sm:!-translate-x-1/2 sm:!-translate-y-1/2",
+          "sm:!max-w-lg sm:!rounded-xl sm:max-h-[90dvh]",
+          "sm:data-open:!zoom-in-95 sm:data-closed:!zoom-out-95"
+        )}
+      >
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-48"
             style={{
@@ -57,7 +71,11 @@ export function EarlyJoinDialog({ open, onOpenChange }: EarlyJoinDialogProps) {
             }}
           />
 
-          <div className="relative px-6 pt-6 pb-4">
+          <div className="relative px-6 pt-5 pb-6 sm:pt-6">
+            <div
+              className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-muted-foreground/30 sm:hidden"
+              aria-hidden="true"
+            />
             <div className="flex justify-center">
               <EarlyJoinGraphic size="sm" />
             </div>
@@ -107,34 +125,36 @@ export function EarlyJoinDialog({ open, onOpenChange }: EarlyJoinDialogProps) {
             <p className="mt-3 text-center font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
               {t("benefits.more")}
             </p>
+          </div>
+        </div>
 
-            <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-              <Button
-                variant="ghost"
-                className="sm:flex-1"
+        <div className="shrink-0 border-t border-border/60 bg-background/95 px-6 py-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] backdrop-blur-sm sm:pb-4">
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button
+              variant="ghost"
+              className="sm:flex-1"
+              onClick={() => {
+                track("early_join_dialog_later_clicked")
+                onOpenChange(false)
+              }}
+            >
+              {t("dialog.laterCta")}
+            </Button>
+            <Button
+              asChild
+              className="sm:flex-[2] bg-primary text-white hover:bg-primary/90"
+            >
+              <Link
+                href="/join-early"
                 onClick={() => {
-                  track("early_join_dialog_later_clicked")
+                  track("early_join_dialog_explore_clicked")
                   onOpenChange(false)
                 }}
               >
-                {t("dialog.laterCta")}
-              </Button>
-              <Button
-                asChild
-                className="sm:flex-[2] bg-primary text-white hover:bg-primary/90"
-              >
-                <Link
-                  href="/join-early"
-                  onClick={() => {
-                    track("early_join_dialog_explore_clicked")
-                    onOpenChange(false)
-                  }}
-                >
-                  {t("dialog.exploreCta")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+                {t("dialog.exploreCta")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </DialogContent>
