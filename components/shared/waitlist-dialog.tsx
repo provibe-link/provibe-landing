@@ -15,6 +15,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, CheckCircle, Loader2, Copy, Check } from "lucide-react"
 
+function splitName(fullName: string): { firstName?: string; lastName?: string } {
+  const trimmed = fullName.trim()
+  if (!trimmed) return {}
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) return { firstName: parts[0] }
+  return {
+    firstName: parts[0],
+    lastName: parts.slice(1).join(" "),
+  }
+}
+
 interface WaitlistDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -27,7 +38,7 @@ export function WaitlistDialog({
   source = "floating-button",
 }: WaitlistDialogProps) {
   const t = useTranslations("waitlist")
-  const { track } = useOpenPanel()
+  const { track, identify } = useOpenPanel()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [handle, setHandle] = useState("")
@@ -71,21 +82,58 @@ export function WaitlistDialog({
 
       const data = await res.json()
 
+      const { firstName, lastName } = splitName(name)
+
       if (res.status === 409) {
         // Already on list — still show success with their existing referral code
-        setReferralCode(data.referral_code || "")
+        const existingCode = data.referral_code || ""
+        setReferralCode(existingCode)
         setStatus("success")
-        track("waitlist_submit_already_exists", { source })
+        identify({
+          profileId: email,
+          email,
+          firstName,
+          lastName,
+          properties: {
+            handle: handle || undefined,
+            referralCode: existingCode || undefined,
+            source,
+          },
+        })
+        track("waitlist_submit_already_exists", {
+          source,
+          email,
+          name,
+          handle,
+          referralCode: existingCode,
+        })
         return
       }
 
       if (!res.ok) throw new Error("Failed to submit")
 
-      setReferralCode(data.referral_code || "")
+      const newCode = data.referral_code || ""
+      setReferralCode(newCode)
       setStatus("success")
+      identify({
+        profileId: email,
+        email,
+        firstName,
+        lastName,
+        properties: {
+          handle: handle || undefined,
+          referralCode: newCode || undefined,
+          referredBy: ref || undefined,
+          source,
+        },
+      })
       track("waitlist_submit_succeeded", {
         source,
         referred: Boolean(ref),
+        email,
+        name,
+        handle,
+        referralCode: newCode,
       })
     } catch {
       setStatus("error")
