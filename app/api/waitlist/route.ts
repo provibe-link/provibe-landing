@@ -70,7 +70,8 @@ export async function POST(request: NextRequest) {
       { success: true, referral_code: entry.referral_code },
       { status: 201 }
     )
-  } catch {
+  } catch (error) {
+    console.error("[waitlist] POST failed:", error)
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
